@@ -1,0 +1,5 @@
+Detalles:
+
+- cuando se borra un cliente cambiar el tachito por el ojo, y viceversa
+- validar dos veces las contraseñas de registro
+- formato de campo de contraseña

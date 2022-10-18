@@ -1,0 +1,17 @@
+Falta:
+
+- hacer navegaciones x autenticacion de cuenta y rol --> ver como hacer el StackAuht
+- Registrarse
+- olvido contraseña
+
+- menu para cada usuario
+
+- crud plantillas (verificar por roles)
+- hacer lista de tres botones (kine, nutri, depor) de jugadores para ver/hacer las plantillas de cada uno
+
+- mis plantillas (en rol de jugador)
+- modificar perfil de cada usuario
+
+
+- listar jugares? 
+- graficos?
