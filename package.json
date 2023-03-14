@@ -25,6 +25,7 @@
     "react-hook-form": "^7.34.2",
     "react-native": "0.70.1",
     "react-native-awesome-alerts": "^2.0.0",
+    "react-native-big-list": "^1.5.6",
     "react-native-combobox": "^1.0.1",
     "react-native-date-picker": "^4.2.5",
     "react-native-element-dropdown": "^2.2.0",

@@ -191,7 +191,6 @@ export default props => {
 
   return (
     <>
-      <Text>Usuarios</Text>
       <FlatList
         keyExtractor={user => user.id_usuario.toString()}
         data={users.users}

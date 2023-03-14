@@ -2,24 +2,26 @@ import {View, Text} from 'react-native';
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Button, Icon} from '@rneui/base';
-import CreateTemplateKinesiologist from '../screens/medicalTemplate/kinesiologist/createTemplateKinesiologist';
-import KinesiologistList from '../screens/medicalTemplate/kinesiologist/KinesiologistList';
 import DeportistList from '../screens/medicalTemplate/SportsmanList';
-import TemplateDetailKinesiologist from '../screens/medicalTemplate/kinesiologist/TemplateDetailKinesiologist';
+import NutricionistList from '../screens/medicalTemplate/nutricionist/NutricionistList';
+import createTemplateNutricionist from '../screens/medicalTemplate/nutricionist/createTemplateNutricionist';
+import TemplateDetail from '../screens/medicalTemplate/nutricionist/TemplateDetailNutricionist';
+import TemplateDetailPhysicalTrainer from '../screens/medicalTemplate/PhysicalTrainer/TemplateDetailPhysicalTrainer';
+import PhysicalTrainerList from '../screens/medicalTemplate/PhysicalTrainer/PhysicalTrainerList';
 
 const Stack = createStackNavigator();
 
-export default function StackKinesiologist() {
+export default function StackPhysicalTrainer() {
   return (
     <Stack.Navigator
-      initialRouteName="KinesiologistList"
+      initialRouteName="PhysicalTrainerList"
       screenOptions={screenOptions}>
       <Stack.Screen
-        name="KinesiologistList"
-        component={KinesiologistList}
+        name="PhysicalTrainerList"
+        component={PhysicalTrainerList}
         options={({navigation}) => {
           return {
-            title: 'Planillas kinesiologicas',
+            title: 'Planillas del preparador fisico',
             headerRight: () => (
               <Button
                 onPress={() => navigation.navigate('SportsmanList')}
@@ -37,18 +39,12 @@ export default function StackKinesiologist() {
           title: 'Deportistas',
         }}
       />
+
       <Stack.Screen
-        name="TemplateDetailK"
-        component={TemplateDetailKinesiologist}
+        name="TemplateDetailPhysicalTrainer"
+        component={TemplateDetailPhysicalTrainer}
         options={{
           title: 'Detalle',
-        }}
-      />
-      <Stack.Screen
-        name="CreateTemplateKinesiologist"
-        component={CreateTemplateKinesiologist}
-        options={{
-          title: 'Registrar planilla',
         }}
       />
     </Stack.Navigator>
@@ -59,7 +55,6 @@ const screenOptions = {
   headerStyle: {
     backgroundColor: '#faf',
   },
-  headerTintColor: '#fff',
   headerTitleStyle: {
     fontWeight: 'bold',
   },

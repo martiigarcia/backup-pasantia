@@ -11,6 +11,7 @@ import {Icon, Input} from '@rneui/themed';
 import {Button, Stack, Text} from '@react-native-material/core';
 import {useForm} from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loading from '../../components/Loading';
 
 export default ({route, navigation}) => {
   const [password, setPassword] = useState('');
@@ -22,17 +23,42 @@ export default ({route, navigation}) => {
   const [mensaje, setMensaje] = useState({mensaje: ''});
 
   const onSaveSuccess = async value => {
-    /*console.log(value.access_token);
-    console.log(value.message);
-    console.log(value.user);*/
+    //console.log(value.access_token);
+    //console.log(value.message);
+    //console.log(value.user);
 
     try {
       await AsyncStorage.setItem('@AUTH_TOKEN', value.access_token);
       await AsyncStorage.setItem('@MEMBER', JSON.stringify(value.user));
-      console.log('AUTH_TOKEN' + (await AsyncStorage.getItem('@AUTH_TOKEN')));
-      // console.log('MEMBER' + (await AsyncStorage.getItem('@MEMBER')));
+      await AsyncStorage.setItem('@ROL_USER', JSON.stringify(value.user.rol));
+      // await AsyncStorage.setItem('@MEMBER2', value.user);
+      await AsyncStorage.setItem(
+        '@ID_USER',
+        JSON.stringify(value.user.id_usuario),
+      );
 
-      navigation.navigate('Users');
+      // console.log('AUTH_TOKEN' + (await AsyncStorage.getItem('@AUTH_TOKEN')));
+      // console.log('MEMBER' + (await AsyncStorage.getItem('@MEMBER')));
+      // console.log('MEMBER2' + (await AsyncStorage.getItem('@MEMBER2')));
+      // console.log('ID_USER' + (await AsyncStorage.getItem('@ID_USER')));
+
+      if (value.user.rol === 'Administrador')
+        navigation.navigate('HomeAdministrator');
+
+      if (value.user.rol === 'Kinesiologo')
+        navigation.navigate('HomeKinesiologist');
+
+      if (value.user.rol === 'Nutricionista')
+        navigation.navigate('HomeNutricionist');
+
+      if (value.user.rol === 'Entrenador') navigation.navigate('HomeTrainer');
+
+      if (value.user.rol === 'Deportista') navigation.navigate('HomeSportman');
+
+      // if (value.user.rol === 'Deportologo') navigation.navigate('Deportologo');
+
+      if (value.user.rol === 'Preparador Fisico')
+        navigation.navigate('HomePhysicalTrainer');
     } catch (error) {
       Alert.alert('Login', 'Error.' + error);
     }
@@ -42,20 +68,37 @@ export default ({route, navigation}) => {
       email: email,
       password: password,
     };
-    fetch('http://localhost:8080/back/public/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestBody),
-    })
-      .then(response => response.json())
-      .then(data => {
-        onSaveSuccess(data);
+
+    if (!(requestBody.email === '') || !(requestBody.password === '')) {
+      console.log(requestBody);
+      fetch('http://localhost:8080/back/public/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
       })
-      .catch(error => {
-        console.log(error);
-      });
+        .then(response => response.json())
+        .then(data => {
+          console.log('data');
+          if (data.success === false) {
+            Alert.alert('ERROR', data.message);
+          } else {
+            <>
+              <Loading isVisible={true} />
+            </>;
+            onSaveSuccess(data); //ERROR: hacer que entre aca solo si se loguea, no siempre como esta ahora
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else {
+      Alert.alert(
+        'Error',
+        'Los campos Email y Contraseña deben estar completos',
+      );
+    }
   };
 
   return (

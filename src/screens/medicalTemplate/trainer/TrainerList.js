@@ -47,7 +47,7 @@ export default ({route, navigation}) => {
         const userID = JSON.parse(user);
         //  console.log(userID.nombre);
         const url =
-          'http://localhost:8080/back/public/kinesiologo/list-planillas/' +
+          'http://localhost:8080/back/public/entrenador/list-planillas/' +
           +userID.id_usuario +
           '/';
         console.log(url);
@@ -97,7 +97,7 @@ export default ({route, navigation}) => {
           icon={<Icon name="edit" size={25} color="orange" />}
         />
         <Button
-          onPress={() => navigation.navigate('TemplateDetailK', template)}
+          onPress={() => navigation.navigate('TemplateDetailTrainer', template)}
           type="clear"
           icon={
             <Icon

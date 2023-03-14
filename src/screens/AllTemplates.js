@@ -1,10 +1,10 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 
-export default function createTemplate() {
+export default function AllTemplates() {
   return (
     <View>
-      <Text>createTemplate</Text>
+      <Text>AllTemplates</Text>
     </View>
   );
 }

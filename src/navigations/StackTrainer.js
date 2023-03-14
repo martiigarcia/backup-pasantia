@@ -6,20 +6,22 @@ import CreateTemplateKinesiologist from '../screens/medicalTemplate/kinesiologis
 import KinesiologistList from '../screens/medicalTemplate/kinesiologist/KinesiologistList';
 import DeportistList from '../screens/medicalTemplate/SportsmanList';
 import TemplateDetailKinesiologist from '../screens/medicalTemplate/kinesiologist/TemplateDetailKinesiologist';
+import TemplateDetailTrainer from '../screens/medicalTemplate/trainer/TemplateDetailTrainer';
+import TrainerList from '../screens/medicalTemplate/trainer/TrainerList';
 
 const Stack = createStackNavigator();
 
-export default function StackKinesiologist() {
+export default function StackTrainer() {
   return (
     <Stack.Navigator
-      initialRouteName="KinesiologistList"
+      initialRouteName="TrainerList"
       screenOptions={screenOptions}>
       <Stack.Screen
-        name="KinesiologistList"
-        component={KinesiologistList}
+        name="TrainerList"
+        component={TrainerList}
         options={({navigation}) => {
           return {
-            title: 'Planillas kinesiologicas',
+            title: 'Planillas del entrenador',
             headerRight: () => (
               <Button
                 onPress={() => navigation.navigate('SportsmanList')}
@@ -38,17 +40,10 @@ export default function StackKinesiologist() {
         }}
       />
       <Stack.Screen
-        name="TemplateDetailK"
-        component={TemplateDetailKinesiologist}
+        name="TemplateDetailTrainer"
+        component={TemplateDetailTrainer}
         options={{
           title: 'Detalle',
-        }}
-      />
-      <Stack.Screen
-        name="CreateTemplateKinesiologist"
-        component={CreateTemplateKinesiologist}
-        options={{
-          title: 'Registrar planilla',
         }}
       />
     </Stack.Navigator>

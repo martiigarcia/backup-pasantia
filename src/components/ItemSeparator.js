@@ -14,7 +14,7 @@ const ItemSeparator = () => {
         backgroundStyle,
         {
           height: 1,
-          marginHorizontal: 10,
+          //marginHorizontal: 10,
           backgroundColor: 'darkviolet',
         },
       ]}

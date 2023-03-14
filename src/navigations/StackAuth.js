@@ -10,22 +10,7 @@ const Stack = createStackNavigator();
 export default function StackAuth({routes, navigation}) {
   return (
     <Stack.Navigator initialRouteName="Login" screenOptions={screenOptions}>
-      <Stack.Screen
-        name="Login"
-        component={Login}
-        options={({navigation}) => {
-          return {
-            title: 'Ingresar',
-            headerRight: () => (
-              <Button
-                onPress={() => navigation.navigate('Register')}
-                type="clear"
-                icon={<Icon name="add" size={30} color="#fff" />}
-              />
-            ),
-          };
-        }}
-      />
+      <Stack.Screen name="Login" component={Login} />
       <Stack.Screen
         name="Register"
         component={Register}

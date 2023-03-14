@@ -19,14 +19,7 @@ export default ({route, navigation}) => {
   const getUser = async () => {
     try {
       const MEMBER = await AsyncStorage.getItem('@MEMBER');
-      // const ID_USER = await AsyncStorage.getItem('@ID_USER');
-      /*setUser({
-        user: MEMBER,
-      });
-      console.log('Member USER: ' + user.user); //hacer otra vairble en AsyncStorage para el ID y el ROL
-      */
-      //  console.log('ID USUARIO: ' + ID_USER);
-      //return ID_USER;
+
       return MEMBER;
     } catch (error) {
       console.log(error);
@@ -47,16 +40,16 @@ export default ({route, navigation}) => {
         const userID = JSON.parse(user);
         //  console.log(userID.nombre);
         const url =
-          'http://localhost:8080/back/public/kinesiologo/list-planillas/' +
+          'http://localhost:8080/back/public/nutricionista/list-planillas/' +
           +userID.id_usuario +
           '/';
-        console.log(url);
+        // console.log(url);
 
         fetch(url)
           .then(resp => resp.json())
           .then(json => {
             //console.log(json);
-            // console.log(json.planillas);
+            console.log(json.planillas);
 
             if (json.success) {
               setTemplate({
@@ -89,7 +82,7 @@ export default ({route, navigation}) => {
           <ListItem.Title>
             {template.deportista.nombre} {template.deportista.apellido}
           </ListItem.Title>
-          <ListItem.Subtitle>Fecha: {template.fecha}</ListItem.Subtitle>
+          <ListItem.Subtitle>Fecha: 25/10/2022</ListItem.Subtitle>
         </ListItem.Content>
         <Button
           // onPress={() => props.navigation.navigate('UserForm', user)}
@@ -97,7 +90,7 @@ export default ({route, navigation}) => {
           icon={<Icon name="edit" size={25} color="orange" />}
         />
         <Button
-          onPress={() => navigation.navigate('TemplateDetailK', template)}
+          onPress={() => navigation.navigate('TemplateDetail', template)}
           type="clear"
           icon={
             <Icon
@@ -119,7 +112,7 @@ export default ({route, navigation}) => {
   return (
     <>
       <FlatList
-        keyExtractor={template => template.id_planilla.toString()}
+        keyExtractor={template => template.id.toString()}
         data={templates.templates}
         renderItem={getTempleteItem}
       />

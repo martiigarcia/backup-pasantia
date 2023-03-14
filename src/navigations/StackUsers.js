@@ -4,36 +4,41 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {Button, Icon} from '@rneui/base';
 import UsersList from '../screens/users/UsersList';
 import UserForm from '../screens/users/UserForm';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 
-const Stack = createStackNavigator();
+//const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
 export default function StackUsers() {
   return (
-    <Stack.Navigator initialRouteName="UsersList" screenOptions={screenOptions}>
-      <Stack.Screen
+    <Drawer.Navigator initialRouteName="UsersList">
+      <Drawer.Screen
         name="UsersList"
         component={UsersList}
+        /*options={{
+          title: 'Lista de usuarios',
+        }}*/
         options={({navigation}) => {
           return {
-            title: 'CRUD - Listado de Usuarios',
+            title: 'Lista de usuarios',
             headerRight: () => (
               <Button
                 onPress={() => navigation.navigate('UserForm')}
                 type="clear"
-                icon={<Icon name="add" size={30} color="#fff" />}
+                icon={<Icon name="add" size={30} color="black" />}
               />
             ),
           };
         }}
       />
-      <Stack.Screen
+      <Drawer.Screen
         name="UserForm"
         component={UserForm}
         options={{
           title: 'Formulario de Usuario',
         }}
       />
-    </Stack.Navigator>
+    </Drawer.Navigator>
   );
 }
 

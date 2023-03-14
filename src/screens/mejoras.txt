@@ -3,3 +3,8 @@ Detalles:
 - cuando se borra un cliente cambiar el tachito por el ojo, y viceversa
 - validar dos veces las contraseñas de registro
 - formato de campo de contraseña
+- PROBLEMA EN EL LOGIN CUANDO PONES LA contraseña
+- MANEJO DE ERRORES (en todos lados)
+- hacer opcion de cerrar cuenta
+- detalle de usuarios ? sera necesario? 
+- agregar al registro de usuario/update el estado (ACTUALIZACION DE BACKEND)

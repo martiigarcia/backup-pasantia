@@ -33,13 +33,13 @@ export default ({route, navigation}) => {
           Authorization: 'Bearer ' + token,
         };
 
-        fetch('http://localhost:8080/back/public/users/list-users', {
+        fetch('http://localhost:8080/back/public/profesionales/deportistas', {
           headers,
         })
           .then(resp => resp.json())
           .then(json => {
             setUsers({
-              users: json.users.filter(user => user.rol === 'Deportista'),
+              users: json.deportistas,
             });
             setLoading(false);
           })

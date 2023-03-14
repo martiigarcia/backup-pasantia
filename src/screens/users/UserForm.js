@@ -164,8 +164,6 @@ export default ({route, navigation}) => {
 
   return (
     <>
-      <Text>UserForm</Text>
-
       <SafeAreaView style={styles.container}>
         <ScrollView style={styles.scrollView}>
           <View style={styles.form}>
