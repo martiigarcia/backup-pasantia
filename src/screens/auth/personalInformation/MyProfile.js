@@ -75,7 +75,6 @@ export default ({route, navigation}) => {
 
     getMemberToken()
       .then(data => {
-        console.log('GET MEMBER TOKEN: ');
         // console.log(data.MEMBER);
         // console.log(data.TOKEN);
         // console.log(data.ID);

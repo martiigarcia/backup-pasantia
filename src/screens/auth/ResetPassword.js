@@ -7,20 +7,21 @@ import {
   ScrollView,
   StatusBar,
   Alert,
+  // Clipboard,
 } from 'react-native';
-import {Icon, Input, ListItem} from '@rneui/themed';
+import {Input, ListItem} from '@rneui/themed';
 import {Button, Stack} from '@react-native-material/core';
 import {Card} from '@rneui/themed';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 export default ({route, navigation}) => {
-  const [password1, setPassword1] = useState('');
-  const [password2, setPassword2] = useState('');
-  const [showPassword1, setShowPassword1] = useState(false);
-  const [showPassword2, setShowPassword2] = useState(false);
+  // const [password1, setPassword1] = useState('');
+  // const [password2, setPassword2] = useState('');
+  // const [showPassword1, setShowPassword1] = useState(false);
+  // const [showPassword2, setShowPassword2] = useState(false);
   const [email, setEmail] = useState('');
-  const [errorPassword1, setErrorPassword1] = useState('');
-  const [errorPassword2, setErrorPassword2] = useState('');
+  // const [errorPassword1, setErrorPassword1] = useState('');
+  // const [errorPassword2, setErrorPassword2] = useState('');
   const [errorEmail, setErrorEmail] = useState('');
   const [resultado, setResultado] = useState({resultado: ''});
   const [mensaje, setMensaje] = useState({mensaje: ''});
@@ -29,177 +30,73 @@ export default ({route, navigation}) => {
   useEffect(() => {}, []);
 
   const handleSubmit = () => {
-    const clearvalue1 = password1.trim();
-    const clearvalue2 = password2.trim();
-    // console.log(password1);
-    // console.log(password2);
-    // console.log(clearvalue1);
-    // console.log(clearvalue2);
-    // console.log(clearvalue1.length);
-    // console.log(password1.length);
-    // console.log(clearvalue2.length);
-    // console.log(password2.length);
+    const clearEmail = email.trim();
+    console.log(clearEmail);
+    console.log(email);
+    console.log(clearEmail.length);
+    console.log(email.length);
+    console.log(clearEmail.length < email.length);
 
-    // console.log(clearvalue2.length < password2.length);
-    // console.log(clearvalue1.length < password1.length);
-
-    if (password1 === '' || password2 === '') {
-      Alert.alert('Error', 'Debe ingresar una nueva contraseña');
+    if (email === '') {
+      Alert.alert('Error', 'Debe ingresar su email');
     } else {
-      if (
-        clearvalue2.length < password2.length ||
-        clearvalue1.length < password1.length
-      ) {
-        Alert.alert(
-          'Error',
-          'La contraseña no puede contener espacios en blanco',
-        );
+      if (clearEmail.length < email.length) {
+        Alert.alert('Error', 'El email no puede contener espacios en blanco');
       } else {
-        if (password1 === password2) {
-          console.log('iguales: p1- ' + password1 + ' - p2- ' + password2);
-          change();
-        } else {
-          console.log('distintos p1- ' + password1 + ' - p2- ' + password2);
-          Alert.alert('Error', 'Las constraseñas no coinciden');
-        }
+        change();
       }
-    }
-  };
-
-  const getUserData = async () => {
-    try {
-      const MEMBER = await AsyncStorage.getItem('@MEMBER');
-      const TOKEN = await AsyncStorage.getItem('@AUTH_TOKEN');
-      const ID = await AsyncStorage.getItem('@ID_USER');
-
-      const data = {
-        MEMBER,
-        TOKEN,
-        ID,
-      };
-
-      // setUserData({
-      //   member: MEMBER,
-      //   token: TOKEN,
-      //   userId: ID,
-      // });
-      return data;
-    } catch (error) {
-      console.log(error);
     }
   };
 
   const change = () => {
     setLoading(true);
 
-    console.log('CHANGE: ');
-    getUserData()
-      .then(data => {
-        // console.log(data.MEMBER);
-        // console.log(data.TOKEN);
-        // console.log(data.ID);
-        const idX = JSON.parse(data.ID);
-        // console.log(idX);
+    const url = 'http://localhost:8080/back/public/auth/forgot-password';
+    console.log(url);
 
-        // const headers = {
-        //   'Content-Type': 'application/json',
-        //   Authorization: 'Bearer ' + data.TOKEN,
-        // };
-        const url =
-          'http://localhost:8080/back/public/profile/update-password/' +
-          +idX +
-          '/' +
-          idX;
-        console.log(url);
+    const requestBody = {
+      email: email,
+    };
 
-        const requestBody = {
-          password: password1,
-        };
+    console.log(requestBody);
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // Authorization: 'Bearer ' + userData.token,
+      },
+      body: JSON.stringify(requestBody),
+    })
+      .then(resp => resp.json())
+      .then(json => {
+        // console.log(json);
 
-        fetch(url, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + data.TOKEN,
-          },
-          body: JSON.stringify(requestBody),
-        })
-          .then(resp => resp.json())
-          .then(json => {
-            console.log(json);
+        if (json.success) {
+          Alert.alert(
+            'Enhorabuena!',
+            'La contraseña se actualizo con exito. Su nueva contraseña es: ' +
+              json.user.clave,
+            [
+              {
+                text: 'Copiar contraseña generada al portapapeles',
+                onPress: () => {
+                  Clipboard.setString(json.user.clave);
+                  console.log('Mensaje copiado al portapapeles');
+                },
+              },
+            ],
+          );
+          navigation.navigate('Auth');
+        } else {
+          Alert.alert('ERROR', json.message);
+        }
 
-            if (json.success) {
-              Alert.alert(
-                'Enhorabuena!',
-                'La contraseña se actualizo con exito',
-              );
-              navigation.navigate('Profile');
-            } else {
-              Alert.alert(
-                'Error',
-                json.message + ': \n' + json.errors.password,
-              );
-            }
-
-            setLoading(false);
-          })
-          .catch(error => {
-            // console.log(error);
-            setLoading(false);
-          });
+        setLoading(false);
       })
       .catch(error => {
         // console.log(error);
         setLoading(false);
       });
-    // console.log(userData.member);
-    // console.log(userData.token);
-    // console.log(userData.userId);
-    // const id = JSON.parse(userData.userId);
-    // console.log(id);
-
-    // const headers = {
-    //   //userID: user,
-    //   Authorization: 'Bearer ' + userData.token,
-    // };
-
-    // const url =
-    //   'http://localhost:8080/back/public/profile/update-password/' +
-    //   +id +
-    //   '/' +
-    //   id;
-    // // console.log(url);
-
-    // const requestBody = {
-    //   password: password1,
-    // };
-
-    // console.log(requestBody);
-    // fetch(url, {
-    //   method: 'PUT',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     Authorization: 'Bearer ' + userData.token,
-    //   },
-    //   body: JSON.stringify(requestBody),
-    // })
-    //   .then(resp => resp.json())
-    //   .then(json => {
-    //     // console.log(json);
-
-    //     if (json.success) {
-    //       Alert.alert('Enhorabuena!', 'La contraseña se actualizo con exito');
-    //       navigation.navigate('Profile');
-    //     } else {
-    //       Alert.alert('ERROR', json.message + ': \n' + json.errors.password);
-    //     }
-
-    //     setLoading(false);
-    //   })
-    //   .catch(error => {
-    //     // console.log(error);
-    //     setLoading(false);
-    //   });
   };
 
   return (
@@ -210,6 +107,29 @@ export default ({route, navigation}) => {
           <Card.Divider />
 
           <ListItem key={1} bottomDivider>
+            <ListItem.Content>
+              <ListItem.Title style={styles.text}>
+                Ingrese su email
+              </ListItem.Title>
+              <Input
+                placeholder="Email"
+                onChangeText={email => {
+                  setEmail(email);
+                }}
+                name="email"
+                keyboardType="email-address"
+                errorMessage={errorEmail}
+                //defaultValue={form.email}
+              />
+
+              <Text style={styles.textInfo}>
+                Complete su email y presione "Solicitar nueva contraseña". El
+                sistema le generará una contraseña aleatoria en el momento.
+              </Text>
+            </ListItem.Content>
+          </ListItem>
+
+          {/* <ListItem key={2} bottomDivider>
             <ListItem.Content>
               <ListItem.Title style={styles.text}>
                 Ingrese una nueva contraseña
@@ -225,7 +145,7 @@ export default ({route, navigation}) => {
                 onChangeText={password => {
                   setPassword1(password);
                 }}
-                name="password"
+                name="password1"
                 rightIcon={
                   <Icon
                     type="material-community"
@@ -237,7 +157,7 @@ export default ({route, navigation}) => {
               />
             </ListItem.Content>
           </ListItem>
-          <ListItem key={2} bottomDivider>
+          <ListItem key={3} bottomDivider>
             <ListItem.Content>
               <ListItem.Title style={styles.text}>
                 Ingrese una nueva contraseña
@@ -253,7 +173,7 @@ export default ({route, navigation}) => {
                 onChangeText={password => {
                   setPassword2(password);
                 }}
-                name="password"
+                name="password2"
                 rightIcon={
                   <Icon
                     type="material-community"
@@ -267,7 +187,7 @@ export default ({route, navigation}) => {
                 * La nueva contraseña debe contener al menos 8 caracteres
               </Text>
             </ListItem.Content>
-          </ListItem>
+          </ListItem> */}
 
           <Card.Divider />
           <View style={styles.view}>
@@ -275,7 +195,7 @@ export default ({route, navigation}) => {
               <Button
                 style={styles.button}
                 type="submit"
-                title="Cambiar"
+                title="Solicitar nueva contraseña"
                 onPress={() => {
                   //Alert.alert('Iniciando...');
                   handleSubmit();

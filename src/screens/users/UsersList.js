@@ -64,7 +64,7 @@ export default props => {
       .then(json => {
         // console.log('json: ' + json);
         if (json.success) {
-          Alert.alert('Elimino el usuario con exito', json.message);
+          Alert.alert('Elimnación exitosa!', json.message);
           navigation.navigate('UsersList');
         } else {
           Alert.alert('Error... algo salio mal', json.message);
@@ -93,7 +93,7 @@ export default props => {
       .then(json => {
         // console.log('json: ' + json);
         if (json.success) {
-          Alert.alert('Elimino el autorizo con exito', json.message);
+          Alert.alert('Activación exitosa!', json.message);
           navigation.navigate('UsersList');
         } else {
           Alert.alert('Error... algo salio mal', json.message);
@@ -122,7 +122,7 @@ export default props => {
       .then(json => {
         // console.log('json: ' + json);
         if (json.success) {
-          Alert.alert('Elimino el autorizo con exito', json.message);
+          Alert.alert('Autorización extiosa!', json.message);
           navigation.navigate('UsersList');
         } else {
           Alert.alert('Error... algo salio mal', json.message);

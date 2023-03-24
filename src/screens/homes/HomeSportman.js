@@ -30,7 +30,7 @@ export default ({route, navigation}) => {
         color: '#87CEEB',
         options: 'Listar mis planillas',
         image: 'https://img.icons8.com/office/512/groups.png',
-        route: 'Users',
+        route: 'MyTemplates',
         // image: 'https://img.icons8.com/office/70/000000/home-page.png',
       },
     ],
