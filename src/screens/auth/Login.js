@@ -43,22 +43,23 @@ export default ({route, navigation}) => {
       // console.log('ID_USER' + (await AsyncStorage.getItem('@ID_USER')));
 
       if (value.user.rol === 'Administrador')
-        navigation.navigate('HomeAdministrator');
+        navigation.navigate('Administrator');
 
       if (value.user.rol === 'Kinesiologo')
-        navigation.navigate('HomeKinesiologist');
+        navigation.navigate('Kinesiologist');
 
       if (value.user.rol === 'Nutricionista')
-        navigation.navigate('HomeNutricionist');
+        navigation.navigate('Nutricionist');
 
-      if (value.user.rol === 'Entrenador') navigation.navigate('HomeTrainer');
+      if (value.user.rol === 'Entrenador') navigation.navigate('Trainer');
 
-      if (value.user.rol === 'Deportista') navigation.navigate('HomeSportman');
+      if (value.user.rol === 'Deportista') navigation.navigate('Sportman');
 
-      // if (value.user.rol === 'Deportologo') navigation.navigate('Deportologo');
+      if (value.user.rol === 'Deportologo')
+        navigation.navigate('Deportologist');
 
       if (value.user.rol === 'Preparador Fisico')
-        navigation.navigate('HomePhysicalTrainer');
+        navigation.navigate('PhysicalTrainer');
     } catch (error) {
       Alert.alert('Login', 'Error.' + error);
     }

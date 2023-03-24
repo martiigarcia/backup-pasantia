@@ -18,7 +18,7 @@ export default ({route, navigation}) => {
   }, [route, navigation]);
 
   const clickEventListener = item => {
-    // console.log(item);
+    console.log(item);
     navigation.navigate(item.route);
   };
   return (

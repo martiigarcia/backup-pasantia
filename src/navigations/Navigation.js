@@ -7,8 +7,6 @@ import {
   DrawerItem,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import StackUsers from './StackUsers';
-import StackAuth from './StackAuth';
 import StackKinesiologist from './StackKinesiologist';
 import StackNutricionist from './StackNutricionist';
 import StackPhysicalTrainer from './StackPhysicalTrainer';
@@ -19,96 +17,19 @@ import Login from '../screens/auth/Login';
 import Register from '../screens/auth/Register';
 import ResetPassword from '../screens/auth/ResetPassword';
 import MyProfile from '../screens/auth/personalInformation/MyProfile';
-import UserForm from '../screens/users/UserForm';
-import RolesList from '../screens/RolesList';
-import AllTemplates from '../screens/AllTemplates';
-import HomeAdministrator from '../screens/homes/HomeAdministrator';
-import HomeNutricionist from '../screens/homes/HomeNutricionist';
-import HomeSportman from '../screens/homes/HomeSportman';
-import HomeKinesiologist from '../screens/homes/HomeKinesiologist';
-import HomeTrainer from '../screens/homes/HomeTrainer';
-import HomePhysicalTrainer from '../screens/homes/HomePhysicalTrainer';
 import ChangePassword from '../screens/auth/personalInformation/ChangePassword';
+import UpdateProfile from '../screens/auth/personalInformation/UpdateProfile';
+import StackAdministrator from './StackAdministrator';
+import StackSportman from './StackSportman';
+import StackDeportologist from './StackDeportologist';
 
-//const Drawer = createDrawerNavigator();
-//const HomeStack = createStackNavigator();
-/*
-function CustomDrawerContent(props) {
-  return (
-    <DrawerContentScrollView {...props}>
-    <DrawerItemList {...props} />
-    <DrawerItem label="Help" onPress={() => alert('Helpinggggg')} />
-    </DrawerContentScrollView>
-    );
-  }*/
-/*
-  <Drawer.Navigator
-  useLegacyImplementation
-  centerTitle={true}
-  drawerContent={props => <CustomDrawerContent {...props} />}>
-  <Drawer.Screen name="Auth" component={StackAuth} />
-  <Drawer.Screen name="PhysicalTrainer" component={StackPhysicalTrainer} />
-  <Drawer.Screen name="Kinesiologist" component={StackKinesiologist} />
-  <Drawer.Screen name="Users" component={StackUsers} />
-  <Drawer.Screen name="Nutricionist" component={StackNutricionist} />
-  <Drawer.Screen name="Trainer" component={StackTrainer} />
-  </Drawer.Navigator>*/
+
 
 const Stack = createStackNavigator();
 
 const AllStacks = () => {
   return (
     <Stack.Navigator initialRouteName="Auth">
-      <Stack.Screen
-        name="HomePhysicalTrainer"
-        options={{
-          title: 'Home',
-        }}
-        component={HomePhysicalTrainer}
-      />
-      <Stack.Screen
-        name="HomeTrainer"
-        options={{
-          title: 'Home',
-        }}
-        component={HomeTrainer}
-      />
-      <Stack.Screen
-        name="HomeKinesiologist"
-        options={{
-          title: 'Home',
-        }}
-        component={HomeKinesiologist}
-      />
-      <Stack.Screen
-        name="HomeSportman"
-        options={{
-          title: 'Home',
-        }}
-        component={HomeSportman}
-      />
-      <Stack.Screen
-        name="HomeAdministrator"
-        options={{
-          title: 'Home',
-        }}
-        component={HomeAdministrator}
-      />
-
-      <Stack.Screen
-        name="HomeNutricionist"
-        options={{
-          title: 'Home',
-        }}
-        component={HomeNutricionist}
-      />
-      <Stack.Screen
-        name="Profile"
-        options={{
-          title: 'Mi perfil',
-        }}
-        component={MyProfile}
-      />
       <Stack.Screen
         name="Auth"
         options={({navigation}) => {
@@ -139,6 +60,32 @@ const AllStacks = () => {
         }}
         component={ResetPassword}
       />
+
+      <Stack.Screen name="Nutricionist" component={StackNutricionist} options={{ headerShown: false }}/>
+      <Stack.Screen name="Kinesiologist" component={StackKinesiologist} options={{ headerShown: false }}/>
+      <Stack.Screen name="PhysicalTrainer" component={StackPhysicalTrainer} options={{ headerShown: false }}/>
+      <Stack.Screen name="Trainer" component={StackTrainer} options={{ headerShown: false }}/>
+      <Stack.Screen name="Administrator" component={StackAdministrator} options={{ headerShown: false }}/>
+      <Stack.Screen name="Sportman" component={StackSportman} options={{ headerShown: false }}/>
+      <Stack.Screen name="Deportologist" component={StackDeportologist} options={{ headerShown: false }}/>
+
+  
+    
+      <Stack.Screen
+        name="Profile"
+        options={{
+          title: 'Mi perfil',
+        }}
+        component={MyProfile}
+      />
+      <Stack.Screen
+        name="UpdateProfile"
+        options={{
+          title: 'Actualizar perfil',
+        }}
+        component={UpdateProfile}
+      />
+      
       <Stack.Screen
         name="ChangePassword"
         options={{
@@ -146,40 +93,9 @@ const AllStacks = () => {
         }}
         component={ChangePassword}
       />
-      <Stack.Screen
-        name="Users"
-        options={{
-          title: 'Usuarios',
-        }}
-        component={StackUsers}
-      />
+     
 
-      <Stack.Screen
-        name="UserForm"
-        options={{
-          title: 'Formulario de Usuario',
-        }}
-        component={UserForm}
-      />
-      <Stack.Screen
-        name="RolesList"
-        options={{
-          title: 'Roles del sistema',
-        }}
-        component={RolesList}
-      />
-      <Stack.Screen
-        name="AllTemplates"
-        options={{
-          title: 'Todas las planillas',
-        }}
-        component={AllTemplates}
-      />
-
-      <Stack.Screen name="Nutricionist" component={StackNutricionist} />
-      <Stack.Screen name="Kinesiologist" component={StackKinesiologist} />
-      <Stack.Screen name="PhysicalTrainer" component={StackPhysicalTrainer} />
-      <Stack.Screen name="Trainer" component={StackTrainer} />
+    
     </Stack.Navigator>
   );
 };

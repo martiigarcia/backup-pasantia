@@ -8,14 +8,22 @@ import createTemplateNutricionist from '../screens/medicalTemplate/nutricionist/
 import TemplateDetail from '../screens/medicalTemplate/nutricionist/TemplateDetailNutricionist';
 import TemplateDetailPhysicalTrainer from '../screens/medicalTemplate/PhysicalTrainer/TemplateDetailPhysicalTrainer';
 import PhysicalTrainerList from '../screens/medicalTemplate/PhysicalTrainer/PhysicalTrainerList';
+import HomePhysicalTrainer from '../screens/homes/HomePhysicalTrainer';
 
 const Stack = createStackNavigator();
 
 export default function StackPhysicalTrainer() {
   return (
     <Stack.Navigator
-      initialRouteName="PhysicalTrainerList"
+      initialRouteName="HomePhysicalTrainer"
       screenOptions={screenOptions}>
+       <Stack.Screen
+        name="HomePhysicalTrainer"
+        options={{
+          title: 'Home',
+        }}
+        component={HomePhysicalTrainer}
+      />
       <Stack.Screen
         name="PhysicalTrainerList"
         component={PhysicalTrainerList}

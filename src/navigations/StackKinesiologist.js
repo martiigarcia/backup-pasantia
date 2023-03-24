@@ -6,14 +6,23 @@ import CreateTemplateKinesiologist from '../screens/medicalTemplate/kinesiologis
 import KinesiologistList from '../screens/medicalTemplate/kinesiologist/KinesiologistList';
 import DeportistList from '../screens/medicalTemplate/SportsmanList';
 import TemplateDetailKinesiologist from '../screens/medicalTemplate/kinesiologist/TemplateDetailKinesiologist';
+import HomeKinesiologist from '../screens/homes/HomeKinesiologist';
 
 const Stack = createStackNavigator();
 
 export default function StackKinesiologist() {
   return (
     <Stack.Navigator
-      initialRouteName="KinesiologistList"
+      useLegacyImplementation
+      initialRouteName="HomeKinesiologist"
       screenOptions={screenOptions}>
+      <Stack.Screen
+        name="HomeKinesiologist"
+        options={{
+          title: 'Home',
+        }}
+        component={HomeKinesiologist}
+      />
       <Stack.Screen
         name="KinesiologistList"
         component={KinesiologistList}
@@ -57,10 +66,10 @@ export default function StackKinesiologist() {
 
 const screenOptions = {
   headerStyle: {
-    backgroundColor: '#faf',
+    //backgroundColor: '#faf',
   },
-  headerTintColor: '#fff',
+  // headerTintColor: '#fff',
   headerTitleStyle: {
-    fontWeight: 'bold',
+    //  fontWeight: 'bold',
   },
 };

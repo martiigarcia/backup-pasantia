@@ -30,7 +30,7 @@ export default ({route, navigation}) => {
         color: '#87CEEB',
         options: 'Listar todas mis planillas registradas',
         image: 'https://img.icons8.com/office/512/groups.png',
-        route: 'Users',
+        route: 'KinesiologistList',
         // image: 'https://img.icons8.com/office/70/000000/home-page.png',
       },
       {
@@ -39,27 +39,12 @@ export default ({route, navigation}) => {
         color: '#4682B4',
         options: 'Registrar nueva planilla',
         image: 'https://img.icons8.com/officel/512/add-user-male.png',
-        route: 'UserForm',
+        route: 'CreateTemplateKinesiologist',
         //https://img.icons8.com/color/70/000000/two-hearts.png',
       },
     ],
   };
 
-  /*function Root() {
-    return (
-      <Stack.Navigator>
-        <Stack.Screen name="Root" component={Root} />
-        <Stack.Screen name="Profile" component={MyProfile} />
-      </Stack.Navigator>
-    );
-  }
-  const NavigaRoot = () => {
-    return (
-      <Stack.Navigator>
-        <Stack.Screen name="Root" component={Root} />
-      </Stack.Navigator>
-    );
-  };*/
 
   const clickEventListener = item => {
     console.log(item);

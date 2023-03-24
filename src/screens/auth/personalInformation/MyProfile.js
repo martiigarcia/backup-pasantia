@@ -10,6 +10,11 @@ import {TouchableOpacity, Image, ScrollView} from 'react-native';
 export default ({route, navigation}) => {
   const [user, setUser] = useState({user: {}});
   const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState({
+    // member: {},
+    token: {},
+    userId: {},
+  });
 
   const state = {
     data: [
@@ -18,7 +23,7 @@ export default ({route, navigation}) => {
         title: 'Actualizar datos',
         color: '#58D68D',
         image: 'https://img.icons8.com/offices/512/change-user-female.png',
-        route: 'Profile',
+        route: 'UpdateProfile',
         // image: 'https://img.icons8.com/color/70/000000/name.png',
       },
       {
@@ -34,14 +39,32 @@ export default ({route, navigation}) => {
 
   useEffect(() => {
     getProfile();
-    console.log(user);
+    // getMemberToken().then(member => {
+    //   const userX = JSON.parse(member);
+    //   setUser({
+    //     user: userX,
+    //   });
+    // });
   }, []);
 
   const getMemberToken = async () => {
     try {
       const MEMBER = await AsyncStorage.getItem('@MEMBER');
+      const TOKEN = await AsyncStorage.getItem('@AUTH_TOKEN');
+      const ID = await AsyncStorage.getItem('@ID_USER');
 
-      return MEMBER;
+      const data = {
+        MEMBER,
+        TOKEN,
+        ID,
+      };
+      // setUserData({
+      //   member: MEMBER,
+      //   token: TOKEN,
+      //   userId: ID,
+      // });
+
+      return data;
     } catch (error) {
       console.log(error);
     }
@@ -49,29 +72,28 @@ export default ({route, navigation}) => {
 
   const getProfile = () => {
     setLoading(true);
-    let valorToken;
 
     getMemberToken()
-      .then(user => {
+      .then(data => {
+        console.log('GET MEMBER TOKEN: ');
+        // console.log(data.MEMBER);
+        // console.log(data.TOKEN);
+        // console.log(data.ID);
+        const idX = JSON.parse(data.ID);
+        // console.log(idX);
+
         const headers = {
-          //userID: user,
-          //Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + data.TOKEN,
         };
-        //  console.log('USER:     ' + user);
-        const userID = JSON.parse(user);
-        //  console.log(userID.nombre);
+
         const url =
-          'http://localhost:8080/back/public/profile/view/' +
-          +userID.id_usuario +
-          '/' +
-          userID.id_usuario;
+          'http://localhost:8080/back/public/profile/view/' + idX + '/' + idX;
         // console.log(url);
 
-        fetch(url)
+        fetch(url, {headers})
           .then(resp => resp.json())
           .then(json => {
-            console.log(json);
-
             if (json.success) {
               setUser({
                 user: json.user,
@@ -83,12 +105,12 @@ export default ({route, navigation}) => {
             setLoading(false);
           })
           .catch(error => {
-            console.log(error);
+            // console.log(error);
             setLoading(false);
           });
       })
       .catch(error => {
-        console.log(error);
+        // console.log(error);
         setLoading(false);
       });
   };

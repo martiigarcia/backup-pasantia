@@ -30,7 +30,7 @@ export default ({route, navigation}) => {
         color: '#87CEEB',
         options: 'Listar todas mis planillas registradas',
         image: 'https://img.icons8.com/office/512/groups.png',
-        route: 'Users',
+        route: 'TrainerList',
         // image: 'https://img.icons8.com/office/70/000000/home-page.png',
       },
       {

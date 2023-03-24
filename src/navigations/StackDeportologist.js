@@ -1,36 +1,36 @@
-import {View, Text} from 'react-native';
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Button, Icon} from '@rneui/base';
 import DeportistList from '../screens/medicalTemplate/SportsmanList';
-import NutricionistList from '../screens/medicalTemplate/nutricionist/NutricionistList';
-import createTemplateNutricionist from '../screens/medicalTemplate/nutricionist/createTemplateNutricionist';
-import TemplateDetail from '../screens/medicalTemplate/nutricionist/TemplateDetailNutricionist';
-import HomeNutricionist from '../screens/homes/HomeNutricionist';
+import HomeDeportologist from '../screens/homes/HomeDeportologist';
+import TemplateDetailDeportologist from '../screens/medicalTemplate/deportologist/TemplateDetailDeportologist';
+import CreateTemplateDeportologist from '../screens/medicalTemplate/deportologist/CreateTemplateDeportologist';
 
 const Stack = createStackNavigator();
 
-export default function StackNutricionist() {
+export default function StackDeportologist() {
   return (
     <Stack.Navigator
       useLegacyImplementation
-      initialRouteName="HomeNutricionist"
-      screenOptions={screenOptions}>
-
-        <Stack.Screen
-        name="HomeNutricionist"
+      initialRouteName="HomeDeportologist"
+          screenOptions={screenOptions}>
+          
+          <Stack.Screen
+        name="HomeDeportologist"
         options={{
           title: 'Home',
         }}
-        component={HomeNutricionist}
+        component={HomeDeportologist}
       />
 
+    
+
       <Stack.Screen
-        name="NutricionistList"
-        component={NutricionistList}
+        name="DeportologistList"
+        component={DeportistList}
         options={({navigation}) => {
           return {
-            title: 'Planillas nutricionales',
+            title: 'Planillas deportologo',
             headerRight: () => (
               <Button
                 onPress={() => navigation.navigate('SportsmanList')}
@@ -49,15 +49,15 @@ export default function StackNutricionist() {
         }}
       />
       <Stack.Screen
-        name="CreateTemplateNutricionist"
-        component={createTemplateNutricionist}
+        name="CreateTemplateDeportologist"
+        component={CreateTemplateDeportologist}
         options={{
           title: 'Registrar planilla',
         }}
       />
       <Stack.Screen
         name="TemplateDetail"
-        component={TemplateDetail}
+        component={TemplateDetailDeportologist}
         options={{
           title: 'Detalle',
         }}

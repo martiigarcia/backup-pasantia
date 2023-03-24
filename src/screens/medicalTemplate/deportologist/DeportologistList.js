@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-export default ({route, navigation}) => {
+export default function DeportologistList() {
   return (
     <View>
-      <Text>UpdateProfile</Text>
+      <Text>DeportologistList</Text>
     </View>
   )
 }

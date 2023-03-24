@@ -8,14 +8,22 @@ import DeportistList from '../screens/medicalTemplate/SportsmanList';
 import TemplateDetailKinesiologist from '../screens/medicalTemplate/kinesiologist/TemplateDetailKinesiologist';
 import TemplateDetailTrainer from '../screens/medicalTemplate/trainer/TemplateDetailTrainer';
 import TrainerList from '../screens/medicalTemplate/trainer/TrainerList';
+import HomeTrainer from '../screens/homes/HomeTrainer';
 
 const Stack = createStackNavigator();
 
 export default function StackTrainer() {
   return (
     <Stack.Navigator
-      initialRouteName="TrainerList"
+      initialRouteName="HomeTrainer"
       screenOptions={screenOptions}>
+       <Stack.Screen
+        name="HomeTrainer"
+        options={{
+          title: 'Home',
+        }}
+        component={HomeTrainer}
+      />
       <Stack.Screen
         name="TrainerList"
         component={TrainerList}
@@ -52,10 +60,10 @@ export default function StackTrainer() {
 
 const screenOptions = {
   headerStyle: {
-    backgroundColor: '#faf',
+    //backgroundColor: '#faf',
   },
-  headerTintColor: '#fff',
+ // headerTintColor: '#fff',
   headerTitleStyle: {
-    fontWeight: 'bold',
+   // fontWeight: 'bold',
   },
 };

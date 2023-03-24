@@ -26,21 +26,64 @@ export default ({route, navigation}) => {
   const [mensaje, setMensaje] = useState({mensaje: ''});
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {}, []);
+
   const handleSubmit = () => {
-    if (password1 === password2) {
-      console.log('iguales: p1- ' + password1 + ' - p2- ' + password2);
-      change();
+    const clearvalue1 = password1.trim();
+    const clearvalue2 = password2.trim();
+    // console.log(password1);
+    // console.log(password2);
+    // console.log(clearvalue1);
+    // console.log(clearvalue2);
+    // console.log(clearvalue1.length);
+    // console.log(password1.length);
+    // console.log(clearvalue2.length);
+    // console.log(password2.length);
+
+    // console.log(clearvalue2.length < password2.length);
+    // console.log(clearvalue1.length < password1.length);
+
+    if (password1 === '' || password2 === '') {
+      Alert.alert('Error', 'Debe ingresar una nueva contraseña');
     } else {
-      console.log('distnitos p1- ' + password1 + ' - p2- ' + password2);
-      Alert.alert('Error', 'Las constraseñas no coinciden');
+      if (
+        clearvalue2.length < password2.length ||
+        clearvalue1.length < password1.length
+      ) {
+        Alert.alert(
+          'Error',
+          'La contraseña no puede contener espacios en blanco',
+        );
+      } else {
+        if (password1 === password2) {
+          console.log('iguales: p1- ' + password1 + ' - p2- ' + password2);
+          change();
+        } else {
+          console.log('distintos p1- ' + password1 + ' - p2- ' + password2);
+          Alert.alert('Error', 'Las constraseñas no coinciden');
+        }
+      }
     }
   };
 
-  const getUser = async () => {
+  const getUserData = async () => {
     try {
       const MEMBER = await AsyncStorage.getItem('@MEMBER');
+      const TOKEN = await AsyncStorage.getItem('@AUTH_TOKEN');
+      const ID = await AsyncStorage.getItem('@ID_USER');
 
-      return MEMBER;
+      const data = {
+        MEMBER,
+        TOKEN,
+        ID,
+      };
+
+      // setUserData({
+      //   member: MEMBER,
+      //   token: TOKEN,
+      //   userId: ID,
+      // });
+      return data;
     } catch (error) {
       console.log(error);
     }
@@ -48,33 +91,36 @@ export default ({route, navigation}) => {
 
   const change = () => {
     setLoading(true);
-    let valorToken;
 
-    getUser()
-      .then(user => {
-        const headers = {
-          //userID: user,
-          //Authorization: 'Bearer ' + token,
-        };
-        //  console.log('USER:     ' + user);
-        const userID = JSON.parse(user);
-        //  console.log(userID.nombre);
+    console.log('CHANGE: ');
+    getUserData()
+      .then(data => {
+        // console.log(data.MEMBER);
+        // console.log(data.TOKEN);
+        // console.log(data.ID);
+        const idX = JSON.parse(data.ID);
+        // console.log(idX);
+
+        // const headers = {
+        //   'Content-Type': 'application/json',
+        //   Authorization: 'Bearer ' + data.TOKEN,
+        // };
         const url =
           'http://localhost:8080/back/public/profile/update-password/' +
-          +userID.id_usuario +
+          +idX +
           '/' +
-          userID.id_usuario;
+          idX;
         console.log(url);
 
         const requestBody = {
           password: password1,
         };
 
-        console.log(requestBody);
         fetch(url, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + data.TOKEN,
           },
           body: JSON.stringify(requestBody),
         })
@@ -90,7 +136,7 @@ export default ({route, navigation}) => {
               navigation.navigate('Profile');
             } else {
               Alert.alert(
-                'ERROR',
+                'Error',
                 json.message + ': \n' + json.errors.password,
               );
             }
@@ -98,14 +144,62 @@ export default ({route, navigation}) => {
             setLoading(false);
           })
           .catch(error => {
-            console.log(error);
+            // console.log(error);
             setLoading(false);
           });
       })
       .catch(error => {
-        console.log(error);
+        // console.log(error);
         setLoading(false);
       });
+    // console.log(userData.member);
+    // console.log(userData.token);
+    // console.log(userData.userId);
+    // const id = JSON.parse(userData.userId);
+    // console.log(id);
+
+    // const headers = {
+    //   //userID: user,
+    //   Authorization: 'Bearer ' + userData.token,
+    // };
+
+    // const url =
+    //   'http://localhost:8080/back/public/profile/update-password/' +
+    //   +id +
+    //   '/' +
+    //   id;
+    // // console.log(url);
+
+    // const requestBody = {
+    //   password: password1,
+    // };
+
+    // console.log(requestBody);
+    // fetch(url, {
+    //   method: 'PUT',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     Authorization: 'Bearer ' + userData.token,
+    //   },
+    //   body: JSON.stringify(requestBody),
+    // })
+    //   .then(resp => resp.json())
+    //   .then(json => {
+    //     // console.log(json);
+
+    //     if (json.success) {
+    //       Alert.alert('Enhorabuena!', 'La contraseña se actualizo con exito');
+    //       navigation.navigate('Profile');
+    //     } else {
+    //       Alert.alert('ERROR', json.message + ': \n' + json.errors.password);
+    //     }
+
+    //     setLoading(false);
+    //   })
+    //   .catch(error => {
+    //     // console.log(error);
+    //     setLoading(false);
+    //   });
   };
 
   return (

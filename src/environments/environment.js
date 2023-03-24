@@ -1,3 +1,3 @@
 export const environment = {
-  baseURL: 'http://localhost/back/publick/',
+  baseURL: 'http://localhost/back/public/',
 };
