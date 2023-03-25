@@ -103,7 +103,9 @@ export default ({route, navigation}) => {
     <ScrollView>
       <View>
         <Card>
-          <Card.Title style={styles.titleCard}>Nueva contraseña</Card.Title>
+          <Card.Title style={styles.titleCard}>
+            Solicitar nueva contraseña
+          </Card.Title>
           <Card.Divider />
 
           <ListItem key={1} bottomDivider>

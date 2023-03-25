@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,8 +10,30 @@ import {
   FlatList,
 } from 'react-native';
 import Home from '../../components/Home';
-import options from '../../contextOptions/AdministratorOptions';
-const initialState = {options};
+// import options from '../../contextOptions/AdministratorOptions';
+
+// const initialState = {options};
+// const OptionsContext = createContext({});
+// export const RolesProvider = props => {
+
+//     function reducer(state, action){
+//         const fn = actions[action.type]
+//         return fn ? fn(state, action): state
+//     }
+
+//     const [state, dispatch] = useReducer(reducer, initialState)
+
+//     return (
+//         <OptionsContext.Provider
+//             value={{
+//                 state, dispatch
+//             }}>
+//             {props.children}
+//         </OptionsContext.Provider>
+//     )
+// }
+
+// export default OptionsContext;
 
 export default ({route, navigation}) => {
   const state = {
@@ -31,7 +53,7 @@ export default ({route, navigation}) => {
         color: '#87CEEB',
         options: 'Listar usuarios y opciones',
         image: 'https://img.icons8.com/office/512/groups.png',
-        route: 'Users',
+        route: 'UsersList',
         // image: 'https://img.icons8.com/office/70/000000/home-page.png',
       },
       {
@@ -47,9 +69,9 @@ export default ({route, navigation}) => {
         id: 3,
         title: 'Todas las planillas',
         color: '#6A5ACD',
-        options: 'Ver todas las planillas registradas',
+        options: 'Ver todas las planillas registradas por profesional',
         image: 'https://img.icons8.com/office/512/report-card.png',
-        route: 'AllTemplates',
+        route: 'ListProfessions',
         //image: 'https://img.icons8.com/dusk/70/000000/checklist.png',
         //image: 'https://img.icons8.com/color/70/000000/family.png',
       },
@@ -62,15 +84,15 @@ export default ({route, navigation}) => {
         route: 'RolesList',
         //image: 'https://img.icons8.com/color/70/000000/groups.png',
       },
-      /*,
-        {
-          id: 5,
-          title: 'School',
-          color: '#00BFFF',
-          members: 7,
-          image: 'https://img.icons8.com/color/70/000000/classroom.png',
-        },
-        {
+      // {
+      //   id: 5,
+      //   title: 'Templates prueba',
+      //   color: '#00BFFF',
+      //   options: 'Ver todas las planillas del sistema',
+      //   image: 'https://img.icons8.com/office/512/report-card.png',
+      //   route: 'AllTemplates',
+      // },
+      /* {
           id: 6,
           title: 'Things',
           color: '#00FFFF',
@@ -98,11 +120,12 @@ export default ({route, navigation}) => {
           members: 13,
           image: 'https://img.icons8.com/color/70/000000/basketball.png',
         },*/
+      ,
     ],
   };
 
   useEffect(() => {
-    console.log(initialState);
+    // console.log(initialState);
   }, []);
 
   return <Home route={state.data} navigation={navigation} />;

@@ -12,6 +12,7 @@ import {
 import {Icon, Input} from '@rneui/themed';
 import {Button, Stack} from '@react-native-material/core';
 import DatePicker from 'react-native-date-picker';
+
 import moment from 'moment';
 import {Dropdown} from 'react-native-element-dropdown';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -20,9 +21,24 @@ export default function FechaInput({doDate}) {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
 
+  const handleConfirm = date => {
+    if (open) {
+      setOpen(false);
+      setDate(date);
+      doDate(date);
+      console.log(moment(date).format('YYYY-MM-DD'));
+    }
+  };
+
+  const handleCancel = () => {
+    if (open) {
+      setOpen(false);
+    }
+  };
+
   return (
     <>
-      <Button
+      {/* <Button
         variant={'outlined'}
         style={styles.buttonDate}
         title="Seleccionar fecha"
@@ -33,6 +49,8 @@ export default function FechaInput({doDate}) {
         modal
         open={open}
         date={date}
+        mode="date"
+        value={date}
         onConfirm={date => {
           setOpen(false);
           setDate(date);
@@ -43,6 +61,25 @@ export default function FechaInput({doDate}) {
         onCancel={() => {
           setOpen(false);
         }}
+      /> */}
+      <Button
+        variant={'outlined'}
+        style={styles.buttonDate}
+        title="Seleccionar fecha"
+        onPress={() => setOpen(true)}
+        value={date}
+      />
+      <DatePicker
+        title={'Seleccione su fecha de nacimiento'}
+        modal
+        open={open}
+        date={date}
+        mode="date"
+        value={date}
+        onConfirm={handleConfirm}
+        confirmText={'Confirmar'}
+        onCancel={handleCancel}
+        cancelText={'Cancelar'}
       />
     </>
   );

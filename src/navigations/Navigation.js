@@ -23,8 +23,6 @@ import StackAdministrator from './StackAdministrator';
 import StackSportman from './StackSportman';
 import StackDeportologist from './StackDeportologist';
 
-
-
 const Stack = createStackNavigator();
 
 const AllStacks = () => {
@@ -34,12 +32,27 @@ const AllStacks = () => {
         name="Auth"
         options={({navigation}) => {
           return {
-            title: 'Ingresar',
+            title: '',
             headerRight: () => (
               <Button
+                title="Registrarme"
                 onPress={() => navigation.navigate('Register')}
                 type="clear"
-                icon={<Icon name="add" size={30} color="black" />}
+                titleStyle={{
+                  color: 'black',
+                  fontSize: 20,
+                  marginHorizontal: 10,
+                }}
+                iconRight
+                icon={
+                  {
+                    name: 'user-plus',
+                    type: 'font-awesome',
+                    size: 20,
+                    color: 'black',
+                  }
+                  // <Icon name="add" size={30} color="black" style={marginHorizontal: 10} />
+                }
               />
             ),
           };
@@ -49,28 +62,54 @@ const AllStacks = () => {
       <Stack.Screen
         name="Register"
         options={{
-          title: 'Registrarme',
+          title: '',
         }}
         component={Register}
       />
       <Stack.Screen
         name="ResetPassword"
         options={{
-          title: 'Restaurar',
+          title: 'Restaurar contraseña',
         }}
         component={ResetPassword}
       />
 
-      <Stack.Screen name="Nutricionist" component={StackNutricionist} options={{ headerShown: false }}/>
-      <Stack.Screen name="Kinesiologist" component={StackKinesiologist} options={{ headerShown: false }}/>
-      <Stack.Screen name="PhysicalTrainer" component={StackPhysicalTrainer} options={{ headerShown: false }}/>
-      <Stack.Screen name="Trainer" component={StackTrainer} options={{ headerShown: false }}/>
-      <Stack.Screen name="Administrator" component={StackAdministrator} options={{ headerShown: false }}/>
-      <Stack.Screen name="Sportman" component={StackSportman} options={{ headerShown: false }}/>
-      <Stack.Screen name="Deportologist" component={StackDeportologist} options={{ headerShown: false }}/>
+      <Stack.Screen
+        name="Nutricionist"
+        component={StackNutricionist}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Kinesiologist"
+        component={StackKinesiologist}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="PhysicalTrainer"
+        component={StackPhysicalTrainer}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Trainer"
+        component={StackTrainer}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Administrator"
+        component={StackAdministrator}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Sportman"
+        component={StackSportman}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Deportologist"
+        component={StackDeportologist}
+        options={{headerShown: false}}
+      />
 
-  
-    
       <Stack.Screen
         name="Profile"
         options={{
@@ -85,7 +124,7 @@ const AllStacks = () => {
         }}
         component={UpdateProfile}
       />
-      
+
       <Stack.Screen
         name="ChangePassword"
         options={{
@@ -93,9 +132,6 @@ const AllStacks = () => {
         }}
         component={ChangePassword}
       />
-     
-
-    
     </Stack.Navigator>
   );
 };

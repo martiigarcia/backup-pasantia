@@ -1,10 +1,13 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import HomeAdministrator from '../screens/homes/HomeAdministrator';
-import StackUsers from './StackUsers';
 import UserForm from '../screens/users/UserForm';
 import RolesList from '../screens/RolesList';
 import AllTemplates from '../screens/AllTemplates';
+import UsersList from '../screens/users/UsersList';
+import {Button, Icon} from '@rneui/base';
+import ListProfessions from '../components/ListProfessions';
+import ListProfessionals from '../components/ListProfessionals';
 
 const Stack = createStackNavigator();
 
@@ -13,9 +16,8 @@ export default function StackAdministrator() {
     <Stack.Navigator
       useLegacyImplementation
       initialRouteName="HomeAdministrator"
-          screenOptions={screenOptions}>
-          
-          <Stack.Screen
+      screenOptions={screenOptions}>
+      <Stack.Screen
         name="HomeAdministrator"
         options={{
           title: 'Home',
@@ -23,13 +25,24 @@ export default function StackAdministrator() {
         component={HomeAdministrator}
       />
 
-
       <Stack.Screen
-        name="Users"
+        name="UsersList"
+        component={UsersList}
         options={{
-          title: 'Usuarios',
+          title: 'Lista de usuarios',
         }}
-        component={StackUsers}
+        // options={({navigation}) => {
+        //   return {
+        //     title: 'Lista de usuarios',
+        //     headerRight: () => (
+        //       <Button
+        //         onPress={() => navigation.navigate('UserForm')}
+        //         type="clear"
+        //         icon={<Icon name="add" size={30} color="black" />}
+        //       />
+        //     ),
+        //   };
+        // }}
       />
 
       <Stack.Screen
@@ -46,6 +59,21 @@ export default function StackAdministrator() {
         }}
         component={RolesList}
       />
+      <Stack.Screen
+        name="ListProfessions"
+        options={{
+          title: 'Profesiones',
+        }}
+        component={ListProfessions}
+      />
+      <Stack.Screen
+        name="ListProfessionals"
+        options={{
+          title: 'Profesionales',
+        }}
+        component={ListProfessionals}
+      />
+
       <Stack.Screen
         name="AllTemplates"
         options={{

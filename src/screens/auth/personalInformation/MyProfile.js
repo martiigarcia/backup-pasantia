@@ -58,11 +58,6 @@ export default ({route, navigation}) => {
         TOKEN,
         ID,
       };
-      // setUserData({
-      //   member: MEMBER,
-      //   token: TOKEN,
-      //   userId: ID,
-      // });
 
       return data;
     } catch (error) {
@@ -116,7 +111,7 @@ export default ({route, navigation}) => {
 
   const clickEventListener = item => {
     // console.log(item);
-    navigation.navigate(item.route);
+    navigation.navigate(item.route, user.user);
   };
 
   return (

@@ -6574,9 +6574,9 @@ react-native-combobox@^1.0.1:
     react-native-elements "^2.0.4"
 
 react-native-date-picker@^4.2.5:
-  version "4.2.5"
-  resolved "https://registry.npmjs.org/react-native-date-picker/-/react-native-date-picker-4.2.5.tgz"
-  integrity sha512-YjwiMpZEnVVS+ymLvmJDicVZ3pSR+nJHgtAhctMl6fO8f7iRNcYhY427gemlTBf2Ji+XIAK0Agyl255DhaemFw==
+  version "4.2.9"
+  resolved "https://registry.npmjs.org/react-native-date-picker/-/react-native-date-picker-4.2.9.tgz"
+  integrity sha512-msx877/ULxaoceqOV3GKx/A93ninYmOp46w5DOCh3pQGPbgL4ZmbglvXJ3mOp2h/j5scuYf9+NetCRLqj1pODA==
   dependencies:
     prop-types "^15.8.1"
 
@@ -6778,7 +6778,7 @@ react-native-vector-icons@^7.0.0:
     prop-types "^15.7.2"
     yargs "^15.0.2"
 
-react-native@*, "react-native@^0.0.0-0 || 0.60 - 0.70 || 1000.0.0", react-native@>=0.38.0, react-native@>=0.41.1, react-native@>=0.42.0, react-native@>=0.43.0, react-native@>=0.48.4, react-native@>=0.56.0, react-native@>=0.57, react-native@>=0.57.0, react-native@>=0.63.0, react-native@0.70.1:
+react-native@*, "react-native@^0.0.0-0 || 0.60 - 0.70 || 1000.0.0", "react-native@>= 0.64.3", react-native@>=0.38.0, react-native@>=0.41.1, react-native@>=0.42.0, react-native@>=0.43.0, react-native@>=0.48.4, react-native@>=0.56.0, react-native@>=0.57, react-native@>=0.57.0, react-native@>=0.63.0, react-native@0.70.1:
   version "0.70.1"
   resolved "https://registry.npmjs.org/react-native/-/react-native-0.70.1.tgz"
   integrity sha512-AUh4NZLFdvyjSiYWCtTROCrC7loxeeZ/TzBnkZwp3kb9XmMu7/kzvWn2c5sEMnzW7X/0JSul8jXexGVdpnCoSA==
@@ -6846,7 +6846,7 @@ react-tween-state@^0.1.5:
     raf "^3.1.0"
     tween-functions "^1.0.1"
 
-react@*, "react@^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17 || ^18", "react@^16.8.0 || ^17.0.0 || ^18.0.0", react@^18.1.0, react@>=15.5.0, react@>=16.0, react@>=16.0.0-alpha.3, react@>=16.3.0, react@>=16.4.1, react@>=17.0.0, "react@16 || 17", react@18.1.0:
+react@*, "react@^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.8.0 || ^17 || ^18", "react@^16.8.0 || ^17.0.0 || ^18.0.0", react@^18.1.0, "react@>= 17.0.1", react@>=15.5.0, react@>=16.0, react@>=16.0.0-alpha.3, react@>=16.3.0, react@>=16.4.1, react@>=17.0.0, "react@16 || 17", react@18.1.0:
   version "18.1.0"
   resolved "https://registry.npmjs.org/react/-/react-18.1.0.tgz"
   integrity sha512-4oL8ivCz5ZEPyclFQXaNksK3adutVS8l2xzZU0cqEFrE9Sb7fC0EFK5uEk74wIreL1DERyjvsU915j1pcT2uEQ==

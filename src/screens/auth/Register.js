@@ -16,6 +16,7 @@ import moment from 'moment';
 import {Dropdown} from 'react-native-element-dropdown';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FechaInput from '../../components/FechaInput';
+import {Card} from '@rneui/themed';
 
 export default ({route, navigation}) => {
   const [user, setUser] = useState(route.params ? route.params : {});
@@ -47,7 +48,8 @@ export default ({route, navigation}) => {
   };
 
   const handleDate = date => {
-    console.log(date);
+    // console.log('REGISTER METHOD: ' + date);
+    // console.log(date);
     setDate(date);
     setUser({...user, date});
   };
@@ -83,7 +85,7 @@ export default ({route, navigation}) => {
         console.log(json);
         if (json.success) {
           Alert.alert('Se ha registrado con exito!', json.message);
-          navigation.navigate('UsersList');
+          navigation.navigate('Auth');
         } else {
           Alert.alert('Error... algo salio mal', json.message);
           // console.log(json.errors);
@@ -102,116 +104,124 @@ export default ({route, navigation}) => {
 
   return (
     <>
-      <Text>UserForm</Text>
-
       <SafeAreaView style={styles.container}>
-        <ScrollView style={styles.scrollView}>
-          <View style={styles.form}>
-            <Text style={styles.text}>Nombre</Text>
+        <ScrollView>
+          <View>
+            <Card>
+              <Card.Title style={styles.titleCard}>
+                Registrarme en el sistema
+              </Card.Title>
+              <Text style={styles.textInfo}>
+                Complete sus datos para solicitar un usuario para acceder al
+                sistema. Una vez registrado, su usuario quedara en estado
+                "Pendiente", por lo que no podra acceder al sistema hasta que el
+                administrador lo habilite.
+              </Text>
+              <Card.Divider />
+              <Text style={styles.text}>Nombre</Text>
 
-            <Input
-              style={styles.input}
-              onChangeText={nombre => setUser({...user, nombre})}
-              placeholder="Completar"
-              value={user.nombre}
-              errorStyle={{color: 'red'}}
-              errorMessage={errors.errors.name}
-            />
+              <Input
+                style={styles.input}
+                onChangeText={nombre => setUser({...user, nombre})}
+                placeholder="Completar"
+                value={user.nombre}
+                errorStyle={{color: 'red'}}
+                errorMessage={errors.errors.name}
+              />
 
-            <Text style={styles.text}>Apellido</Text>
-            <Input
-              style={styles.input}
-              onChangeText={apellido => setUser({...user, apellido})}
-              placeholder="Completar"
-              value={user.apellido}
-              errorStyle={{color: 'red'}}
-              errorMessage={errors.errors.surname}
-            />
-            <Text style={styles.text}>Email:</Text>
+              <Text style={styles.text}>Apellido</Text>
+              <Input
+                style={styles.input}
+                onChangeText={apellido => setUser({...user, apellido})}
+                placeholder="Completar"
+                value={user.apellido}
+                errorStyle={{color: 'red'}}
+                errorMessage={errors.errors.surname}
+              />
+              <Text style={styles.text}>Email:</Text>
 
-            <Input
-              style={styles.input}
-              onChangeText={email => setUser({...user, email})}
-              placeholder="Completar ej. a@a.com"
-              value={user.email}
-              errorStyle={{color: 'red'}}
-              errorMessage={errors.errors.email}
-            />
-            <Text style={styles.text}>Contraseña:</Text>
+              <Input
+                style={styles.input}
+                onChangeText={email => setUser({...user, email})}
+                placeholder="Completar ej. a@a.com"
+                value={user.email}
+                errorStyle={{color: 'red'}}
+                errorMessage={errors.errors.email}
+              />
+              <Text style={styles.text}>Contraseña:</Text>
 
-            <Input
-              style={styles.input}
-              onChangeText={password => setUser({...user, password})}
-              placeholder="Completar"
-              value={user.password}
-              errorStyle={{color: 'red'}}
-              errorMessage={errors.errors.password}
-              password={true}
-              secureTextEntry={!showPassword}
-              name="password"
-              rightIcon={
-                <Icon
-                  type="material-community"
-                  name={showPassword ? 'eye-off-outline' : 'eye-outline'}
-                  iconStyle={styles.icon}
-                  onPress={() => setShowPassword(!showPassword)}
-                />
-              }></Input>
+              <Input
+                style={styles.input}
+                onChangeText={password => setUser({...user, password})}
+                placeholder="Completar"
+                value={user.password}
+                errorStyle={{color: 'red'}}
+                errorMessage={errors.errors.password}
+                password={true}
+                secureTextEntry={!showPassword}
+                name="password"
+                rightIcon={
+                  <Icon
+                    type="material-community"
+                    name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                    iconStyle={styles.icon}
+                    onPress={() => setShowPassword(!showPassword)}
+                  />
+                }></Input>
 
-            <Text style={styles.text}>
-              Fecha de nacimiento:
-              <Text style={styles.textInfo}> {user.fecha_nacimiento}</Text>
-            </Text>
-            <FechaInput doDate={handleDate} />
+              <Text style={styles.text}>Fecha de nacimiento:</Text>
+              <FechaInput doDate={handleDate} />
 
-            <Text style={styles.text}>
-              Rol en el sistema:
-              <Text style={styles.textInfo}> {user.rol}</Text>
-            </Text>
+              <Text style={styles.text}>Rol en el sistema:</Text>
 
-            <Dropdown
-              style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
-              placeholderStyle={styles.placeholderStyle}
-              selectedTextStyle={styles.selectedTextStyle}
-              inputSearchStyle={styles.inputSearchStyle}
-              iconStyle={styles.iconStyle}
-              data={roles.roles}
-              search
-              maxHeight={300}
-              labelField="nombre"
-              valueField="id_rol"
-              placeholder={!isFocus ? 'Seleccionar rol' : '...'}
-              searchPlaceholder="Buscar por nombre"
-              onFocus={() => setIsFocus(true)}
-              onBlur={() => setIsFocus(false)}
-              onChange={item => {
-                setSelectedRole(item);
-                //  setUser({...user, item});
-                setIsFocus(false);
-              }}
-              renderLeftIcon={() => (
-                <AntDesign
-                  style={styles.icon}
-                  color={isFocus ? 'blue' : 'black'}
-                  name="Safety"
-                  size={20}
-                />
-              )}
-            />
-            <Text style={styles.textError}>{errors.errors.wantedRole}</Text>
+              <Dropdown
+                style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                inputSearchStyle={styles.inputSearchStyle}
+                iconStyle={styles.iconStyle}
+                data={roles.roles}
+                search
+                maxHeight={300}
+                labelField="nombre"
+                valueField="id_rol"
+                placeholder={!isFocus ? 'Seleccionar rol' : '...'}
+                searchPlaceholder="Buscar por nombre"
+                onFocus={() => setIsFocus(true)}
+                onBlur={() => setIsFocus(false)}
+                onChange={item => {
+                  setSelectedRole(item);
+                  //  setUser({...user, item});
+                  setIsFocus(false);
+                }}
+                renderLeftIcon={() => (
+                  <AntDesign
+                    style={styles.icon}
+                    color={isFocus ? 'blue' : 'black'}
+                    name="Safety"
+                    size={20}
+                  />
+                )}
+              />
+              <Text style={styles.textInfo}>
+                * Cuando se habilite el usuario, el administrador decidira si el
+                rol solicitado sera el rol final
+              </Text>
+              <Text style={styles.textError}>{errors.errors.wantedRole}</Text>
 
-            <View style={styles.view}>
-              <Stack fill center spacing={4}>
-                <Button
-                  title="Registrarme"
-                  style={styles.button}
-                  onPress={() => {
-                    handleSubmit();
-                    //navigation.navigate('UserList');
-                  }}
-                />
-              </Stack>
-            </View>
+              <View style={styles.view}>
+                <Stack fill center spacing={4}>
+                  <Button
+                    title="Registrarme"
+                    style={styles.button}
+                    onPress={() => {
+                      handleSubmit();
+                      //navigation.navigate('UserList');
+                    }}
+                  />
+                </Stack>
+              </View>
+            </Card>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -222,11 +232,20 @@ export default ({route, navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: StatusBar.currentHeight,
+    // paddingTop: StatusBar.currentHeight,
+    paddingBottom: StatusBar.currentHeight,
   },
   scrollView: {
     marginHorizontal: 20,
   },
+  view: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  form: {
+    padding: 20,
+  },
+
   view: {
     paddingTop: StatusBar.currentHeight,
     paddingBottom: StatusBar.currentHeight,
@@ -238,8 +257,8 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 50,
-    borderColor: 'gray',
-    borderWidth: 1,
+    // borderColor: 'gray',
+    // borderWidth: 1,
     // margin: 5,
     marginBottom: 10,
     padding: 10,
@@ -263,9 +282,9 @@ const styles = StyleSheet.create({
   },
   textInfo: {
     fontSize: 15,
-    textAlign: 'left',
+    textAlign: 'justify',
     padding: 10,
-    color: '#DFA8F8',
+    // color: '#DFA8F8',
   },
   dropdown: {
     height: 50,

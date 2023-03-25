@@ -3,8 +3,23 @@ import {Alert, FlatList, Text} from 'react-native';
 import {Avatar, Button, ListItem, Icon} from '@rneui/themed';
 import {mdiEyeOutline} from '@mdi/js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  View,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+} from 'react-native';
+import {Input, ButtonGroup} from '@rneui/themed';
+import {Stack} from '@react-native-material/core';
+import DatePicker from 'react-native-date-picker';
+import moment from 'moment';
+import {Dropdown} from 'react-native-element-dropdown';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import FechaInput from '../../components/FechaInput';
+import {Card} from '@rneui/themed';
 
-export default props => {
+export default ({route, navigation}) => {
   const [users, setUsers] = useState({users: []});
   const [loading, setLoading] = useState(true);
   const [alert, setAlert] = useState(false);
@@ -54,6 +69,7 @@ export default props => {
       });
   };
   const userDelete = user => {
+    // console.log(user.estado);
     const url =
       'http://localhost:8080/back/public/users/delete-user/' + user.id_usuario;
 
@@ -64,6 +80,7 @@ export default props => {
       .then(json => {
         // console.log('json: ' + json);
         if (json.success) {
+          user.estado = 'Inactivo';
           Alert.alert('Elimnación exitosa!', json.message);
           navigation.navigate('UsersList');
         } else {
@@ -82,6 +99,7 @@ export default props => {
       });
   };
   const userActivate = user => {
+    // console.log(user.estado);
     const url =
       'http://localhost:8080/back/public/users/activate-user/' +
       user.id_usuario;
@@ -93,6 +111,7 @@ export default props => {
       .then(json => {
         // console.log('json: ' + json);
         if (json.success) {
+          user.estado = 'Activo';
           Alert.alert('Activación exitosa!', json.message);
           navigation.navigate('UsersList');
         } else {
@@ -111,6 +130,7 @@ export default props => {
       });
   };
   const userAuthorization = user => {
+    // console.log(user.estado);
     const url =
       'http://localhost:8080/back/public/users/autorize-user/' +
       user.id_usuario;
@@ -122,6 +142,7 @@ export default props => {
       .then(json => {
         // console.log('json: ' + json);
         if (json.success) {
+          user.estado = 'Activo';
           Alert.alert('Autorización extiosa!', json.message);
           navigation.navigate('UsersList');
         } else {
@@ -145,7 +166,7 @@ export default props => {
       <ListItem
         key={user.id_usuario}
         bottomDivider
-        onPress={() => props.navigation.navigate('UserForm', user)}>
+        onPress={() => navigation.navigate('UserForm', user)}>
         <ListItem.Content>
           <ListItem.Title>
             {user.nombre} {user.apellido}
@@ -154,7 +175,10 @@ export default props => {
           <ListItem.Subtitle>Estado: {user.estado}</ListItem.Subtitle>
         </ListItem.Content>
         <Button
-          onPress={() => props.navigation.navigate('UserForm', user)}
+          onPress={() => {
+            console.log(user.estado);
+            navigation.navigate('UserForm', {user: user, state: user.estado});
+          }}
           type="clear"
           icon={<Icon name="edit" size={25} color="orange" />}
         />
@@ -191,11 +215,42 @@ export default props => {
 
   return (
     <>
-      <FlatList
-        keyExtractor={user => user.id_usuario.toString()}
-        data={users.users}
-        renderItem={getUserItem}
-      />
+      <SafeAreaView style={styles.container}>
+        <View>
+          <Card>
+            <FlatList
+              keyExtractor={user => user.id_usuario.toString()}
+              data={users.users}
+              renderItem={getUserItem}
+            />
+          </Card>
+        </View>
+      </SafeAreaView>
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    // paddingTop: StatusBar.currentHeight,
+    paddingBottom: StatusBar.currentHeight,
+  },
+  scrollView: {
+    marginHorizontal: 20,
+  },
+  view: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  form: {
+    padding: 20,
+  },
+
+  view: {
+    paddingTop: StatusBar.currentHeight,
+    paddingBottom: StatusBar.currentHeight,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
