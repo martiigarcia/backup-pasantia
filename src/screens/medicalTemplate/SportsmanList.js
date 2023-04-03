@@ -68,9 +68,7 @@ export default ({route, navigation}) => {
           <ListItem.Subtitle>{user.email}</ListItem.Subtitle>
         </ListItem.Content>
         <Button
-          onPress={() =>
-            navigation.navigate('CreateTemplateKinesiologist', user)
-          }
+          onPress={() => navigation.navigate('CreateTemplate', user)}
           type="clear"
           icon={<Icon name="add" size={25} color="orange" />}
         />

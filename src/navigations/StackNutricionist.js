@@ -7,6 +7,7 @@ import NutricionistList from '../screens/medicalTemplate/nutricionist/Nutricioni
 import createTemplateNutricionist from '../screens/medicalTemplate/nutricionist/createTemplateNutricionist';
 import TemplateDetail from '../screens/medicalTemplate/nutricionist/TemplateDetailNutricionist';
 import HomeNutricionist from '../screens/homes/HomeNutricionist';
+import updateTemplate from '../screens/medicalTemplate/nutricionist/updateTemplate';
 
 const Stack = createStackNavigator();
 
@@ -16,8 +17,7 @@ export default function StackNutricionist() {
       useLegacyImplementation
       initialRouteName="HomeNutricionist"
       screenOptions={screenOptions}>
-
-        <Stack.Screen
+      <Stack.Screen
         name="HomeNutricionist"
         options={{
           title: 'Home',
@@ -49,10 +49,17 @@ export default function StackNutricionist() {
         }}
       />
       <Stack.Screen
-        name="CreateTemplateNutricionist"
+        name="CreateTemplate"
         component={createTemplateNutricionist}
         options={{
           title: 'Registrar planilla',
+        }}
+      />
+      <Stack.Screen
+        name="UpdateTemplateNutricionist"
+        component={updateTemplate}
+        options={{
+          title: 'Actualizar planilla',
         }}
       />
       <Stack.Screen

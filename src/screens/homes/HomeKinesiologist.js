@@ -39,12 +39,11 @@ export default ({route, navigation}) => {
         color: '#4682B4',
         options: 'Registrar nueva planilla',
         image: 'https://img.icons8.com/officel/512/add-user-male.png',
-        route: 'CreateTemplateKinesiologist',
+        route: 'SportsmanList',
         //https://img.icons8.com/color/70/000000/two-hearts.png',
       },
     ],
   };
-
 
   const clickEventListener = item => {
     console.log(item);

@@ -14,9 +14,9 @@ import options from '../../contextOptions/NutricionistOptions';
 const initialState = {options};
 
 export default ({route, navigation}) => {
-const state = {
-  data: [
-       {
+  const state = {
+    data: [
+      {
         id: 1,
         title: 'Mis datos',
         color: '#FF4500',
@@ -24,8 +24,8 @@ const state = {
         image: 'https://img.icons8.com/office/512/user-menu-male--v1.png',
         route: 'Profile',
         // image: 'https://img.icons8.com/color/70/000000/name.png',
-    },
-    {
+      },
+      {
         id: 1,
         title: 'Mis planillas',
         color: '#87CEEB',
@@ -33,16 +33,16 @@ const state = {
         image: 'https://img.icons8.com/office/512/groups.png',
         route: 'NutricionistList',
         // image: 'https://img.icons8.com/office/70/000000/home-page.png',
-    },
-    {
+      },
+      {
         id: 2,
         title: 'Registrar nueva planilla',
         color: '#4682B4',
         options: 'Registrar nueva planilla',
         image: 'https://img.icons8.com/officel/512/add-user-male.png',
-        route: 'CreateTemplateNutricionist',
+        route: 'SportsmanList',
         //https://img.icons8.com/color/70/000000/two-hearts.png',
-    } 
+      },
     ],
   };
 

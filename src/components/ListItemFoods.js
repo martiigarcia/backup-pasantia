@@ -28,6 +28,7 @@ import BigList from 'react-native-big-list';
 export default ({foods}) => {
   const [food, setFood] = useState([]);
   useEffect(() => {
+    console.log(foods);
     setFood(foods);
   }, []);
 

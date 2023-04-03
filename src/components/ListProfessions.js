@@ -96,7 +96,7 @@ export default ({route, navigation}) => {
       <SafeAreaView style={styles.container}>
         <View>
           <Card>
-            <Card.Title style={styles.titleCard}>
+            <Card.Title>
               Seleccione la profesión para ver las planillas
             </Card.Title>
             <Card.Divider />

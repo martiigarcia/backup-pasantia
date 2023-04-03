@@ -54,7 +54,7 @@ export default function StackKinesiologist() {
         }}
       />
       <Stack.Screen
-        name="CreateTemplateKinesiologist"
+        name="CreateTemplate"
         component={CreateTemplateKinesiologist}
         options={{
           title: 'Registrar planilla',

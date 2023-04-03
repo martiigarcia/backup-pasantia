@@ -36,7 +36,7 @@ export default ({route, navigation}) => {
   return (
     <>
       <Text style={styles.textNombre}>{user.nombre}</Text>
-      <Text style={styles.textTipoFicha}>Kinesiologia - Agosto 2022</Text>
+      <Text style={styles.textTipoFicha}>Nutricionista - Agosto 2022</Text>
       <SafeAreaView style={styles.container}>
         <ScrollView style={styles.scrollView}>
           <View style={styles.view}>
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     lineHeight: 84,
     fontWeight: 'bold',
     textAlign: 'center',
-    backgroundColor: '#000000c0',
+    backgroundColor: '#6409E6',
   },
   textTipoFicha: {
     textAlign: 'center',

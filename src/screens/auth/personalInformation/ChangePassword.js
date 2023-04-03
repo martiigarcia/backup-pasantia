@@ -39,7 +39,7 @@ export default ({route, navigation}) => {
     // console.log(password1.length);
     // console.log(clearvalue2.length);
     // console.log(password2.length);
-
+    //
     // console.log(clearvalue2.length < password2.length);
     // console.log(clearvalue1.length < password1.length);
 

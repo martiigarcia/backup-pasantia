@@ -1,8 +1,19 @@
 import React, {useState, useEffect} from 'react';
-import DeportistList from '../SportsmanList';
-import {Alert, FlatList, Text} from 'react-native';
-import {Avatar, Button, ListItem, Icon} from '@rneui/themed';
+import {
+  Alert,
+  FlatList,
+  Text,
+  View,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+} from 'react-native';
+import {Avatar, ListItem, Icon, Card} from '@rneui/themed';
+
+import {Button, IconButton} from '@react-native-material/core';
 import {mdiAccountDetails} from '@mdi/js';
+import {mdiInformationVariantCircleOutline} from '@mdi/js';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -70,11 +81,14 @@ export default ({route, navigation}) => {
         setLoading(false);
       });
   };
+
   function getTempleteItem({item: template}) {
     return (
       <ListItem
         key={template.id}
         bottomDivider
+        onPress={() => navigation.navigate('TemplateDetail', template)}
+        // bottomDivider
         //onPress={() => props.navigation.navigate('UserForm', user)}
       >
         <Text>{template.id}</Text>
@@ -82,40 +96,128 @@ export default ({route, navigation}) => {
           <ListItem.Title>
             {template.deportista.nombre} {template.deportista.apellido}
           </ListItem.Title>
-          <ListItem.Subtitle>Fecha: 25/10/2022</ListItem.Subtitle>
+          <ListItem.Subtitle>Fecha: {template.fecha}</ListItem.Subtitle>
         </ListItem.Content>
-        <Button
-          // onPress={() => props.navigation.navigate('UserForm', user)}
-          type="clear"
-          icon={<Icon name="edit" size={25} color="orange" />}
+        <Icon
+          name="info-circle"
+          size={25}
+          type="font-awesome"
+          color="#6495ed"
         />
-        <Button
-          onPress={() => navigation.navigate('TemplateDetail', template)}
-          type="clear"
-          icon={
-            <Icon
+
+        {/* <Icon
               name="account-details"
               type="material-community"
               size={25}
-              color="#6495ed"></Icon>
+              color="#6495ed"></Icon> */}
+
+        <Card.Divider orientation="vertical" />
+        {/* <ListItem.Content> */}
+        <IconButton
+          variant="outlined"
+          onPress={() => {
+            console.log('EDITAR OPTION');
+            navigation.navigate('UpdateTemplateNutricionist');
+          }}
+          type="clear"
+          icon={
+            <Icon name="edit" size={25} type="font-awesome" color="orange" />
           }
         />
-        <Button
-          // onPress={() => userDelete(user)}
+
+        <IconButton
+          variant="outlined"
+          onPress={() => {
+            console.log('DELETE OPTION');
+            message =
+              'Desea eliminar la planilla de ' +
+              template.deportista.nombre +
+              ' ' +
+              template.deportista.apellido +
+              ', realizada el dia ' +
+              template.fecha +
+              '?';
+            Alert.alert('Confirmación', message, [
+              {
+                text: 'Cancelar',
+                onPress: () => console.log('cancelando...'),
+                style: 'cancel',
+              },
+              {text: 'Eliminar', onPress: () => console.log('eliminando...')},
+            ]);
+          }}
           type="clear"
           icon={<Icon name="delete" size={25} color="red" />}
         />
+        {/* </ListItem.Content> */}
       </ListItem>
     );
   }
 
   return (
     <>
-      <FlatList
-        keyExtractor={template => template.id.toString()}
-        data={templates.templates}
-        renderItem={getTempleteItem}
-      />
+      <SafeAreaView style={styles.container}>
+        <View style={styles.view}>
+          <Card style={styles.card}>
+            <Card.Title>Planillas</Card.Title>
+            <Card.Divider />
+            <Text style={styles.textInfo}>
+              Seleccione una planilla segun el nombre del deportista y la fecha
+              de la planilla para verla en detalle, editarla o eliminarla.
+            </Text>
+            <Card.Divider />
+            <FlatList
+              keyExtractor={template => template.id.toString()}
+              data={templates.templates}
+              renderItem={getTempleteItem}
+            />
+            {/* <Card.Divider /> */}
+          </Card>
+        </View>
+      </SafeAreaView>
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  textInfo: {
+    fontSize: 15,
+    textAlign: 'left',
+    padding: 10,
+  },
+  // container: {
+  //   flex: 1,
+  //   width: '100%', // make sure SafeAreaView takes up full width
+  // },
+  // view: {
+  //   flex: 1,
+  //   width: '100%',
+  //   justifyContent: 'center',
+  //   alignItems: 'center', // make sure View takes up full width
+  // },
+  // card: {
+  //   width: '50%', // set Card width to match List width
+  //   marginRight: 0,
+  // },
+  container: {
+    // flex: 1,
+    paddingBottom: StatusBar.currentHeight,
+    // marginBottom: StatusBar.currentHeight,
+    // paddingTop: StatusBar.currentHeight,
+  },
+  scrollView: {
+    // marginHorizontal: 20,
+  },
+  // form: {
+  //   padding: 20,
+  // },
+  // titleCard: {
+  //   fontSize: 20,
+  // },
+  view: {
+    // paddingTop: StatusBar.currentHeight,
+    // paddingBottom: StatusBar.currentHeight,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
