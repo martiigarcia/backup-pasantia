@@ -26,7 +26,7 @@ export default ({injuryx}) => {
               {c.tipo} - {c.zona_tratada}
             </ListItem.Title>
             <ListItem.Subtitle>
-              observaciones: {c.observaciones}{' '}
+              Observaciones: {c.observaciones}{' '}
             </ListItem.Subtitle>
             <ListItem.Subtitle>
               Fecha : {c.fecha_inicio} -{' '}

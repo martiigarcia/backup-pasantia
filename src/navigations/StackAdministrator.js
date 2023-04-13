@@ -1,4 +1,5 @@
 import React from 'react';
+import {View, Text, Alert} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import HomeAdministrator from '../screens/homes/HomeAdministrator';
 import UserForm from '../screens/users/UserForm';
@@ -11,7 +12,7 @@ import ListProfessionals from '../components/ListProfessionals';
 
 const Stack = createStackNavigator();
 
-export default function StackAdministrator() {
+export default function StackAdministrator({navigation}) {
   return (
     <Stack.Navigator
       useLegacyImplementation
@@ -21,6 +22,45 @@ export default function StackAdministrator() {
         name="HomeAdministrator"
         options={{
           title: 'Home',
+          headerLeft: null,
+          headerRight: () => (
+            <Button
+              title="Cerrar sesión"
+              onPress={() => {
+                Alert.alert(
+                  'Salir',
+                  'Esta a punto de cerrar su sesión actual, seguro que desea continuar?',
+                  [
+                    {
+                      text: 'Cancelar',
+                      onPress: () => console.log('cancelando...'),
+                      style: 'cancel',
+                    },
+                    {
+                      text: 'Salir',
+                      onPress: () => navigation.goBack(),
+                    },
+                  ],
+                );
+              }}
+              type="clear"
+              titleStyle={{
+                color: 'black',
+                fontSize: 20,
+                marginHorizontal: 10,
+              }}
+              iconRight
+              icon={
+                {
+                  name: 'sign-out',
+                  type: 'font-awesome',
+                  size: 20,
+                  color: 'black',
+                }
+                // <Icon name="add" size={30} color="black" style={marginHorizontal: 10} />
+              }
+            />
+          ),
         }}
         component={HomeAdministrator}
       />

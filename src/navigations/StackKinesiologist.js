@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {View, Text, Alert} from 'react-native';
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Button, Icon} from '@rneui/base';
@@ -10,7 +10,7 @@ import HomeKinesiologist from '../screens/homes/HomeKinesiologist';
 
 const Stack = createStackNavigator();
 
-export default function StackKinesiologist() {
+export default function StackKinesiologist({navigation}) {
   return (
     <Stack.Navigator
       useLegacyImplementation
@@ -20,6 +20,45 @@ export default function StackKinesiologist() {
         name="HomeKinesiologist"
         options={{
           title: 'Home',
+          headerLeft: null,
+          headerRight: () => (
+            <Button
+              title="Cerrar sesión"
+              onPress={() => {
+                Alert.alert(
+                  'Salir',
+                  'Esta a punto de cerrar su sesión actual, seguro que desea continuar?',
+                  [
+                    {
+                      text: 'Cancelar',
+                      onPress: () => console.log('cancelando...'),
+                      style: 'cancel',
+                    },
+                    {
+                      text: 'Salir',
+                      onPress: () => navigation.goBack(),
+                    },
+                  ],
+                );
+              }}
+              type="clear"
+              titleStyle={{
+                color: 'black',
+                fontSize: 20,
+                marginHorizontal: 10,
+              }}
+              iconRight
+              icon={
+                {
+                  name: 'sign-out',
+                  type: 'font-awesome',
+                  size: 20,
+                  color: 'black',
+                }
+                // <Icon name="add" size={30} color="black" style={marginHorizontal: 10} />
+              }
+            />
+          ),
         }}
         component={HomeKinesiologist}
       />

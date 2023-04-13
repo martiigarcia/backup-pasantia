@@ -1,6 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Button, Icon} from '@rneui/base';
+import {View, Text, Alert} from 'react-native';
 import DeportistList from '../screens/medicalTemplate/SportsmanList';
 import HomeDeportologist from '../screens/homes/HomeDeportologist';
 import TemplateDetailDeportologist from '../screens/medicalTemplate/deportologist/TemplateDetailDeportologist';
@@ -8,22 +9,58 @@ import CreateTemplateDeportologist from '../screens/medicalTemplate/deportologis
 
 const Stack = createStackNavigator();
 
-export default function StackDeportologist() {
+export default function StackDeportologist({navigation}) {
   return (
     <Stack.Navigator
       useLegacyImplementation
       initialRouteName="HomeDeportologist"
-          screenOptions={screenOptions}>
-          
-          <Stack.Screen
+      screenOptions={screenOptions}>
+      <Stack.Screen
         name="HomeDeportologist"
         options={{
           title: 'Home',
+          headerLeft: null,
+          headerRight: () => (
+            <Button
+              title="Cerrar sesión"
+              onPress={() => {
+                Alert.alert(
+                  'Salir',
+                  'Esta a punto de cerrar su sesión actual, seguro que desea continuar?',
+                  [
+                    {
+                      text: 'Cancelar',
+                      onPress: () => console.log('cancelando...'),
+                      style: 'cancel',
+                    },
+                    {
+                      text: 'Salir',
+                      onPress: () => navigation.goBack(),
+                    },
+                  ],
+                );
+              }}
+              type="clear"
+              titleStyle={{
+                color: 'black',
+                fontSize: 20,
+                marginHorizontal: 10,
+              }}
+              iconRight
+              icon={
+                {
+                  name: 'sign-out',
+                  type: 'font-awesome',
+                  size: 20,
+                  color: 'black',
+                }
+                // <Icon name="add" size={30} color="black" style={marginHorizontal: 10} />
+              }
+            />
+          ),
         }}
         component={HomeDeportologist}
       />
-
-    
 
       <Stack.Screen
         name="DeportologistList"

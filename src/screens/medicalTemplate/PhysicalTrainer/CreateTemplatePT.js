@@ -1,10 +1,10 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 
-export default function DeportologistList() {
+export default ({route, navigation}) => {
   return (
     <View>
-      <Text>DeportologistList</Text>
+      <Text>CreateTemplatePT</Text>
     </View>
   );
-}
+};

@@ -56,7 +56,8 @@ export default ({route, navigation}) => {
           {template.deportista.nombre} {template.deportista.apellido}
         </Text>
         <Text style={styles.textTipoFicha}>
-          {template.entrenador.rol} - {template.fecha}
+          Fecha de la planilla entrenador fisico: {'\n'}
+          {template.fecha}
         </Text>
 
         <SafeAreaView style={styles.container}>
@@ -71,17 +72,40 @@ export default ({route, navigation}) => {
             </Card>
           </View>
           <Separator />
+
           <View style={styles.fixToText}>
             <View style={styles.vertical}>
               <Button
                 title="Modificar"
-                onPress={() => Alert.alert('Seguro?')}
+                onPress={() =>
+                  navigation.navigate('UpdateTemplateNutricionist')
+                }
               />
             </View>
             <View style={styles.vertical}>
               <Button
                 title="Eliminar"
-                onPress={() => Alert.alert('Seguriiiisimo?')}
+                onPress={() => {
+                  message =
+                    'Desea eliminar la planilla de ' +
+                    template.deportista.nombre +
+                    ' ' +
+                    template.deportista.apellido +
+                    ', realizada el dia ' +
+                    template.fecha +
+                    '?';
+                  Alert.alert('Confirmación', message, [
+                    {
+                      text: 'Cancelar',
+                      onPress: () => console.log('cancelando...'),
+                      style: 'cancel',
+                    },
+                    {
+                      text: 'Eliminar',
+                      onPress: () => console.log('eliminando...'),
+                    },
+                  ]);
+                }}
               />
             </View>
           </View>
@@ -152,7 +176,7 @@ const styles = StyleSheet.create({
     lineHeight: 84,
     fontWeight: 'bold',
     textAlign: 'center',
-    backgroundColor: '#000000c0',
+    backgroundColor: '#6409E6',
   },
   textTipoFicha: {
     textAlign: 'center',
