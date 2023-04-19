@@ -5,6 +5,7 @@ import {mdiEyeOutline} from '@mdi/js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ItemSeparator from '../components/ItemSeparator';
 import {Card} from '@rneui/themed';
+import {environment} from '../environments/environment';
 
 export default props => {
   const [roles, setRoles] = useState({roles: []});
@@ -18,7 +19,7 @@ export default props => {
 
   const getRoles = () => {
     setLoading(true);
-    fetch('http://localhost:8080/back/public/auth/roles')
+    fetch(environment.baseURL + 'auth/roles')
       .then(resp => resp.json())
       .then(json => {
         setRoles({

@@ -21,7 +21,6 @@ import ChangePassword from '../screens/auth/personalInformation/ChangePassword';
 import UpdateProfile from '../screens/auth/personalInformation/UpdateProfile';
 import StackAdministrator from './StackAdministrator';
 import StackSportman from './StackSportman';
-import StackDeportologist from './StackDeportologist';
 
 const Stack = createStackNavigator();
 
@@ -102,11 +101,6 @@ const AllStacks = () => {
       <Stack.Screen
         name="Sportman"
         component={StackSportman}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="Deportologist"
-        component={StackDeportologist}
         options={{headerShown: false}}
       />
 

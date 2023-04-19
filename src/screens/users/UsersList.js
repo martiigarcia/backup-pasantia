@@ -18,6 +18,7 @@ import {Dropdown} from 'react-native-element-dropdown';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FechaInput from '../../components/FechaInput';
 import {Card} from '@rneui/themed';
+import {environment} from '../../environments/environment';
 
 export default ({route, navigation}) => {
   const [users, setUsers] = useState({users: []});
@@ -48,7 +49,7 @@ export default ({route, navigation}) => {
           Authorization: 'Bearer ' + token,
         };
 
-        fetch('http://localhost:8080/back/public/users/list-users', {
+        fetch(environment.baseURL + 'users/list-users', {
           headers,
         })
           .then(resp => resp.json())
@@ -70,8 +71,7 @@ export default ({route, navigation}) => {
   };
   const userDelete = user => {
     // console.log(user.estado);
-    const url =
-      'http://localhost:8080/back/public/users/delete-user/' + user.id_usuario;
+    const url = environment.baseURL + 'users/delete-user/' + user.id_usuario;
 
     fetch(url, {
       method: 'DELETE',
@@ -100,9 +100,7 @@ export default ({route, navigation}) => {
   };
   const userActivate = user => {
     // console.log(user.estado);
-    const url =
-      'http://localhost:8080/back/public/users/activate-user/' +
-      user.id_usuario;
+    const url = environment.baseURL + 'users/activate-user/' + user.id_usuario;
 
     fetch(url, {
       method: 'POST',
@@ -131,9 +129,7 @@ export default ({route, navigation}) => {
   };
   const userAuthorization = user => {
     // console.log(user.estado);
-    const url =
-      'http://localhost:8080/back/public/users/autorize-user/' +
-      user.id_usuario;
+    const url = environment.baseURL + 'users/autorize-user/' + user.id_usuario;
 
     fetch(url, {
       method: 'POST',
@@ -166,7 +162,9 @@ export default ({route, navigation}) => {
       <ListItem
         key={user.id_usuario}
         bottomDivider
-        onPress={() => navigation.navigate('UserForm', user)}>
+        onPress={() =>
+          navigation.navigate('UserForm', {user: user, state: user.estado})
+        }>
         <ListItem.Content>
           <ListItem.Title>
             {user.nombre} {user.apellido}
@@ -174,14 +172,8 @@ export default ({route, navigation}) => {
           <ListItem.Subtitle>{user.email}</ListItem.Subtitle>
           <ListItem.Subtitle>Estado: {user.estado}</ListItem.Subtitle>
         </ListItem.Content>
-        <Button
-          onPress={() => {
-            console.log(user.estado);
-            navigation.navigate('UserForm', {user: user, state: user.estado});
-          }}
-          type="clear"
-          icon={<Icon name="edit" size={25} color="orange" />}
-        />
+        <Icon name="edit" size={25} type="font-awesome" color="orange" />
+
         {user.estado === 'Activo' && (
           <Button
             onPress={() => userDelete(user)}

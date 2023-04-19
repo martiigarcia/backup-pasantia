@@ -12,6 +12,7 @@ import {Icon, Input, ListItem} from '@rneui/themed';
 import {Button, Stack} from '@react-native-material/core';
 import {Card} from '@rneui/themed';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {environment} from '../../../environments/environment';
 
 export default ({route, navigation}) => {
   const [password1, setPassword1] = useState('');
@@ -106,10 +107,7 @@ export default ({route, navigation}) => {
         //   Authorization: 'Bearer ' + data.TOKEN,
         // };
         const url =
-          'http://localhost:8080/back/public/profile/update-password/' +
-          +idX +
-          '/' +
-          idX;
+          environment.baseURL + 'profile/update-password/' + +idX + '/' + idX;
         console.log(url);
 
         const requestBody = {
@@ -240,7 +238,7 @@ export default ({route, navigation}) => {
           <ListItem key={2} bottomDivider>
             <ListItem.Content>
               <ListItem.Title style={styles.text}>
-                Ingrese una nueva contraseña
+                Repita la nueva contraseña ingresada
               </ListItem.Title>
 
               <Input

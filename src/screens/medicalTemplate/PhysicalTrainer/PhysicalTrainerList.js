@@ -16,6 +16,7 @@ import {mdiAccountDetails} from '@mdi/js';
 import {mdiInformationVariantCircleOutline} from '@mdi/js';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {environment} from '../../../environments/environment';
 
 export default ({route, navigation}) => {
   const [templates, setTemplate] = useState({templates: []});
@@ -52,7 +53,8 @@ export default ({route, navigation}) => {
         const userID = JSON.parse(user);
         //  console.log(userID.nombre);
         const url =
-          'http://localhost:8080/back/public/preparador/list-planillas/' +
+          environment.baseURL +
+          'preparador/list-planillas/' +
           +userID.id_usuario +
           '/';
         console.log(url);

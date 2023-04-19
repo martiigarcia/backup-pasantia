@@ -13,6 +13,7 @@ import {Input, ListItem} from '@rneui/themed';
 import {Button, Stack} from '@react-native-material/core';
 import {Card} from '@rneui/themed';
 import Clipboard from '@react-native-clipboard/clipboard';
+import {environment} from '../../environments/environment';
 
 export default ({route, navigation}) => {
   // const [password1, setPassword1] = useState('');
@@ -51,7 +52,7 @@ export default ({route, navigation}) => {
   const change = () => {
     setLoading(true);
 
-    const url = 'http://localhost:8080/back/public/auth/forgot-password';
+    const url = environment.baseURL + 'auth/forgot-password';
     console.log(url);
 
     const requestBody = {

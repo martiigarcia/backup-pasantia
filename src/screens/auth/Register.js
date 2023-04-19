@@ -17,6 +17,7 @@ import {Dropdown} from 'react-native-element-dropdown';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FechaInput from '../../components/FechaInput';
 import {Card} from '@rneui/themed';
+import {environment} from '../../environments/environment';
 
 export default ({route, navigation}) => {
   const [user, setUser] = useState(route.params ? route.params : {});
@@ -37,7 +38,7 @@ export default ({route, navigation}) => {
 
   const getRoles = () => {
     setLoading(true);
-    fetch('http://localhost:8080/back/public/auth/roles')
+    fetch(environment.baseURL + 'auth/roles')
       .then(resp => resp.json())
       .then(json => {
         setRoles({
@@ -71,7 +72,7 @@ export default ({route, navigation}) => {
       console.log(alert);
       //Alert.alert('debe ingresar un rol');
     }
-    const url = 'http://localhost:8080/back/public/auth/register';
+    const url = environment.baseURL + 'auth/register';
 
     fetch(url, {
       method: 'POST',

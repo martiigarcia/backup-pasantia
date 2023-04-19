@@ -19,6 +19,7 @@ import FechaInput from '../../components/FechaInput';
 import {Card} from '@rneui/themed';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {environment} from '../../environments/environment';
 
 export default ({route, navigation}) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -80,8 +81,7 @@ export default ({route, navigation}) => {
           Authorization: 'Bearer ' + data.TOKEN,
         };
 
-        const url =
-          'http://localhost:8080/back/public/users/get-user/' + user.id_usuario;
+        const url = environment.baseURL + 'users/get-user/' + user.id_usuario;
         console.log(url);
 
         fetch(url, {headers})
@@ -134,7 +134,7 @@ export default ({route, navigation}) => {
 
   const getRoles = () => {
     setLoading(true);
-    fetch('http://localhost:8080/back/public/auth/roles')
+    fetch(environment.baseURL + 'auth/roles')
       .then(resp => resp.json())
       .then(json => {
         setRoles({
@@ -187,7 +187,7 @@ export default ({route, navigation}) => {
   } */
     console.log('Rol: ' + usuario.wantedRole);
 
-    const url = 'http://localhost:8080/back/public/users/create-user';
+    const url = environment.baseURL + 'users/create-user';
     console.log(url);
 
     fetch(url, {
@@ -246,8 +246,7 @@ export default ({route, navigation}) => {
 
     console.log(usuario);
 
-    const url =
-      'http://localhost:8080/back/public/users/update-user/' + user.id_usuario;
+    const url = environment.baseURL + 'users/update-user/' + user.id_usuario;
 
     fetch(url, {
       method: 'PUT',

@@ -42,7 +42,7 @@ export default ({route, navigation}) => {
   useEffect(() => {
     // setFoods(template.comida);
     // setMeasures(template.medidas_antropometricas);
-    console.log('template: ');
+    console.log('template IN DETAIL: ');
     console.log(template);
     // console.log('foods: ');
     //console.log(template.comida);

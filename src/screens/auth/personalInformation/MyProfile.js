@@ -6,6 +6,7 @@ import {Alert} from 'react-native';
 import {FlatList} from 'react-native';
 import {Avatar, Button, ListItem, Icon} from '@rneui/themed';
 import {TouchableOpacity, Image, ScrollView} from 'react-native';
+import {environment} from '../../../environments/environment';
 
 export default ({route, navigation}) => {
   const [user, setUser] = useState({user: {}});
@@ -81,8 +82,7 @@ export default ({route, navigation}) => {
           Authorization: 'Bearer ' + data.TOKEN,
         };
 
-        const url =
-          'http://localhost:8080/back/public/profile/view/' + idX + '/' + idX;
+        const url = environment.baseURL + 'profile/view/' + idX + '/' + idX;
         // console.log(url);
 
         fetch(url, {headers})

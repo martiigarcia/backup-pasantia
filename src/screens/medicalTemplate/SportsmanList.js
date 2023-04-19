@@ -12,6 +12,7 @@ import {Avatar, Button, ListItem, Icon} from '@rneui/themed';
 import {mdiEyeOutline} from '@mdi/js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Card} from '@rneui/themed';
+import {environment} from '../../environments/environment';
 
 export default ({route, navigation}) => {
   const [users, setUsers] = useState({users: []});
@@ -42,7 +43,7 @@ export default ({route, navigation}) => {
           Authorization: 'Bearer ' + token,
         };
 
-        fetch('http://localhost:8080/back/public/profesionales/deportistas', {
+        fetch(environment.baseURL + 'profesionales/deportistas', {
           headers,
         })
           .then(resp => resp.json())

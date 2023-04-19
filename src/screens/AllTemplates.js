@@ -4,6 +4,7 @@ import {Avatar, Button, ListItem, Icon} from '@rneui/themed';
 import {mdiAccountDetails} from '@mdi/js';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {environment} from '../environments/environment';
 
 export default ({route, navigation}) => {
   const [templates, setTemplate] = useState({templates: []});
@@ -51,10 +52,7 @@ export default ({route, navigation}) => {
         };
 
         const url =
-          'http://localhost:8080/back/public/deportistas/get-planillas/' +
-          +idX +
-          '/' +
-          idX;
+          environment.baseURL + 'deportistas/get-planillas/' + +idX + '/' + idX;
         // console.log(url);
 
         fetch(url)

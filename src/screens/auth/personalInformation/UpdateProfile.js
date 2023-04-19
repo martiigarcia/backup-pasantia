@@ -19,6 +19,7 @@ import FechaInput from '../../../components/FechaInput';
 import {Card} from '@rneui/themed';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {environment} from '../../../environments/environment';
 
 export default ({route, navigation}) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -123,8 +124,7 @@ export default ({route, navigation}) => {
 
       console.log(usuario);
 
-      const url =
-        'http://localhost:8080/back/public/profile/update/' + idX + '/' + idX;
+      const url = environment.baseURL + 'profile/update/' + idX + '/' + idX;
 
       fetch(url, {
         method: 'PUT',

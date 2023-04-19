@@ -43,6 +43,15 @@ export default ({route, navigation}) => {
         route: 'SportsmanList',
         //https://img.icons8.com/color/70/000000/two-hearts.png',
       },
+      {
+        id: 3,
+        title: 'Registrar alimento',
+        color: '#FF69B4',
+        options: 'Registrar nutriente y comida',
+        image: 'https://img.icons8.com/officel/512/add-user-male.png',
+        route: 'CreateAliment',
+        //https://img.icons8.com/color/70/000000/two-hearts.png',
+      },
     ],
   };
 

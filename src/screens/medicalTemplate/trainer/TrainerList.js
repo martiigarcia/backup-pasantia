@@ -13,6 +13,7 @@ import {
 import {Avatar, ListItem, Icon, Card} from '@rneui/themed';
 import {Button, IconButton} from '@react-native-material/core';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {environment} from '../../../environments/environment';
 
 export default ({route, navigation}) => {
   const [templates, setTemplate] = useState({templates: []});
@@ -55,7 +56,8 @@ export default ({route, navigation}) => {
         const userID = JSON.parse(user);
         //  console.log(userID.nombre);
         const url =
-          'http://localhost:8080/back/public/entrenador/list-planillas/' +
+          environment.baseURL +
+          'entrenador/list-planillas/' +
           +userID.id_usuario +
           '/';
         console.log(url);
