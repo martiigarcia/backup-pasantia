@@ -9,6 +9,11 @@ import UsersList from '../screens/users/UsersList';
 import {Button, Icon} from '@rneui/base';
 import ListProfessions from '../components/ListProfessions';
 import ListProfessionals from '../components/ListProfessionals';
+import SportsmanList from '../screens/medicalTemplate/SportsmanList';
+import TemplateDetailNutricionist from '../screens/medicalTemplate/nutricionist/TemplateDetailNutricionist';
+import TemplateDetailKinesiologist from '../screens/medicalTemplate/kinesiologist/TemplateDetailKinesiologist';
+import TemplateDetailTrainer from '../screens/medicalTemplate/trainer/TemplateDetailTrainer';
+import TemplateDetailPhysicalTrainer from '../screens/medicalTemplate/PhysicalTrainer/TemplateDetailPhysicalTrainer';
 
 const Stack = createStackNavigator();
 
@@ -100,6 +105,13 @@ export default function StackAdministrator({navigation}) {
         component={RolesList}
       />
       <Stack.Screen
+        name="SportsmanList"
+        component={SportsmanList}
+        options={{
+          title: 'Deportistas',
+        }}
+      />
+      <Stack.Screen
         name="ListProfessions"
         options={{
           title: 'Profesiones',
@@ -120,6 +132,35 @@ export default function StackAdministrator({navigation}) {
           title: 'Todas las planillas',
         }}
         component={AllTemplates}
+      />
+
+      <Stack.Screen
+        name="TemplateDetailN"
+        component={TemplateDetailNutricionist}
+        options={{
+          title: 'Detalle',
+        }}
+      />
+      <Stack.Screen
+        name="TemplateDetailK"
+        component={TemplateDetailKinesiologist}
+        options={{
+          title: 'Detalle',
+        }}
+      />
+      <Stack.Screen
+        name="TemplateDetailT"
+        component={TemplateDetailTrainer}
+        options={{
+          title: 'Detalle',
+        }}
+      />
+      <Stack.Screen
+        name="TemplateDetailPT"
+        component={TemplateDetailPhysicalTrainer}
+        options={{
+          title: 'Detalle',
+        }}
       />
     </Stack.Navigator>
   );

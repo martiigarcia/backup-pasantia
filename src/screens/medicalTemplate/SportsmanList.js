@@ -14,21 +14,59 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Card} from '@rneui/themed';
 import {environment} from '../../environments/environment';
 
-export default ({route, navigation}) => {
+export default ({route, navigation, role}) => {
   const [users, setUsers] = useState({users: []});
+  const [UserRole, setUserRole] = useState('');
   const [loading, setLoading] = useState(true);
   const [alert, setAlert] = useState(false);
   const [errors, setErrors] = useState({errors: []});
 
   useEffect(() => {
+    // getUserRole();
     getUsers();
   }, []);
 
-  const getToken = async () => {
+  const getUser = async () => {
     try {
-      const token = await AsyncStorage.getItem('@AUTH_TOKEN');
+      // const MEMBER = await AsyncStorage.getItem('@MEMBER');
+      // const TOKEN = await AsyncStorage.getItem('@AUTH_TOKEN');
+      // const ID = await AsyncStorage.getItem('@ID_USER');
+      const ROLE = await AsyncStorage.getItem('@ROL_USER');
 
-      return token;
+      const data = {
+        ROLE,
+        // MEMBER,
+        // TOKEN,
+        // ID,
+      };
+
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getUserRole = () => {
+    getUser().then(data => {
+      const roleX = JSON.parse(data.ROLE);
+      setUserRole(roleX);
+    });
+  };
+
+  const getUserData = async () => {
+    try {
+      // const MEMBER = await AsyncStorage.getItem('@MEMBER');
+      const TOKEN = await AsyncStorage.getItem('@AUTH_TOKEN');
+      // const ID = await AsyncStorage.getItem('@ID_USER');
+      const ROLE = await AsyncStorage.getItem('@ROL_USER');
+
+      const data = {
+        ROLE,
+        // MEMBER,
+        TOKEN,
+        // ID,
+      };
+      return data;
     } catch (error) {
       console.log(error);
     }
@@ -37,10 +75,13 @@ export default ({route, navigation}) => {
     setLoading(true);
     let valorToken;
 
-    getToken()
-      .then(token => {
+    getUserData()
+      .then(data => {
+        const roleX = JSON.parse(data.ROLE);
+        setUserRole(roleX);
+
         const headers = {
-          Authorization: 'Bearer ' + token,
+          Authorization: 'Bearer ' + data.TOKEN,
         };
 
         fetch(environment.baseURL + 'profesionales/deportistas', {
@@ -66,24 +107,43 @@ export default ({route, navigation}) => {
 
   function getUserItem({item: user}) {
     return (
-      <ListItem
-        key={user.id_usuario}
-        bottomDivider
-        onPress={() => navigation.navigate('CreateTemplate', user)}>
-        <ListItem.Content>
-          <ListItem.Title>
-            {user.nombre} {user.apellido}
-          </ListItem.Title>
-          <ListItem.Subtitle>{user.email}</ListItem.Subtitle>
-        </ListItem.Content>
-        <Icon name="add" size={25} color="orange" />
+      <>
+        <ListItem
+          key={user.id_usuario}
+          bottomDivider
+          onPress={() => {
+            if (UserRole === 'Administrador') {
+              console.log('VER PLANILLAS DEL USUARIO SELECCIONADO...');
+              navigation.navigate('AllTemplates', {user});
+            } else {
+              console.log('FAKE ' + UserRole);
+              navigation.navigate('CreateTemplate', user);
+            }
+          }}>
+          <ListItem.Content>
+            <ListItem.Title>
+              {user.nombre} {user.apellido}
+            </ListItem.Title>
+            <ListItem.Subtitle>{user.email}</ListItem.Subtitle>
+          </ListItem.Content>
 
-        {/* <Button
+          {UserRole === 'Administrador' ? (
+            <Icon name="arrow-right" type="font-awesome" color="#FF69B4" />
+          ) : (
+            <Icon name="add" size={25} color="orange" />
+          )}
+          {/* {UserRole === 'Administrador' && (
+            <Icon name="arrow-right" type="font-awesome" color="#FF69B4" />
+          )}
+          <Icon name="add" size={25} color="orange" /> */}
+
+          {/* <Button
           onPress={() => navigation.navigate('CreateTemplate', user)}
           type="clear"
           icon={<Icon name="add" size={25} color="orange" />}
         /> */}
-      </ListItem>
+        </ListItem>
+      </>
     );
   }
 
@@ -93,7 +153,8 @@ export default ({route, navigation}) => {
         <View>
           <Card>
             <Text style={styles.textInfo}>
-              * Seleccione un deportista para registrar una nueva planilla
+              * Seleccione un deportista para registrar una nueva planilla{' '}
+              {UserRole}
             </Text>
             <Card.Divider />
             <FlatList

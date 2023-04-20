@@ -13,9 +13,7 @@ import {
 export default ({route, navigation}) => {
   //const [options, setOptions] = useState(route);
 
-  useEffect(() => {
-    // console.log(options);
-  }, [route, navigation]);
+  useEffect(() => {}, [route, navigation]);
 
   const clickEventListener = item => {
     console.log(item);

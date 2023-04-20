@@ -31,10 +31,13 @@ import ListItemPerimeters from '../../../components/ListItemPerimeters';
 import ListItemFolds from '../../../components/ListItemFolds';
 import ListItemFoods from '../../../components/ListItemFoods';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const Separator = () => <View style={styles.separator} />;
 
 export default ({route, navigation}) => {
   const [template, setTemplate] = useState(route.params ? route.params : {});
+  const [UserRole, setUserRole] = useState('');
   const [touche, setTouch] = useState(false);
   const [foods, setFoods] = useState([]);
   const [measures, setMeasures] = useState([]);
@@ -44,11 +47,37 @@ export default ({route, navigation}) => {
     // setMeasures(template.medidas_antropometricas);
     console.log('template IN DETAIL: ');
     console.log(template);
+    console.log(template.deportista);
     // console.log('foods: ');
     //console.log(template.comida);
     // console.log('medidas: ');
     // console.log(template.medidas_antropometricas);
+
+    getUserData().then(data => {
+      const roleX = JSON.parse(data.ROLE);
+      setUserRole(roleX);
+    });
   }, []);
+
+  const getUserData = async () => {
+    try {
+      const MEMBER = await AsyncStorage.getItem('@MEMBER');
+      const TOKEN = await AsyncStorage.getItem('@AUTH_TOKEN');
+      const ID = await AsyncStorage.getItem('@ID_USER');
+      const ROLE = await AsyncStorage.getItem('@ROL_USER');
+
+      const data = {
+        MEMBER,
+        TOKEN,
+        ID,
+        ROLE,
+      };
+
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   function FoodList() {
     //console.log('FOOD LIST: ');
@@ -56,8 +85,14 @@ export default ({route, navigation}) => {
 
     return (
       <>
-        <Card.Title>COMIDAS</Card.Title>
+        <Card.Title>
+          Autor de la planilla: {template.professional.nombre}{' '}
+          {template.professional.apellido}
+        </Card.Title>
+
         <Card.Divider />
+        <Card.Divider />
+        <Card.Title>COMIDAS</Card.Title>
         <ListItemFoods foods={template.comida} />
         <Card.Divider />
       </>
@@ -98,58 +133,72 @@ export default ({route, navigation}) => {
           Fecha de la planilla nutricionista: {'\n'}
           {template.fecha}
         </Text>
+        {UserRole === 'Administrador' ? (
+          <>
+            <SafeAreaView style={styles.containerAdmin}>
+              <View style={styles.viewAdmin}>
+                <Card>
+                  <FlatList
+                    ListHeaderComponent={<>{FoodList()}</>}
+                    ListFooterComponent={<>{render()}</>}
+                  />
+                </Card>
+              </View>
+            </SafeAreaView>
+          </>
+        ) : (
+          <>
+            <SafeAreaView style={styles.container}>
+              <View style={styles.view}>
+                <Card>
+                  <FlatList
+                    ListHeaderComponent={<>{FoodList()}</>}
+                    ListFooterComponent={<>{render()}</>}
+                  />
+                </Card>
+              </View>
 
-        <SafeAreaView style={styles.container}>
-          {/* <ScrollView style={styles.scrollView}>*/}
+              <Separator />
 
-          <View style={styles.view}>
-            <Card>
-              <FlatList
-                ListHeaderComponent={<>{FoodList()}</>}
-                ListFooterComponent={<>{render()}</>}
-              />
-            </Card>
-          </View>
-
-          <Separator />
-
-          <View style={styles.fixToText}>
-            <View style={styles.vertical}>
-              <Button
-                title="Modificar"
-                onPress={() =>
-                  navigation.navigate('UpdateTemplateNutricionist')
-                }
-              />
-            </View>
-            <View style={styles.vertical}>
-              <Button
-                title="Eliminar"
-                onPress={() => {
-                  message =
-                    'Desea eliminar la planilla de ' +
-                    template.deportista.nombre +
-                    ' ' +
-                    template.deportista.apellido +
-                    ', realizada el dia ' +
-                    template.fecha +
-                    '?';
-                  Alert.alert('Confirmación', message, [
-                    {
-                      text: 'Cancelar',
-                      onPress: () => console.log('cancelando...'),
-                      style: 'cancel',
-                    },
-                    {
-                      text: 'Eliminar',
-                      onPress: () => console.log('eliminando...'),
-                    },
-                  ]);
-                }}
-              />
-            </View>
-          </View>
-        </SafeAreaView>
+              <View style={styles.fixToText}>
+                <View style={styles.vertical}>
+                  <Button
+                    title="Modificar"
+                    onPress={() =>
+                      navigation.navigate('UpdateTemplateNutricionist')
+                    }
+                  />
+                </View>
+                <View style={styles.vertical}>
+                  <Button
+                    title="Eliminar"
+                    onPress={() => {
+                      message =
+                        'Desea eliminar la planilla de ' +
+                        template.deportista.nombre +
+                        ' ' +
+                        template.deportista.apellido +
+                        ', realizada el dia ' +
+                        template.fecha +
+                        '?';
+                      Alert.alert('Confirmación', message, [
+                        {
+                          text: 'Cancelar',
+                          onPress: () => console.log('cancelando...'),
+                          style: 'cancel',
+                        },
+                        {
+                          text: 'Eliminar',
+                          onPress: () => console.log('eliminando...'),
+                        },
+                      ]);
+                    }}
+                  />
+                </View>
+              </View>
+            </SafeAreaView>
+          </>
+        )}
       </>
     );
   }
@@ -170,7 +219,14 @@ const styles = StyleSheet.create({
     height: 50,
     flex: 1,
   },
-
+  viewAdmin: {
+    justifyContent: 'center',
+    height: 550,
+  },
+  containerAdmin: {
+    paddingBottom: StatusBar.currentHeight,
+    marginBottom: StatusBar.currentHeight,
+  },
   vertical: {
     display: 'flex',
     marginHorizontal: 5,

@@ -285,7 +285,7 @@ export default ({route, navigation}) => {
     console.log(item);
     return (
       <View>
-        <Card.Title>{item.title}</Card.Title>
+        <Card.Title style={styles.titleCard}>{item.title}</Card.Title>
         {templates.map(template => (
           <ListItem
             key={template.id}
@@ -339,8 +339,7 @@ export default ({route, navigation}) => {
         <View style={styles.view}>
           <Card>
             <Text style={styles.textInfo}>
-              Seleccione una planilla segun el nombre del deportista y la fecha
-              de la planilla para verla en detalle, editarla o eliminarla.
+              Seleccione una planilla para verla en detalle.
             </Text>
             <Card.Divider />
 
@@ -396,9 +395,9 @@ const styles = StyleSheet.create({
   // form: {
   //   padding: 20,
   // },
-  // titleCard: {
-  //   fontSize: 20,
-  // },
+  titleCard: {
+    fontSize: 20,
+  },
   view: {
     // paddingTop: StatusBar.currentHeight,
     // paddingBottom: StatusBar.currentHeight,

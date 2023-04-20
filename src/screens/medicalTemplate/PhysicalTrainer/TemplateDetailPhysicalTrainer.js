@@ -27,20 +27,53 @@ import {ListItem} from '@rneui/themed';
 import BigList from 'react-native-big-list';
 import {HStack} from '@react-native-material/core';
 import ListItemTests from '../../../components/ListItemTests';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Separator = () => <View style={styles.separator} />;
 
 export default ({route, navigation}) => {
   const [template, setTemplate] = useState(route.params ? route.params : {});
+  const [UserRole, setUserRole] = useState('');
 
   useEffect(() => {
     console.log('template: ');
     console.log(template.tests);
+    getUserData().then(data => {
+      const roleX = JSON.parse(data.ROLE);
+      setUserRole(roleX);
+    });
   }, []);
+
+  const getUserData = async () => {
+    try {
+      const MEMBER = await AsyncStorage.getItem('@MEMBER');
+      const TOKEN = await AsyncStorage.getItem('@AUTH_TOKEN');
+      const ID = await AsyncStorage.getItem('@ID_USER');
+      const ROLE = await AsyncStorage.getItem('@ROL_USER');
+
+      const data = {
+        MEMBER,
+        TOKEN,
+        ID,
+        ROLE,
+      };
+
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   function TestList() {
     return (
       <>
+        <Card.Title>
+          Autor de la planilla: {template.professional.nombre}{' '}
+          {template.professional.apellido}
+        </Card.Title>
+
+        <Card.Divider />
+        <Card.Divider />
         <Card.Title>TESTS</Card.Title>
         <Card.Divider />
         <ListItemTests testx={template.tests} />
@@ -56,60 +89,75 @@ export default ({route, navigation}) => {
           {template.deportista.nombre} {template.deportista.apellido}
         </Text>
         <Text style={styles.textTipoFicha}>
-          Fecha de la planilla entrenador fisico: {'\n'}
+          Fecha de la planilla nutricionista: {'\n'}
           {template.fecha}
         </Text>
 
-        <SafeAreaView style={styles.container}>
-          {/* <ScrollView style={styles.scrollView}>*/}
+        {UserRole === 'Administrador' ? (
+          <>
+            <SafeAreaView style={styles.containerAdmin}>
+              <View style={styles.viewAdmin}>
+                <Card>
+                  <FlatList
+                    ListHeaderComponent={<>{TestList()}</>}
+                    ListFooterComponent={<></>}
+                  />
+                </Card>
+              </View>
+            </SafeAreaView>
+          </>
+        ) : (
+          <>
+            <SafeAreaView style={styles.container}>
+              <View style={styles.view}>
+                <Card>
+                  <FlatList
+                    ListHeaderComponent={<>{TestList()}</>}
+                    ListFooterComponent={<></>}
+                  />
+                </Card>
+              </View>
+              <Separator />
 
-          <View style={styles.view}>
-            <Card>
-              <FlatList
-                ListHeaderComponent={<>{TestList()}</>}
-                ListFooterComponent={<></>}
-              />
-            </Card>
-          </View>
-          <Separator />
-
-          <View style={styles.fixToText}>
-            <View style={styles.vertical}>
-              <Button
-                title="Modificar"
-                onPress={() =>
-                  navigation.navigate('UpdateTemplateNutricionist')
-                }
-              />
-            </View>
-            <View style={styles.vertical}>
-              <Button
-                title="Eliminar"
-                onPress={() => {
-                  message =
-                    'Desea eliminar la planilla de ' +
-                    template.deportista.nombre +
-                    ' ' +
-                    template.deportista.apellido +
-                    ', realizada el dia ' +
-                    template.fecha +
-                    '?';
-                  Alert.alert('Confirmación', message, [
-                    {
-                      text: 'Cancelar',
-                      onPress: () => console.log('cancelando...'),
-                      style: 'cancel',
-                    },
-                    {
-                      text: 'Eliminar',
-                      onPress: () => console.log('eliminando...'),
-                    },
-                  ]);
-                }}
-              />
-            </View>
-          </View>
-        </SafeAreaView>
+              <View style={styles.fixToText}>
+                <View style={styles.vertical}>
+                  <Button
+                    title="Modificar"
+                    onPress={() =>
+                      navigation.navigate('UpdateTemplateNutricionist')
+                    }
+                  />
+                </View>
+                <View style={styles.vertical}>
+                  <Button
+                    title="Eliminar"
+                    onPress={() => {
+                      message =
+                        'Desea eliminar la planilla de ' +
+                        template.deportista.nombre +
+                        ' ' +
+                        template.deportista.apellido +
+                        ', realizada el dia ' +
+                        template.fecha +
+                        '?';
+                      Alert.alert('Confirmación', message, [
+                        {
+                          text: 'Cancelar',
+                          onPress: () => console.log('cancelando...'),
+                          style: 'cancel',
+                        },
+                        {
+                          text: 'Eliminar',
+                          onPress: () => console.log('eliminando...'),
+                        },
+                      ]);
+                    }}
+                  />
+                </View>
+              </View>
+            </SafeAreaView>
+          </>
+        )}
       </>
     );
   }
@@ -130,7 +178,15 @@ const styles = StyleSheet.create({
     height: 50,
     flex: 1,
   },
-
+  viewAdmin: {
+    justifyContent: 'center',
+    height: 550,
+  },
+  containerAdmin: {
+    height: 550,
+    paddingBottom: StatusBar.currentHeight,
+    marginBottom: StatusBar.currentHeight,
+  },
   vertical: {
     display: 'flex',
     marginHorizontal: 5,

@@ -71,7 +71,7 @@ export default ({route, navigation}) => {
         color: '#6A5ACD',
         options: 'Ver todas las planillas registradas por profesional',
         image: 'https://img.icons8.com/office/512/report-card.png',
-        route: 'ListProfessions',
+        route: 'SportsmanList',
         //image: 'https://img.icons8.com/dusk/70/000000/checklist.png',
         //image: 'https://img.icons8.com/color/70/000000/family.png',
       },
