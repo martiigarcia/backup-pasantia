@@ -62,7 +62,7 @@ export default ({route, navigation}) => {
           .then(resp => resp.json())
           .then(json => {
             //console.log(json);
-            console.log(json.planillas);
+            // console.log(json.planillas);
 
             if (json.success) {
               setTemplate({

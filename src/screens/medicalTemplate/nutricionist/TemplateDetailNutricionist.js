@@ -47,7 +47,7 @@ export default ({route, navigation}) => {
     // setMeasures(template.medidas_antropometricas);
     console.log('template IN DETAIL: ');
     console.log(template);
-    console.log(template.deportista);
+    // console.log(template.deportista);
     // console.log('foods: ');
     //console.log(template.comida);
     // console.log('medidas: ');
@@ -79,47 +79,99 @@ export default ({route, navigation}) => {
     }
   };
 
-  function FoodList() {
+  function HearderListComponent() {
     //console.log('FOOD LIST: ');
     //console.log(template.comida);
 
     return (
       <>
-        <Card.Title>
-          Autor de la planilla: {template.professional.nombre}{' '}
-          {template.professional.apellido}
-        </Card.Title>
+        {(UserRole === 'Administrador' || UserRole === 'Deportista') && (
+          <>
+            <Card.Title>DATOS DEL ESPECIALISTA</Card.Title>
+            <ListItem bottomDivider>
+              <ListItem.Content>
+                <ListItem.Title>
+                  {template.professional.nombre}{' '}
+                  {template.professional.apellido}
+                </ListItem.Title>
+                <ListItem.Subtitle>
+                  Email: {template.professional.email}{' '}
+                </ListItem.Subtitle>
+              </ListItem.Content>
+            </ListItem>
 
-        <Card.Divider />
-        <Card.Divider />
+            <Card.Divider />
+            <Card.Divider />
+          </>
+        )}
+
         <Card.Title>COMIDAS</Card.Title>
-        <ListItemFoods foods={template.comida} />
         <Card.Divider />
+        {template.comida.length === 0 ? (
+          <>
+            <Text style={styles.text}>* No hay comidas registradas</Text>
+            <Card.Divider />
+          </>
+        ) : (
+          <>
+            <ListItemFoods foods={template.comida} />
+            <Card.Divider />
+          </>
+        )}
       </>
     );
   }
 
-  function render() {
+  function FooterListComponent() {
     return (
       <>
         <Card.Title>MEDIDAS ANTROPOMETRICAS</Card.Title>
         <Card.Divider />
-        <ListItemMeasures measures={template.medidas_antropometricas.medidas} />
-
-        <Card.Divider />
+        {template.medidas_antropometricas.medidas.length === 0 ? (
+          <>
+            <Text style={styles.text}>
+              * No hay medidas atropometricas registradas
+            </Text>
+            <Card.Divider />
+          </>
+        ) : (
+          <>
+            <ListItemMeasures
+              measures={template.medidas_antropometricas.medidas}
+            />
+            <Card.Divider />
+          </>
+        )}
 
         <Card.Title>PERIMETROS</Card.Title>
         <Card.Divider />
-        <ListItemPerimeters
-          perimeters={template.medidas_antropometricas.perimetros}
-        />
-
-        <Card.Divider />
+        {template.medidas_antropometricas.perimetros.length === 0 ? (
+          <>
+            <Text style={styles.text}>* No hay perimetros registrados</Text>
+            <Card.Divider />
+          </>
+        ) : (
+          <>
+            <ListItemPerimeters
+              perimeters={template.medidas_antropometricas.perimetros}
+            />
+            <Card.Divider />
+          </>
+        )}
 
         <Card.Title>PLIEGUES</Card.Title>
         <Card.Divider />
-
-        <ListItemFolds folds={template.medidas_antropometricas.pliegues} />
+        {template.medidas_antropometricas.pliegues.length === 0 ? (
+          <>
+            <Text style={styles.text}>* No hay pliegues registrados</Text>
+            <Card.Divider />
+          </>
+        ) : (
+          <>
+            <ListItemFolds folds={template.medidas_antropometricas.pliegues} />
+            <Card.Divider />
+          </>
+        )}
       </>
     );
   }
@@ -133,14 +185,14 @@ export default ({route, navigation}) => {
           Fecha de la planilla nutricionista: {'\n'}
           {template.fecha}
         </Text>
-        {UserRole === 'Administrador' ? (
+        {UserRole === 'Administrador' || UserRole === 'Deportista' ? (
           <>
             <SafeAreaView style={styles.containerAdmin}>
               <View style={styles.viewAdmin}>
                 <Card>
                   <FlatList
-                    ListHeaderComponent={<>{FoodList()}</>}
-                    ListFooterComponent={<>{render()}</>}
+                    ListHeaderComponent={<>{HearderListComponent()}</>}
+                    ListFooterComponent={<>{FooterListComponent()}</>}
                   />
                 </Card>
               </View>
@@ -152,8 +204,8 @@ export default ({route, navigation}) => {
               <View style={styles.view}>
                 <Card>
                   <FlatList
-                    ListHeaderComponent={<>{FoodList()}</>}
-                    ListFooterComponent={<>{render()}</>}
+                    ListHeaderComponent={<>{HearderListComponent()}</>}
+                    ListFooterComponent={<>{FooterListComponent()}</>}
                   />
                 </Card>
               </View>
@@ -280,10 +332,22 @@ const styles = StyleSheet.create({
     marginTop: 10,
     textAlign: 'center',
   },
-  text: {
-    fontSize: 20,
-    textAlign: 'left',
+  textEmail: {
+    textAlign: 'center',
   },
+  textAutor: {
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  text: {
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  // text: {
+  //   fontSize: 15,
+  //   textAlign: 'left',
+  //   marginBottom: 10,
+  // },
   viewButton: {
     paddingTop: StatusBar.currentHeight,
     justifyContent: 'center',

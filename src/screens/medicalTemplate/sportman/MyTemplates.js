@@ -283,35 +283,45 @@ export default ({route, navigation}) => {
   const renderItem = ({item}) => {
     const {title, templates} = item;
     console.log(item);
+    console.log(templates.length === 0);
     return (
       <View>
         <Card.Title style={styles.titleCard}>{item.title}</Card.Title>
-        {templates.map(template => (
-          <ListItem
-            key={template.id}
-            bottomDivider
-            onPress={
-              () => handleDetail({template, title})
-              // navigation.navigate('TemplateDetail', template)
-            }>
-            <ListItem.Content>
-              <ListItem.Title>
-                Fecha: {template.fecha}
-                {/* {console.log('PLANILLAS: ' + template)} */}
-              </ListItem.Title>
-              <ListItem.Subtitle>
-                Profesional: {template.professional.nombre}{' '}
-                {template.professional.apellido}
-              </ListItem.Subtitle>
-            </ListItem.Content>
-            <Icon
-              name="info-circle"
-              size={25}
-              type="font-awesome"
-              color="#6495ed"
-            />
-          </ListItem>
-        ))}
+        {templates.length === 0 ? (
+          <>
+            <Text style={styles.text}>* No hay planillas registradas aun</Text>
+            <Card.Divider />
+          </>
+        ) : (
+          <>
+            {templates.map(template => (
+              <ListItem
+                key={template.id}
+                bottomDivider
+                onPress={
+                  () => handleDetail({template, title})
+                  // navigation.navigate('TemplateDetail', template)
+                }>
+                <ListItem.Content>
+                  <ListItem.Title>
+                    Fecha: {template.fecha}
+                    {/* {console.log('PLANILLAS: ' + template)} */}
+                  </ListItem.Title>
+                  <ListItem.Subtitle>
+                    Profesional: {template.professional.nombre}{' '}
+                    {template.professional.apellido}
+                  </ListItem.Subtitle>
+                </ListItem.Content>
+                <Icon
+                  name="info-circle"
+                  size={25}
+                  type="font-awesome"
+                  color="#6495ed"
+                />
+              </ListItem>
+            ))}
+          </>
+        )}
       </View>
     );
   };
@@ -403,5 +413,10 @@ const styles = StyleSheet.create({
     // paddingBottom: StatusBar.currentHeight,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  text: {
+    fontSize: 15,
+    textAlign: 'left',
+    marginBottom: 10,
   },
 });

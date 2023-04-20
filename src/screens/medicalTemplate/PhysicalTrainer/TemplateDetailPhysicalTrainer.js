@@ -67,17 +67,39 @@ export default ({route, navigation}) => {
   function TestList() {
     return (
       <>
-        <Card.Title>
-          Autor de la planilla: {template.professional.nombre}{' '}
-          {template.professional.apellido}
-        </Card.Title>
+        {(UserRole === 'Administrador' || UserRole === 'Deportista') && (
+          <>
+            <Card.Title>DATOS DEL ESPECIALISTA</Card.Title>
+            <ListItem bottomDivider>
+              <ListItem.Content>
+                <ListItem.Title>
+                  {template.professional.nombre}{' '}
+                  {template.professional.apellido}
+                </ListItem.Title>
+                <ListItem.Subtitle>
+                  Email: {template.professional.email}{' '}
+                </ListItem.Subtitle>
+              </ListItem.Content>
+            </ListItem>
 
-        <Card.Divider />
-        <Card.Divider />
+            <Card.Divider />
+            <Card.Divider />
+          </>
+        )}
+
         <Card.Title>TESTS</Card.Title>
         <Card.Divider />
-        <ListItemTests testx={template.tests} />
-        <Card.Divider />
+        {template.tests.length === 0 ? (
+          <>
+            <Text style={styles.text}>* No hay tests registrados</Text>
+            <Card.Divider />
+          </>
+        ) : (
+          <>
+            <ListItemTests testx={template.tests} />
+            <Card.Divider />
+          </>
+        )}
       </>
     );
   }
@@ -89,11 +111,11 @@ export default ({route, navigation}) => {
           {template.deportista.nombre} {template.deportista.apellido}
         </Text>
         <Text style={styles.textTipoFicha}>
-          Fecha de la planilla nutricionista: {'\n'}
+          Fecha de la planilla del preparador físico: {'\n'}
           {template.fecha}
         </Text>
 
-        {UserRole === 'Administrador' ? (
+        {UserRole === 'Administrador' || UserRole === 'Deportista' ? (
           <>
             <SafeAreaView style={styles.containerAdmin}>
               <View style={styles.viewAdmin}>
@@ -235,6 +257,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#6409E6',
   },
   textTipoFicha: {
+    marginTop: 10,
     textAlign: 'center',
   },
   text: {

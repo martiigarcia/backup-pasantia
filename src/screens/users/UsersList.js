@@ -210,11 +210,22 @@ export default ({route, navigation}) => {
       <SafeAreaView style={styles.container}>
         <View>
           <Card>
-            <FlatList
-              keyExtractor={user => user.id_usuario.toString()}
-              data={users.users}
-              renderItem={getUserItem}
-            />
+            {users.users.length === 0 ? (
+              <>
+                <Text style={styles.text}>
+                  * No hay usuarios registrados aun
+                </Text>
+                <Card.Divider />
+              </>
+            ) : (
+              <>
+                <FlatList
+                  keyExtractor={user => user.id_usuario.toString()}
+                  data={users.users}
+                  renderItem={getUserItem}
+                />
+              </>
+            )}
           </Card>
         </View>
       </SafeAreaView>
@@ -244,5 +255,10 @@ const styles = StyleSheet.create({
     paddingBottom: StatusBar.currentHeight,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  text: {
+    fontSize: 15,
+    textAlign: 'left',
+    marginBottom: 10,
   },
 });

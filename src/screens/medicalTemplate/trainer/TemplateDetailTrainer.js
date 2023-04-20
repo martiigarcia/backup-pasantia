@@ -19,7 +19,7 @@ import {
   View,
   FlatList,
 } from 'react-native';
-import {Divider} from '@rneui/themed';
+import {Divider, ListItem} from '@rneui/themed';
 import {Icon} from '@rneui/base';
 import {Input, Card} from '@rneui/themed';
 import ListItemBasketballThrows from '../../../components/ListItemBasketballThrows';
@@ -101,17 +101,39 @@ export default ({route, navigation}) => {
   function BasketballThrowsList() {
     return (
       <>
-        <Card.Title>
-          Autor de la planilla: {template.professional.nombre}{' '}
-          {template.professional.apellido}
-        </Card.Title>
+        {(UserRole === 'Administrador' || UserRole === 'Deportista') && (
+          <>
+            <Card.Title>DATOS DEL ESPECIALISTA</Card.Title>
+            <ListItem bottomDivider>
+              <ListItem.Content>
+                <ListItem.Title>
+                  {template.professional.nombre}{' '}
+                  {template.professional.apellido}
+                </ListItem.Title>
+                <ListItem.Subtitle>
+                  Email: {template.professional.email}{' '}
+                </ListItem.Subtitle>
+              </ListItem.Content>
+            </ListItem>
 
-        <Card.Divider />
-        <Card.Divider />
+            <Card.Divider />
+            <Card.Divider />
+          </>
+        )}
+
         <Card.Title>LANZAMIENTOS</Card.Title>
         <Card.Divider />
-        <ListItemBasketballThrows throws={template.lanzamientos} />
-        <Card.Divider />
+        {template.lanzamientos.length === 0 ? (
+          <>
+            <Text style={styles.text}>* No hay lanzamientos registradas</Text>
+            <Card.Divider />
+          </>
+        ) : (
+          <>
+            <ListItemBasketballThrows throws={template.lanzamientos} />
+            <Card.Divider />
+          </>
+        )}
       </>
     );
   }
@@ -123,10 +145,10 @@ export default ({route, navigation}) => {
           {template.deportista.nombre} {template.deportista.apellido}
         </Text>
         <Text style={styles.textTipoFicha}>
-          Fecha de la planilla nutricionista: {'\n'}
+          Fecha de la planilla del entrenador: {'\n'}
           {template.fecha}
         </Text>
-        {UserRole === 'Administrador' ? (
+        {UserRole === 'Administrador' || UserRole === 'Deportista' ? (
           <>
             <SafeAreaView style={styles.containerAdmin}>
               <View style={styles.viewAdmin}>

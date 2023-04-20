@@ -19,7 +19,7 @@ import {
   View,
   FlatList,
 } from 'react-native';
-import {Divider} from '@rneui/themed';
+import {Divider, ListItem} from '@rneui/themed';
 import {Icon} from '@rneui/base';
 import {Input, Card} from '@rneui/themed';
 import ListItemInjuries from '../../../components/ListItemInjuries';
@@ -37,8 +37,9 @@ export default ({route, navigation}) => {
     console.log('template: ');
     console.log(template);
     console.log(template.deportista);
-    // console.log('lesiones: ');
-    // console.log(template.lesion);
+    console.log('lesiones: ');
+    console.log(template.lesion);
+    console.log(template.lesion);
     // console.log('sesiones: ');
     // console.log(template.sesion);
     getUserData().then(data => {
@@ -70,17 +71,39 @@ export default ({route, navigation}) => {
   function InjuriesList() {
     return (
       <>
-        <Card.Title>
-          Autor de la planilla: {template.professional.nombre}{' '}
-          {template.professional.apellido}
-        </Card.Title>
+        {(UserRole === 'Administrador' || UserRole === 'Deportista') && (
+          <>
+            <Card.Title>DATOS DEL ESPECIALISTA</Card.Title>
+            <ListItem bottomDivider>
+              <ListItem.Content>
+                <ListItem.Title>
+                  {template.professional.nombre}{' '}
+                  {template.professional.apellido}
+                </ListItem.Title>
+                <ListItem.Subtitle>
+                  Email: {template.professional.email}{' '}
+                </ListItem.Subtitle>
+              </ListItem.Content>
+            </ListItem>
 
-        <Card.Divider />
-        <Card.Divider />
+            <Card.Divider />
+            <Card.Divider />
+          </>
+        )}
+
         <Card.Title>LESIONES</Card.Title>
         <Card.Divider />
-        <ListItemInjuries injuryx={template.lesion} />
-        <Card.Divider />
+        {template.lesion.length === 0 ? (
+          <>
+            <Text style={styles.text}>* No hay lesiones registradas</Text>
+            <Card.Divider />
+          </>
+        ) : (
+          <>
+            <ListItemInjuries injuryx={template.lesion} />
+            <Card.Divider />
+          </>
+        )}
       </>
     );
   }
@@ -90,9 +113,18 @@ export default ({route, navigation}) => {
       <>
         <Card.Title>SESIONES</Card.Title>
         <Card.Divider />
-        <ListItemSesions sesionx={template.sesion} />
+        {template.sesion.length === 0 ? (
+          <>
+            <Text style={styles.text}>* No hay sesiones registradas</Text>
+            <Card.Divider />
+          </>
+        ) : (
+          <>
+            <ListItemSesions sesionx={template.sesion} />
 
-        <Card.Divider />
+            <Card.Divider />
+          </>
+        )}
       </>
     );
   }
@@ -103,10 +135,10 @@ export default ({route, navigation}) => {
           {template.deportista.nombre} {template.deportista.apellido}
         </Text>
         <Text style={styles.textTipoFicha}>
-          Fecha de la planilla nutricionista: {'\n'}
+          Fecha de la planilla kinesiologica: {'\n'}
           {template.fecha}
         </Text>
-        {UserRole === 'Administrador' ? (
+        {UserRole === 'Administrador' || UserRole === 'Deportista' ? (
           <>
             <SafeAreaView style={styles.containerAdmin}>
               <View style={styles.viewAdmin}>
@@ -256,9 +288,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   text: {
-    fontSize: 20,
-    textAlign: 'left',
+    textAlign: 'center',
+    marginBottom: 10,
   },
+  // text: {
+  //   fontSize: 15,
+  //   textAlign: 'left',
+  //   marginBottom: 10,
+  // },
   viewButton: {
     paddingTop: StatusBar.currentHeight,
     justifyContent: 'center',

@@ -152,9 +152,19 @@ export default ({route, navigation, role}) => {
       <SafeAreaView style={styles.container}>
         <View>
           <Card>
+            {users.users.length === 0 ? (
+              <>
+                <Text style={styles.text}>
+                  * No hay deportistas registrados aun
+                </Text>
+                <Card.Divider />
+              </>
+            ) : (
+              <></>
+            )}
+
             <Text style={styles.textInfo}>
-              * Seleccione un deportista para registrar una nueva planilla{' '}
-              {UserRole}
+              * Seleccione un deportista para registrar una nueva planilla
             </Text>
             <Card.Divider />
             <FlatList
@@ -196,5 +206,10 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'left',
     padding: 10,
+  },
+  text: {
+    fontSize: 15,
+    textAlign: 'left',
+    marginBottom: 10,
   },
 });
