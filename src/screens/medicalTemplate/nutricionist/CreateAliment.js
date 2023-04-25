@@ -418,7 +418,10 @@ export default ({route, navigation}) => {
               <Text style={styles.text}>Nombre de la comida</Text>
               <Input
                 style={styles.input}
-                onChangeText={name => setFood({...food, name})}
+                onChangeText={name =>
+                  // console.log(name)
+                  setFood({...food, name})
+                }
                 placeholder="Nombre"
                 value={food.name}
                 errorStyle={{color: 'red'}}

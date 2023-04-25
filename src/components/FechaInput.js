@@ -26,6 +26,7 @@ export default function FechaInput({doDate}) {
       setOpen(false);
       setDate(date);
       doDate(date);
+      console.log('HANDLE EN <FECHAINPUT>: ');
       console.log(moment(date).format('YYYY-MM-DD'));
     }
   };
@@ -63,14 +64,14 @@ export default function FechaInput({doDate}) {
         }}
       /> */}
       <Button
-        variant={'outlined'}
+        variant={'text'}
         style={styles.buttonDate}
         title="Seleccionar fecha"
         onPress={() => setOpen(true)}
         value={date}
       />
       <DatePicker
-        title={'Seleccione su fecha de nacimiento'}
+        title={'Seleccione una fecha'}
         modal
         open={open}
         date={date}
@@ -164,10 +165,11 @@ const styles = StyleSheet.create({
   },
   buttonDate: {
     height: 50,
-    borderWidth: 1,
-    margin: 10,
-    marginBottom: 10,
-    padding: 10,
+    // borderWidth: 1,
+    // margin: 10,
+    // marginBottom: 10,
+    // padding: 10,
+    borderBottomWidth: 1,
     borderColor: 'gray',
     paddingTop: 10,
     paddingBottom: 10,

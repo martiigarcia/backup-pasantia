@@ -113,11 +113,9 @@ export default ({route, navigation, role}) => {
           bottomDivider
           onPress={() => {
             if (UserRole === 'Administrador') {
-              console.log('VER PLANILLAS DEL USUARIO SELECCIONADO...');
               navigation.navigate('AllTemplates', {user});
             } else {
-              console.log('FAKE ' + UserRole);
-              navigation.navigate('CreateTemplate', user);
+              navigation.navigate('CreateTemplate', {user});
             }
           }}>
           <ListItem.Content>
