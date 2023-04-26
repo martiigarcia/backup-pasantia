@@ -417,8 +417,8 @@ export default ({route, navigation}) => {
   );
   const [zones, setZones] = useState({zones: []});
   const [foods, setFoods] = useState({foods: []});
-  const [dateShow, setDateShow] = useState(new Date());
   const [date, setDate] = useState('');
+  const [errors, setErrors] = useState({errors: []});
 
   //info seleccionada:
   const [selectedFoodsDate, setSelectedFoodsDate] = useState({
@@ -447,6 +447,11 @@ export default ({route, navigation}) => {
   //agregar perimetros y pliegues
   const [newPerimeterName, setNewPerimeterName] = useState({name: ''});
   const [newFoldName, setNewFoldName] = useState({name: ''});
+
+  //para el json:
+  const [jsonFoods, setJsonFoods] = useState({jsonFoods: []});
+  const [jsonPerimeters, setJsonPerimeters] = useState({jsonPerimeters: []});
+  const [jsonFolds, setJsonFolds] = useState({jsonFolds: []});
 
   useEffect(() => {
     getZones();
@@ -553,7 +558,6 @@ export default ({route, navigation}) => {
     console.log('handle date: ');
     console.log(date); // 2023-04-25T02:21:00.000Z
     setDate(date);
-    setDateShow(date);
   };
 
   const handleSave = () => {
@@ -593,29 +597,135 @@ export default ({route, navigation}) => {
     }
   }
 
-    */
-
-    const templateData = {
-      id_propietario: '',
-      id_deportista: '',
-      fecha: '',
-      comida: [{}],
-      medidas_antropometricas: {
-        medidas: {
-          estatura: '',
-          peso: '',
+///////////////////////////////////////
+ {
+  "id_propietario":"1",
+  "id_deportista":"5",
+  "fecha":"2023-04-26T00:30:41.978Z",
+  "comida":
+  [
+    {
+      "nombre":"Milanesa",
+      "nutriente":"Grasas",
+      "id_comida":"1",
+      "fecha":"2023-05-26T00:24:00.000Z",
+      "fecha_mostrar":"25/5/2023"
+    },
+    {
+      "nombre":"Lentejas",
+      "nutriente":"Proteina",
+      "id_comida":"4",
+      "fecha":"2024-04-26T00:24:00.000Z",
+      "fecha_mostrar":"25/4/2024"
+    }
+  ],
+  "medidas_antropometricas":
+  {
+    "medidas":
+    {
+      "estatura":"11111",
+      "peso":"22222"
+    },
+    "perimetros":
+    [
+        {
+          "valor_medida":"1",
+          "id_zona":"3",
+          "nombre":"Gemelo Izquierdo"
         },
-        perimetros: [{}],
-        pligues: [{}],
-      },
-    };
+        {
+          "valor_medida":"1",
+          "id_zona":"4",
+          "nombre":"Gemelo Derecho"
+        }
+    ],
+    "pliegues":
+    [ 
+        {
+          "valor_medida":"3",
+          "id_zona":"2",
+          "nombre":"Cadera"
+        },
+        {
+          "valor_medida":"4",
+          "id_zona":"1",
+          "nombre":"Cintura"
+        }
+    ]
+  }
+}
 
-    const url = environment.baseURL + 'nutricionista/create-planilla/';
+///////////////////////////////////////////////////////
+
+
+
+{
+  "id_propietario":"1",
+  "id_deportista":"5",
+  "fecha":"2023-04-25",
+  "comida":
+  [
+    {
+      "id_tipo_comida":"1",
+      "fecha":"2024-06-26T01:20:00.000Z"
+    },
+    {
+      "id_tipo_comida":"4",
+      "fecha":"2023-04-26 01:29:00.000"
+    }
+  ],
+  "medidas_antropometricas":
+  {
+    "medidas":
+    {
+      "estatura":"11.11",
+      "peso":"22.22"
+    },
+    "perimetros":
+    [
+      {
+        "valor_medida":"111",
+        "id_zona":"1"
+      }
+    ]
+    ,
+    "pliegues":
+    [
+      {
+        "valor_medida":"333",
+        "id_zona":"3"
+      }
+    ]
+  }
+}
+
+
+  */
+
+    const url = environment.baseURL + 'nutricionista/create-planilla';
     console.log(url);
 
     getUserData()
       .then(data => {
-        console.log('entra getZones1');
+        const idX = JSON.parse(data.ID);
+        const date = new Date();
+
+        const templateData = {
+          id_propietario: idX,
+          id_deportista: sportman.id_usuario,
+          fecha: moment(date).format('YYYY-MM-DD'),
+          comida: jsonFoods.jsonFoods,
+          medidas_antropometricas: {
+            medidas: {
+              estatura: measures.stature,
+              peso: measures.weight,
+            },
+            perimetros: jsonPerimeters.jsonPerimeters,
+            pliegues: jsonFolds.jsonFolds,
+          },
+        };
+        console.log(templateData);
+        console.log(JSON.stringify(templateData));
 
         const headers = {
           'Content-Type': 'application/json',
@@ -630,9 +740,19 @@ export default ({route, navigation}) => {
           .then(resp => resp.json())
           .then(json => {
             console.log(json);
+            console.log(json.success);
+
             if (json.success) {
+              console.log('ENTRA');
+              Alert.alert('Se ha registrado con exito!', json.message);
+              navigation.navigate('HomeNutricionist');
             } else {
-              Alert.error('Error', json.message);
+              Alert.alert('Error... algo salio mal', json.message);
+              console.log(json.errors);
+              setErrors({
+                errors: json.errors,
+              });
+              console.log(errors);
             }
 
             // setLoading(false);
@@ -650,19 +770,26 @@ export default ({route, navigation}) => {
 
   const handleAddPerimeter = () => {
     console.log('Agregar perimetro');
-    // console.log(selectedZone);
-    // console.log(newPerimeterName);
+
     const perimeterData = {
-      // id: perimeters.perimeters.length + 1,
       valor_medida: newPerimeterName.name,
       id_zona: selectedZone.id_zona_medida,
       nombre: selectedZone.nombre,
     };
+    const perimeterDataJson = {
+      valor_medida: newPerimeterName.name,
+      id_zona: selectedZone.id_zona_medida,
+    };
     console.log(perimeterData);
+    console.log(perimeterDataJson);
 
     setPerimeters(prevState => ({
       ...prevState,
       perimeters: [...prevState.perimeters, perimeterData],
+    }));
+    setJsonPerimeters(prevState => ({
+      ...prevState,
+      jsonPerimeters: [...prevState.jsonPerimeters, perimeterDataJson],
     }));
     setDialogVisiblePerimeter(false);
     setNewPerimeterName({name: ''});
@@ -679,9 +806,20 @@ export default ({route, navigation}) => {
       id_zona: selectedZone.id_zona_medida,
       nombre: selectedZone.nombre,
     };
+
+    const foldDataJson = {
+      // id: folds.folds.length + 1,
+      valor_medida: newFoldName.name,
+      id_zona: selectedZone.id_zona_medida,
+    };
     setFolds(prevState => ({
       ...prevState,
       folds: [...prevState.folds, foldData],
+    }));
+
+    setJsonFolds(prevState => ({
+      ...prevState,
+      jsonFolds: [...prevState.jsonFolds, foldDataJson],
     }));
 
     setDialogVisibleFolds(false);
@@ -691,20 +829,28 @@ export default ({route, navigation}) => {
 
   const handleAddFood = () => {
     console.log('agregar comida');
-    console.log(date); //     2023-03-25T03:15:00.000Z
-    console.log(selectedFood); //  LOG  {"id_nutriente": "3", "id_tipo_comida": "2", "nombre": "Pastel de papas", "nombre_nutriente": "Grasas"}
 
     const foodData = {
       nombre: selectedFood.nombre,
       nutriente: selectedFood.nombre_nutriente,
       id_comida: selectedFood.id_tipo_comida,
+      id_tipo_comida: selectedFood.id_tipo_comida,
       fecha: date, //este deberia ser el formato en que lo mando a la bd
       fecha_mostrar: date.toLocaleDateString(),
     };
-    console.log(foodData);
+    const foodDataJson = {
+      id_tipo_comida: selectedFood.id_tipo_comida,
+      fecha: date.toISOString().replace('T', ' ').slice(0, -1), //este deberia ser el formato en que lo mando a la bd
+    };
+
     setSelectedFoodsDate(prevState => ({
       ...prevState,
       selectedFoodsDate: [...prevState.selectedFoodsDate, foodData],
+    }));
+
+    setJsonFoods(prevState => ({
+      ...prevState,
+      jsonFoods: [...prevState.jsonFoods, foodDataJson],
     }));
     setDialogVisibleFoods(false);
     setSelectedFood(null);

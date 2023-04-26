@@ -17,6 +17,7 @@ import {mdiInformationVariantCircleOutline} from '@mdi/js';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {environment} from '../../../environments/environment';
+import {useFocusEffect} from '@react-navigation/native';
 
 export default ({route, navigation}) => {
   const [templates, setTemplate] = useState({templates: []});
@@ -26,13 +27,33 @@ export default ({route, navigation}) => {
 
   useEffect(() => {
     getTemplates();
-  }, []);
+  }, [{}]);
 
-  const getUser = async () => {
+  useFocusEffect(
+    React.useCallback(() => {
+      // Reload the screen when it comes into focus
+      return navigation.addListener('focus', () => {
+        getTemplates();
+        // Do something
+      });
+    }, [navigation]),
+  );
+
+  const getUserData = async () => {
     try {
       const MEMBER = await AsyncStorage.getItem('@MEMBER');
+      const TOKEN = await AsyncStorage.getItem('@AUTH_TOKEN');
+      const ID = await AsyncStorage.getItem('@ID_USER');
+      const ROLE = await AsyncStorage.getItem('@ROL_USER');
 
-      return MEMBER;
+      const data = {
+        MEMBER,
+        TOKEN,
+        ID,
+        ROLE,
+      };
+
+      return data;
     } catch (error) {
       console.log(error);
     }
@@ -42,23 +63,20 @@ export default ({route, navigation}) => {
     setLoading(true);
     let valorToken;
 
-    getUser()
-      .then(user => {
+    getUserData()
+      .then(data => {
         const headers = {
-          //userID: user,
-          //Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + data.TOKEN,
         };
         //  console.log('USER:     ' + user);
-        const userID = JSON.parse(user);
+        const userID = JSON.parse(data.ID);
         //  console.log(userID.nombre);
         const url =
-          environment.baseURL +
-          'nutricionista/list-planillas/' +
-          +userID.id_usuario +
-          '/';
+          environment.baseURL + 'nutricionista/list-planillas/' + userID + '/';
         // console.log(url);
 
-        fetch(url)
+        fetch(url, {headers})
           .then(resp => resp.json())
           .then(json => {
             //console.log(json);
@@ -69,6 +87,60 @@ export default ({route, navigation}) => {
                 templates: json.planillas,
               });
               //console.log(templates.templates);
+            }
+
+            setLoading(false);
+          })
+          .catch(error => {
+            console.log(error);
+            setLoading(false);
+          });
+      })
+      .catch(error => {
+        console.log(error);
+        setLoading(false);
+      });
+  };
+
+  const handleDelete = templateID => {
+    getUserData()
+      .then(data => {
+        const headers = {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + data.TOKEN,
+        };
+        //  console.log('USER:     ' + user);
+        const userID = JSON.parse(data.ID);
+        //  console.log(userID.nombre);
+        const url =
+          environment.baseURL +
+          'nutricionista/delete-planilla/' +
+          templateID +
+          '/' +
+          userID;
+
+        console.log(url);
+
+        fetch(url, {
+          method: 'DELETE',
+          headers,
+        })
+          .then(resp => resp.json())
+          .then(json => {
+            console.log(json);
+            // console.log(json.planillas);
+
+            if (json.success) {
+              console.log('ENTRA');
+              Alert.alert('Enhorabuena!', json.message);
+              getTemplates();
+            } else {
+              Alert.alert('Error... algo salio mal', json.message);
+              console.log(json.errors);
+              setErrors({
+                errors: json.errors,
+              });
+              console.log(errors);
             }
 
             setLoading(false);
@@ -142,10 +214,10 @@ export default ({route, navigation}) => {
             Alert.alert('Confirmación', message, [
               {
                 text: 'Cancelar',
-                onPress: () => console.log('cancelando...'),
+
                 style: 'cancel',
               },
-              {text: 'Eliminar', onPress: () => console.log('eliminando...')},
+              {text: 'Eliminar', onPress: () => handleDelete(template.id)},
             ]);
           }}
           type="clear"

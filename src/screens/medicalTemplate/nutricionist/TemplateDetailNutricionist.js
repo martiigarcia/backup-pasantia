@@ -30,13 +30,15 @@ import ListItemMeasures from '../../../components/ListItemMeasures';
 import ListItemPerimeters from '../../../components/ListItemPerimeters';
 import ListItemFolds from '../../../components/ListItemFolds';
 import ListItemFoods from '../../../components/ListItemFoods';
-
+import {environment} from '../../../environments/environment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Separator = () => <View style={styles.separator} />;
 
 export default ({route, navigation}) => {
   const [template, setTemplate] = useState(route.params ? route.params : {});
+  const [loading, setLoading] = useState(true);
+  const [errors, setErrors] = useState({errors: []});
   const [UserRole, setUserRole] = useState('');
   const [touche, setTouch] = useState(false);
   const [foods, setFoods] = useState([]);
@@ -77,6 +79,63 @@ export default ({route, navigation}) => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleDelete = () => {
+    getUserData()
+      .then(data => {
+        const headers = {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + data.TOKEN,
+        };
+        //  console.log('USER:     ' + user);
+        const userID = JSON.parse(data.ID);
+        //  console.log(userID.nombre);
+        const url =
+          environment.baseURL +
+          'nutricionista/delete-planilla/' +
+          template.id +
+          '/' +
+          userID;
+
+        console.log(url);
+
+        fetch(url, {
+          method: 'DELETE',
+          headers,
+        })
+          .then(resp => resp.json())
+          .then(json => {
+            console.log(json);
+            // console.log(json.planillas);
+
+            if (json.success) {
+              Alert.alert('Enhorabuena!', json.message);
+              navigation.goBack();
+              navigation.goBack(() => {
+                // Reload the previous screen
+              });
+              // navigation.navigate('NutricionistList');
+            } else {
+              Alert.alert('Error... algo salio mal', json.message);
+              console.log(json.errors);
+              setErrors({
+                errors: json.errors,
+              });
+              console.log(errors);
+            }
+
+            setLoading(false);
+          })
+          .catch(error => {
+            console.log(error);
+            setLoading(false);
+          });
+      })
+      .catch(error => {
+        console.log(error);
+        setLoading(false);
+      });
   };
 
   function HearderListComponent() {
@@ -241,7 +300,7 @@ export default ({route, navigation}) => {
                         },
                         {
                           text: 'Eliminar',
-                          onPress: () => console.log('eliminando...'),
+                          onPress: () => handleDelete(),
                         },
                       ]);
                     }}

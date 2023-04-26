@@ -24,11 +24,13 @@ import {Input} from '@rneui/themed';
 import {List} from 'react-native-paper';
 import {ListItem} from '@rneui/themed';
 import BigList from 'react-native-big-list';
+import moment from 'moment';
 
 export default ({foods}) => {
   const [food, setFood] = useState([]);
+  const [day, setDay] = useState('');
   useEffect(() => {
-    console.log(foods);
+    // console.log(foods);
     setFood(foods);
   }, []);
 
@@ -39,14 +41,13 @@ export default ({foods}) => {
           <ListItem.Content>
             <ListItem.Title>{c.nombre}</ListItem.Title>
             <ListItem.Subtitle>Nutriente: {c.nutriente} </ListItem.Subtitle>
+
+            <ListItem.Subtitle>
+              Fecha asignada: {new Date(c.fecha).toLocaleDateString()}
+            </ListItem.Subtitle>
           </ListItem.Content>
         </ListItem>
       ))}
     </View>
   );
 };
-/*
-
-
-
-*/
