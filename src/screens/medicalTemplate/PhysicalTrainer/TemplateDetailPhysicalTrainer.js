@@ -28,6 +28,7 @@ import BigList from 'react-native-big-list';
 import {HStack} from '@react-native-material/core';
 import ListItemTests from '../../../components/ListItemTests';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {environment} from '../../../environments/environment';
 
 const Separator = () => <View style={styles.separator} />;
 
@@ -36,8 +37,6 @@ export default ({route, navigation}) => {
   const [UserRole, setUserRole] = useState('');
 
   useEffect(() => {
-    console.log('template: ');
-    console.log(template.tests);
     getUserData().then(data => {
       const roleX = JSON.parse(data.ROLE);
       setUserRole(roleX);
@@ -103,6 +102,64 @@ export default ({route, navigation}) => {
       </>
     );
   }
+
+  const handleDelete = () => {
+    getUserData()
+      .then(data => {
+        const headers = {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + data.TOKEN,
+        };
+        //  console.log('USER:     ' + user);
+        const idX = JSON.parse(data.ID);
+        //  console.log(userID.nombre);
+        const url =
+          environment.baseURL +
+          'preparador/delete-planilla/' +
+          template.id +
+          '/' +
+          idX;
+
+        console.log(url);
+
+        fetch(url, {
+          method: 'DELETE',
+          headers,
+        })
+          .then(resp => resp.json())
+          .then(json => {
+            console.log(json);
+            // console.log(json.planillas);
+
+            if (json.success) {
+              Alert.alert('Enhorabuena!', json.message);
+
+              // navigation.goBack();
+              navigation.goBack(() => {
+                // Reload the previous screen
+                navigation.navigate('PhysicalTrainerList');
+              });
+            } else {
+              Alert.alert('Error... algo salio mal', json.message);
+              console.log(json.errors);
+              setErrors({
+                errors: json.errors,
+              });
+              console.log(errors);
+            }
+
+            // setLoading(false);
+          })
+          .catch(error => {
+            console.log(error);
+            // setLoading(false);
+          });
+      })
+      .catch(error => {
+        console.log(error);
+        // setLoading(false);
+      });
+  };
 
   function Component() {
     return (
@@ -170,7 +227,7 @@ export default ({route, navigation}) => {
                         },
                         {
                           text: 'Eliminar',
-                          onPress: () => console.log('eliminando...'),
+                          onPress: () => handleDelete(),
                         },
                       ]);
                     }}

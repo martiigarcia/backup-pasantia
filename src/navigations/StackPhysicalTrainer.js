@@ -67,17 +67,8 @@ export default function StackPhysicalTrainer({navigation}) {
       <Stack.Screen
         name="PhysicalTrainerList"
         component={PhysicalTrainerList}
-        options={({navigation}) => {
-          return {
-            title: 'Planillas del preparador fisico',
-            headerRight: () => (
-              <Button
-                onPress={() => navigation.navigate('SportsmanList')}
-                type="clear"
-                icon={<Icon name="add" size={30} color="#fff" />}
-              />
-            ),
-          };
+        options={{
+          title: 'Planillas',
         }}
       />
       <Stack.Screen
