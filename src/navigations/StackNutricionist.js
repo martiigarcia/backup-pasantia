@@ -9,6 +9,7 @@ import TemplateDetail from '../screens/medicalTemplate/nutricionist/TemplateDeta
 import HomeNutricionist from '../screens/homes/HomeNutricionist';
 import updateTemplate from '../screens/medicalTemplate/nutricionist/updateTemplate';
 import CreateAliment from '../screens/medicalTemplate/nutricionist/CreateAliment';
+import FoodsList from '../screens/medicalTemplate/nutricionist/FoodsList';
 
 const Stack = createStackNavigator();
 
@@ -108,6 +109,13 @@ export default function StackNutricionist({navigation}) {
         component={CreateAliment}
         options={{
           title: 'Registrar alimento',
+        }}
+      />
+      <Stack.Screen
+        name="FoodsList"
+        component={FoodsList}
+        options={{
+          title: 'Alimentos registrados',
         }}
       />
       <Stack.Screen

@@ -187,21 +187,6 @@ import {Dropdown} from 'react-native-element-dropdown';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {environment} from '../../../environments/environment';
-import {mdiFoodApple} from '@mdi/js';
-// const nutrientsX = [
-//   {id: 1, name: 'Proteína'},
-//   {id: 2, name: 'Carbohidratos'},
-//   {id: 3, name: 'Grasas'},
-//   {id: 4, name: 'Vitaminas'},
-//   {id: 5, name: 'Minerales'},
-// ];
-// const comidasX = [
-//   {id: 1, name: 'Milanesa'},
-//   {id: 2, name: 'Hamburguesa'},
-//   {id: 3, name: 'Chambuchito'},
-//   {id: 4, name: 'Pernil'},
-//   {id: 5, name: 'Sorrentinos'},
-// ];
 
 export default ({route, navigation}) => {
   const [food, setFood] = useState({name: ''});

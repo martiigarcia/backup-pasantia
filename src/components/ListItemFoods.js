@@ -41,10 +41,13 @@ export default ({foods}) => {
           <ListItem.Content>
             <ListItem.Title>{c.nombre}</ListItem.Title>
             <ListItem.Subtitle>Nutriente: {c.nutriente} </ListItem.Subtitle>
-
-            <ListItem.Subtitle>
-              Fecha asignada: {new Date(c.fecha).toLocaleDateString()}
-            </ListItem.Subtitle>
+            {c.fecha && (
+              <>
+                <ListItem.Subtitle>
+                  Fecha asignada: {new Date(c.fecha).toLocaleDateString()}
+                </ListItem.Subtitle>
+              </>
+            )}
           </ListItem.Content>
         </ListItem>
       ))}

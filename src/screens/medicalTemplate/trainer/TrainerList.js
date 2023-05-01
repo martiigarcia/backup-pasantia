@@ -23,44 +23,43 @@ export default ({route, navigation}) => {
 
   useEffect(() => {
     getTemplates();
-  }, []);
+  }, [{}]);
 
-  const getUser = async () => {
+  const getUserData = async () => {
     try {
       const MEMBER = await AsyncStorage.getItem('@MEMBER');
-      // const ID_USER = await AsyncStorage.getItem('@ID_USER');
-      /*setUser({
-        user: MEMBER,
-      });
-      console.log('Member USER: ' + user.user); //hacer otra vairble en AsyncStorage para el ID y el ROL
-      */
-      //  console.log('ID USUARIO: ' + ID_USER);
-      //return ID_USER;
-      return MEMBER;
+      const TOKEN = await AsyncStorage.getItem('@AUTH_TOKEN');
+      const ID = await AsyncStorage.getItem('@ID_USER');
+      const ROLE = await AsyncStorage.getItem('@ROL_USER');
+
+      const data = {
+        MEMBER,
+        TOKEN,
+        ID,
+        ROLE,
+      };
+
+      return data;
     } catch (error) {
       console.log(error);
     }
   };
-
   const getTemplates = () => {
     setLoading(true);
     let valorToken;
 
-    getUser()
-      .then(user => {
+    getUserData()
+      .then(data => {
         const headers = {
-          //userID: user,
-          //Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + data.TOKEN,
         };
         //  console.log('USER:     ' + user);
-        const userID = JSON.parse(user);
+        const userID = JSON.parse(data.ID);
         //  console.log(userID.nombre);
         const url =
-          environment.baseURL +
-          'entrenador/list-planillas/' +
-          +userID.id_usuario +
-          '/';
-        console.log(url);
+          environment.baseURL + 'entrenador/list-planillas/' + +userID + '/';
+        // console.log(url);
 
         fetch(url)
           .then(resp => resp.json())
@@ -87,13 +86,68 @@ export default ({route, navigation}) => {
         setLoading(false);
       });
   };
+
+  const handleDelete = templateID => {
+    getUserData()
+      .then(data => {
+        const headers = {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + data.TOKEN,
+        };
+        //  console.log('USER:     ' + user);
+        const userID = JSON.parse(data.ID);
+        //  console.log(userID.nombre);
+        const url =
+          environment.baseURL +
+          'entrenador/delete-planilla/' +
+          templateID +
+          '/' +
+          userID;
+
+        console.log(url);
+
+        fetch(url, {
+          method: 'DELETE',
+          headers,
+        })
+          .then(resp => resp.json())
+          .then(json => {
+            console.log(json);
+            // console.log(json.planillas);
+
+            if (json.success) {
+              console.log('ENTRA');
+              Alert.alert('Enhorabuena!', json.message);
+              getTemplates();
+            } else {
+              Alert.alert('Error... algo salio mal', json.message);
+              console.log(json.errors);
+              setErrors({
+                errors: json.errors,
+              });
+              console.log(errors);
+            }
+
+            setLoading(false);
+          })
+          .catch(error => {
+            console.log(error);
+            setLoading(false);
+          });
+      })
+      .catch(error => {
+        console.log(error);
+        setLoading(false);
+      });
+  };
+
   function getTempleteItem({item: template}) {
     return (
       <ListItem
         key={template.id}
         bottomDivider
         onPress={() => navigation.navigate('TemplateDetailTrainer', template)}>
-        <Text>{template.id}</Text>
+        <Text>{template.id_planilla}</Text>
         <ListItem.Content>
           <ListItem.Title>
             {template.deportista.nombre} {template.deportista.apellido}
@@ -146,7 +200,10 @@ export default ({route, navigation}) => {
                 onPress: () => console.log('cancelando...'),
                 style: 'cancel',
               },
-              {text: 'Eliminar', onPress: () => console.log('eliminando...')},
+              {
+                text: 'Eliminar',
+                onPress: () => handleDelete(template.id_planilla),
+              },
             ]);
           }}
           type="clear"

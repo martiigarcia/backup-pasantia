@@ -8,6 +8,8 @@ import TemplateDetailNutricionist from '../screens/medicalTemplate/nutricionist/
 import TemplateDetailKinesiologist from '../screens/medicalTemplate/kinesiologist/TemplateDetailKinesiologist';
 import TemplateDetailTrainer from '../screens/medicalTemplate/trainer/TemplateDetailTrainer';
 import TemplateDetailPhysicalTrainer from '../screens/medicalTemplate/PhysicalTrainer/TemplateDetailPhysicalTrainer';
+import MyIMC from '../screens/medicalTemplate/sportman/MyIMC';
+import IMCGraphic from '../screens/medicalTemplate/sportman/IMCGraphic';
 
 const Stack = createStackNavigator();
 
@@ -71,6 +73,22 @@ export default function StackSportman({navigation}) {
         }}
         component={MyTemplates}
       />
+
+      <Stack.Screen
+        name="MyIMC"
+        options={{
+          title: 'IMC',
+        }}
+        component={MyIMC}
+      />
+      <Stack.Screen
+        name="IMCGraphic"
+        options={{
+          title: 'IMC',
+        }}
+        component={IMCGraphic}
+      />
+
       <Stack.Screen
         name="TemplateDetailN"
         component={TemplateDetailNutricionist}

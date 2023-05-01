@@ -40,15 +40,6 @@ export default ({route, navigation}) => {
     data: [
       {
         id: 1,
-        title: 'Mis datos',
-        color: '#E74C3C',
-        options: 'Ver mis datos, modificar datos, cambiar contraseña',
-        image: 'https://img.icons8.com/office/512/user-menu-male--v1.png',
-        route: 'Profile',
-        // image: 'https://img.icons8.com/color/70/000000/name.png',
-      },
-      {
-        id: 1,
         title: 'Usuarios',
         color: '#87CEEB',
         options: 'Listar usuarios y opciones',
@@ -83,6 +74,16 @@ export default ({route, navigation}) => {
         image: 'https://img.icons8.com/office/512/user-shield.png',
         route: 'RolesList',
         //image: 'https://img.icons8.com/color/70/000000/groups.png',
+      },
+      {
+        id: 1,
+        title: 'Mis datos',
+        color: '#ff581a',
+        // color: '#E74C3C',
+        options: 'Ver mis datos, modificar datos, cambiar contraseña',
+        image: 'https://img.icons8.com/?size=512&id=2zQuuMM0XuM9&format=png',
+        route: 'Profile',
+        // image: 'https://img.icons8.com/color/70/000000/name.png',
       },
       // {
       //   id: 5,
