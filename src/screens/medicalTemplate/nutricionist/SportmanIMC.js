@@ -12,7 +12,7 @@ import {Avatar, Button, ListItem, Icon} from '@rneui/themed';
 import {mdiEyeOutline} from '@mdi/js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Card} from '@rneui/themed';
-import {environment} from '../../environments/environment';
+import {environment} from '../../../environments/environment';
 
 export default ({route, navigation}) => {
   const [users, setUsers] = useState({users: []});
@@ -112,11 +112,7 @@ export default ({route, navigation}) => {
           key={user.id_usuario}
           bottomDivider
           onPress={() => {
-            if (UserRole === 'Administrador') {
-              navigation.navigate('AllTemplates', {user});
-            } else {
-              navigation.navigate('CreateTemplate', {user});
-            }
+            navigation.navigate('IMC', {user});
           }}>
           <ListItem.Content>
             <ListItem.Title>
@@ -125,21 +121,7 @@ export default ({route, navigation}) => {
             <ListItem.Subtitle>{user.email}</ListItem.Subtitle>
           </ListItem.Content>
 
-          {UserRole === 'Administrador' ? (
-            <Icon name="arrow-right" type="font-awesome" color="#FF69B4" />
-          ) : (
-            <Icon name="add" size={25} color="orange" />
-          )}
-          {/* {UserRole === 'Administrador' && (
-            <Icon name="arrow-right" type="font-awesome" color="#FF69B4" />
-          )}
-          <Icon name="add" size={25} color="orange" /> */}
-
-          {/* <Button
-          onPress={() => navigation.navigate('CreateTemplate', user)}
-          type="clear"
-          icon={<Icon name="add" size={25} color="orange" />}
-        /> */}
+          <Icon name="arrow-right" type="font-awesome" color="#FF69B4" />
         </ListItem>
       </>
     );
@@ -162,7 +144,7 @@ export default ({route, navigation}) => {
             )}
 
             <Text style={styles.textInfo}>
-              * Seleccione un deportista para registrar una nueva planilla
+              * Seleccione un deportista para ver su IMC por mes
             </Text>
             <Card.Divider />
             <FlatList

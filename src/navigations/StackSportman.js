@@ -75,7 +75,7 @@ export default function StackSportman({navigation}) {
       />
 
       <Stack.Screen
-        name="MyIMC"
+        name="IMC"
         options={{
           title: 'IMC',
         }}

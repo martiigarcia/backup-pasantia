@@ -19,10 +19,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {environment} from '../../../environments/environment';
 
 export default ({route, navigation}) => {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(route.params.user ? route.params.user : {});
   const [imcs, setImcs] = useState({imcs: []});
+  const [UserRole, setUserRole] = useState('');
   useEffect(() => {
     getIMCs();
+    getUserRole();
   }, []);
 
   const getUserData = async () => {
@@ -31,7 +33,7 @@ export default ({route, navigation}) => {
       const TOKEN = await AsyncStorage.getItem('@AUTH_TOKEN');
       const ID = await AsyncStorage.getItem('@ID_USER');
       const ROLE = await AsyncStorage.getItem('@ROL_USER');
-      setUser(JSON.parse(MEMBER));
+
       const data = {
         MEMBER,
         TOKEN,
@@ -54,13 +56,17 @@ export default ({route, navigation}) => {
           Authorization: 'Bearer ' + data.TOKEN,
         };
 
-        const url = environment.baseURL + 'deportistas/get-imc/' + idX + '/';
+        const url =
+          environment.baseURL +
+          'nutricionista/get-imc/' +
+          user.id_usuario +
+          '/';
         console.log(url);
 
         fetch(url, {headers})
           .then(resp => resp.json())
           .then(json => {
-            //console.log(json);
+            console.log(json);
 
             if (json.success) {
               setImcs({
@@ -79,6 +85,13 @@ export default ({route, navigation}) => {
       });
   };
 
+  const getUserRole = () => {
+    getUserData().then(data => {
+      const roleX = JSON.parse(data.ROLE);
+      setUserRole(roleX);
+    });
+  };
+
   return (
     <>
       <SafeAreaView style={styles.container}>
@@ -89,7 +102,7 @@ export default ({route, navigation}) => {
             <Button
               title="Ver como grafico"
               onPress={() =>
-                navigation.navigate('IMCGraphic', {user})
+                navigation.navigate('IMCGraphic', {user, UserRole})
               }></Button>
             <Card.Divider />
             <Card.Divider />

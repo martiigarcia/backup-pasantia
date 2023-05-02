@@ -54,6 +54,18 @@ export default ({route, navigation}) => {
         route: 'CreateAliment',
         //https://img.icons8.com/color/70/000000/two-hearts.png',
       },
+      {
+        id: 1,
+        title: 'IMC',
+        color: '#b57af0',
+        // color: '#87CEEB',
+        options:
+          'Ver informacion del  Indice de Masa Corporal por mes de los deportistas registrados',
+        image: 'https://img.icons8.com/?size=512&id=feFedRJYd495&format=png',
+        // image: 'https://img.icons8.com/?size=512&id=hlniyYCIF_nE&format=png',
+        route: 'SportmanIMC',
+        // image: 'https://img.icons8.com/office/70/000000/home-page.png',
+      },
 
       {
         id: 1,

@@ -10,7 +10,9 @@ import HomeNutricionist from '../screens/homes/HomeNutricionist';
 import updateTemplate from '../screens/medicalTemplate/nutricionist/updateTemplate';
 import CreateAliment from '../screens/medicalTemplate/nutricionist/CreateAliment';
 import FoodsList from '../screens/medicalTemplate/nutricionist/FoodsList';
-
+import IMCList from '../screens/medicalTemplate/nutricionist/IMCList';
+import SportmanIMC from '../screens/medicalTemplate/nutricionist/SportmanIMC';
+import IMCGraphic from '../screens/medicalTemplate/sportman/IMCGraphic';
 const Stack = createStackNavigator();
 
 export default function StackNutricionist({navigation}) {
@@ -131,6 +133,27 @@ export default function StackNutricionist({navigation}) {
         options={{
           title: 'Detalle',
         }}
+      />
+      <Stack.Screen
+        name="IMC"
+        options={{
+          title: 'IMC',
+        }}
+        component={IMCList}
+      />
+      <Stack.Screen
+        name="IMCGraphic"
+        options={{
+          title: 'IMC',
+        }}
+        component={IMCGraphic}
+      />
+      <Stack.Screen
+        name="SportmanIMC"
+        options={{
+          title: 'Deportistas',
+        }}
+        component={SportmanIMC}
       />
     </Stack.Navigator>
   );

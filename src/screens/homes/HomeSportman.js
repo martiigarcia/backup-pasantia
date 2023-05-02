@@ -42,7 +42,7 @@ export default ({route, navigation}) => {
         options: 'Ver informacion de mi Indice de Masa Corporal por mes',
         image: 'https://img.icons8.com/?size=512&id=feFedRJYd495&format=png',
         // image: 'https://img.icons8.com/?size=512&id=hlniyYCIF_nE&format=png',
-        route: 'MyIMC',
+        route: 'IMC',
         // image: 'https://img.icons8.com/office/70/000000/home-page.png',
       },
     ],
