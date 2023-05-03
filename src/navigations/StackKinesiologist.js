@@ -7,6 +7,9 @@ import KinesiologistList from '../screens/medicalTemplate/kinesiologist/Kinesiol
 import DeportistList from '../screens/medicalTemplate/SportsmanList';
 import TemplateDetailKinesiologist from '../screens/medicalTemplate/kinesiologist/TemplateDetailKinesiologist';
 import HomeKinesiologist from '../screens/homes/HomeKinesiologist';
+import SportmanInjuries from '../screens/medicalTemplate/kinesiologist/SportmanInjuries';
+import InjuriesList from '../screens/medicalTemplate/kinesiologist/InjuriesList';
+import InjuriesGraphic from '../screens/medicalTemplate/kinesiologist/InjuriesGraphic';
 
 const Stack = createStackNavigator();
 
@@ -97,6 +100,27 @@ export default function StackKinesiologist({navigation}) {
         component={CreateTemplateKinesiologist}
         options={{
           title: 'Registrar planilla',
+        }}
+      />
+      <Stack.Screen
+        name="SportmanInjuries"
+        component={SportmanInjuries}
+        options={{
+          title: '',
+        }}
+      />
+      <Stack.Screen
+        name="InjuriesList"
+        component={InjuriesList}
+        options={{
+          title: '',
+        }}
+      />
+      <Stack.Screen
+        name="InjuriesGraphic"
+        component={InjuriesGraphic}
+        options={{
+          title: '',
         }}
       />
     </Stack.Navigator>
