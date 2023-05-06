@@ -23,7 +23,7 @@ export default ({route, navigation}) => {
   useEffect(() => {
     console.log('INJURIES LIST');
     console.log(route);
-    // getInjuriesList();
+    getInjuriesList();
   }, []);
 
   const getUserData = async () => {
@@ -56,19 +56,20 @@ export default ({route, navigation}) => {
         const url =
           environment.baseURL +
           'kinesiologo/grafico-tratamientos/' +
-          route.params.user.id_usuario;
+          route.params.user.id_usuario +
+          '/' +
+          route.params.start +
+          '/' +
+          route.params.end;
         console.log(url);
 
-        const body = {
-          startDate: route.params.start,
-          endDate: route.params.end,
-        };
-
-        console.log(JSON.stringify(body));
+        // const body = {
+        //   startDate: route.params.start,
+        //   endDate: route.params.end,
+        // };
 
         fetch(url, {
           headers,
-          body: JSON.stringify(body),
         })
           .then(resp => resp.json())
           .then(json => {
@@ -89,15 +90,37 @@ export default ({route, navigation}) => {
         console.log(error);
       });
   };
+
+  /*
+  
+  {
+    "graph": 
+    [
+      {
+        "activity": "Masaje", 
+        "count": "1", 
+        "date": "2022-09-06", 
+        "zone": "Espalda Baja"
+      }, 
+      {
+        "activity": "Masaje", 
+        "count": "2", 
+        "date": "2022-09-03", 
+        "zone": "Gemelo Derecho"
+      }
+    ], 
+    "success": true
+  }
+  */
   return (
     <>
       <SafeAreaView style={styles.container}>
         <View style={styles.view}>
           <Card>
-            <Card.Title>Cantidad de lesiones por período</Card.Title>
+            <Card.Title>Sesiones realizadas para una zona</Card.Title>
             <Card.Divider />
             <Button
-              title="Ver como grafico"
+              title="Ver grafico"
               onPress={() =>
                 navigation.navigate('InjuriesGraphic', {
                   user: route.params.user,
@@ -108,17 +131,21 @@ export default ({route, navigation}) => {
               }></Button>
             <Card.Divider />
             <Card.Divider />
-            <Text>Listado del grafico</Text>
-            {/* {injuriesList.injuriesList.map((c, index) => (
+
+            {injuriesList.injuriesList.map((c, index) => (
               <ListItem key={index} bottomDivider>
                 <ListItem.Content>
                   <ListItem.Title>{c.zone}</ListItem.Title>
                   <ListItem.Subtitle>
-                    Cantidad: {parseFloat(c.count).toFixed(2)}
+                    Avtividad realizada: {c.activity}
                   </ListItem.Subtitle>
+                  <ListItem.Subtitle>
+                    Cantidad de sesiones en el mismo mes: {c.count}
+                  </ListItem.Subtitle>
+                  <ListItem.Subtitle>Fecha: {c.date}</ListItem.Subtitle>
                 </ListItem.Content>
               </ListItem>
-            ))} */}
+            ))}
           </Card>
         </View>
       </SafeAreaView>

@@ -10,6 +10,9 @@ import TemplateDetailTrainer from '../screens/medicalTemplate/trainer/TemplateDe
 import TemplateDetailPhysicalTrainer from '../screens/medicalTemplate/PhysicalTrainer/TemplateDetailPhysicalTrainer';
 import MyIMC from '../screens/medicalTemplate/sportman/MyIMC';
 import IMCGraphic from '../screens/medicalTemplate/sportman/IMCGraphic';
+import MySesions from '../screens/medicalTemplate/sportman/MySesions';
+import MyShotProgress from '../screens/medicalTemplate/sportman/MyShotProgress';
+import MyPF from '../screens/medicalTemplate/sportman/MyPF';
 
 const Stack = createStackNavigator();
 
@@ -80,6 +83,27 @@ export default function StackSportman({navigation}) {
           title: 'IMC',
         }}
         component={MyIMC}
+      />
+      <Stack.Screen
+        name="MySesions"
+        options={{
+          title: 'Sesiones',
+        }}
+        component={MySesions}
+      />
+      <Stack.Screen
+        name="MyShotProgress"
+        options={{
+          title: 'Lanzamientos',
+        }}
+        component={MyShotProgress}
+      />
+      <Stack.Screen
+        name="MyPF"
+        options={{
+          title: 'PF',
+        }}
+        component={MyPF}
       />
       <Stack.Screen
         name="IMCGraphic"

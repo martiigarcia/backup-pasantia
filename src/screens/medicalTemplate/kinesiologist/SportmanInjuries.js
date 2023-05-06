@@ -16,6 +16,7 @@ import {Card} from '@rneui/themed';
 import {environment} from '../../../environments/environment';
 import FechaInput from '../../../components/FechaInput';
 import {ScrollView} from 'react-native-gesture-handler';
+import moment from 'moment';
 
 export default ({route, navigation}) => {
   const [users, setUsers] = useState({users: []});
@@ -115,19 +116,19 @@ export default ({route, navigation}) => {
     // console.log(dateStart);
     // console.log(dateEnd);
     if (Object.keys(selectedUser).length === 0) {
-      Alert.alert('Error', 'El usuario no puede ser vacio');
+      Alert.alert('Error', 'Debe seleccionar un usuario');
     } else {
       if (dateStart === '') {
-        Alert.alert('Error', 'La fecha de inicio no puede ser vacia');
+        Alert.alert('Error', 'Debe seleccionar una fecha de inicio');
       } else {
         if (dateEnd === '') {
-          Alert.alert('Error', 'La fecha de fin no puede ser vacia');
+          Alert.alert('Error', 'Debe seleccionar una fecha de fin');
         } else {
           console.log('esta todo completo');
           navigation.navigate('InjuriesList', {
             user: selectedUser,
-            start: dateStart.toISOString(),
-            end: dateEnd.toISOString(),
+            start: moment(dateStart).format('YYYY-MM-DD'),
+            end: moment(dateEnd).format('YYYY-MM-DD'),
             UserRole: UserRole,
           });
         }

@@ -35,11 +35,11 @@ export default ({route, navigation}) => {
       },
       {
         id: 1,
-        title: 'Cantidad de lesiones',
+        title: 'Cantidad de sesiones',
         color: '#b57af0',
         // color: '#87CEEB',
         options:
-          'Ver informacion del la cantidad de lesiones en entre dos fechas para un deportista seleccionado',
+          'Ver informacion del la cantidad de sesiones en entre dos fechas para un deportista seleccionado',
         image: 'https://img.icons8.com/?size=512&id=feFedRJYd495&format=png',
         // image: 'https://img.icons8.com/?size=512&id=hlniyYCIF_nE&format=png',
         route: 'SportmanInjuries',

@@ -31,21 +31,28 @@ import {
 export default ({imcsX}) => {
   const [imc, setImc] = useState([]);
 
+  const screenWidth = Dimensions.get('window').width;
+
   const chartConfig = {
-    backgroundColor: '#e26a00',
-    backgroundGradientFrom: '#fb8c00',
-    backgroundGradientTo: '#ffa726',
-    // backgroundGradientFrom: '#1E2923',
+    backgroundGradientFrom: '#1E2923', //blanco de abajo
     backgroundGradientFromOpacity: 0,
-    // backgroundGradientTo: '#08130D',
+    // backgroundGradientTo: '#b57af0', //parte de arriba: violeta/lila
+    // backgroundGradientTo: '#e1c9f9', //parte de arriba: violeta/lila
+    backgroundGradientTo: '#ffffff', //parte de arriba: violeta/lila
     backgroundGradientToOpacity: 0.5,
-    color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`,
-    strokeWidth: 2, // optional, default 3
-    barPercentage: 0.5,
-    useShadowColorFromDataset: false, // optional
+    // color: (opacity = 1) => `rgba(0,	0,	0, ${opacity})`,
+    // color: (opacity = 1) => `rgba(181,	122,	240, ${opacity})`, //color sombreadod de la curva
+    color: (opacity = 1) => `rgba(143,	53,	232, ${opacity})`, //color sombreadod de la curva
+    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+    propsForBackgroundLines: {
+      stroke: 'gray',
+    },
+    propsForDots: {
+      r: '6',
+      strokeWidth: '2',
+      stroke: '#8641f4',
+    },
   };
-  const labels = imc.map(i => i.month);
-  const dataValues = imc.map(i => Number(i.imc));
 
   const data = {
     labels: imc.map(i => i.month),
@@ -76,13 +83,21 @@ export default ({imcsX}) => {
       {console.log(data.datasets)}
       {imc.length !== 0 && (
         <>
-          <LineChart
-            data={data}
-            width={300}
-            height={500}
-            bezier
-            chartConfig={chartConfig}
-          />
+          <ScrollView horizontal={true}>
+            <LineChart
+              data={data}
+              width={screenWidth}
+              height={500}
+              bezier
+              chartConfig={chartConfig}
+              // chartConfig={{
+              //   ...chartConfig,
+              //   yLabelsOffset: -10, // ajusta la posición vertical de las etiquetas del eje y
+              //   xLabelsOffset: 10, // ajusta la posición horizontal de las etiquetas del eje x
+              // }}
+              // contentInset={{left: 50, right: 50, top: 0, bottom: 0}}
+            />
+          </ScrollView>
         </>
       )}
     </>
