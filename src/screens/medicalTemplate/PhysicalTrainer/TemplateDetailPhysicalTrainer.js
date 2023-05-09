@@ -24,7 +24,6 @@ import {Icon} from '@rneui/base';
 import {Input, Card} from '@rneui/themed';
 import {List} from 'react-native-paper';
 import {ListItem} from '@rneui/themed';
-import BigList from 'react-native-big-list';
 import {HStack} from '@react-native-material/core';
 import ListItemTests from '../../../components/ListItemTests';
 import AsyncStorage from '@react-native-async-storage/async-storage';

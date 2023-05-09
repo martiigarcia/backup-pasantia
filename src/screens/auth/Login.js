@@ -10,6 +10,7 @@ import {
 import {Icon, Input} from '@rneui/themed';
 import {Button, Stack, Text} from '@react-native-material/core';
 import {useForm} from 'react-hook-form';
+import {environment} from '../../environments/environment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loading from '../../components/Loading';
 
@@ -41,6 +42,7 @@ export default ({route, navigation}) => {
       // console.log('MEMBER' + (await AsyncStorage.getItem('@MEMBER')));
       // console.log('MEMBER2' + (await AsyncStorage.getItem('@MEMBER2')));
       // console.log('ID_USER' + (await AsyncStorage.getItem('@ID_USER')));
+      // console.log('ROLE_USER' + (await AsyncStorage.getItem('@ROL_USER')));
 
       if (value.user.rol === 'Administrador')
         navigation.navigate('Administrator');
@@ -55,9 +57,6 @@ export default ({route, navigation}) => {
 
       if (value.user.rol === 'Deportista') navigation.navigate('Sportman');
 
-      if (value.user.rol === 'Deportologo')
-        navigation.navigate('Deportologist');
-
       if (value.user.rol === 'Preparador Fisico')
         navigation.navigate('PhysicalTrainer');
     } catch (error) {
@@ -65,14 +64,20 @@ export default ({route, navigation}) => {
     }
   };
   const handleSession = () => {
+    // const requestBody = {
+    //   email: email,
+    //   password: password,
+    // };
+
+    //hardcodeado:
     const requestBody = {
-      email: email,
-      password: password,
+      email: 'anacleto@gmail.com',
+      password: '12345678',
     };
 
     if (!(requestBody.email === '') || !(requestBody.password === '')) {
       console.log(requestBody);
-      fetch('http://localhost:8080/back/public/auth/login', {
+      fetch(environment.baseURL + 'auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -82,6 +87,7 @@ export default ({route, navigation}) => {
         .then(response => response.json())
         .then(data => {
           console.log('data');
+          console.log(data);
           if (data.success === false) {
             Alert.alert('ERROR', data.message);
           } else {

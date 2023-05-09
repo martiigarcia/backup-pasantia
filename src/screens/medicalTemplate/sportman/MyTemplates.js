@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import {Button, IconButton} from '@react-native-material/core';
 import {Avatar, ListItem, Icon} from '@rneui/themed';
-import {mdiAccountDetails} from '@mdi/js';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {environment} from '../../../environments/environment';

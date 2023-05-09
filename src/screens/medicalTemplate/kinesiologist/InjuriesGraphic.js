@@ -12,8 +12,6 @@ import {
 import {Avatar, ListItem, Icon, Card} from '@rneui/themed';
 
 import {Button, IconButton} from '@react-native-material/core';
-import {mdiAccountDetails} from '@mdi/js';
-import {mdiInformationVariantCircleOutline} from '@mdi/js';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import InjuriesGraphicComponent from '../../../components/InjuriesGraphicComponent';
@@ -54,15 +52,17 @@ export default ({route, navigation}) => {
           Authorization: 'Bearer ' + data.TOKEN,
         };
 
-        const url =
-          environment.baseURL +
-          'kinesiologo/grafico-tratamientos/' +
-          route.params.user.id_usuario +
-          '/' +
-          route.params.start +
-          '/' +
-          route.params.end;
+        // const url =
+        //   environment.baseURL +
+        //   'kinesiologo/grafico-tratamientos/' +
+        //   route.params.user.id_usuario +
+        //   '/' +
+        //   route.params.start +
+        //   '/' +
+        //   route.params.end;
+        const url = route.params.url;
         console.log(url);
+        console.log(route.params.url);
 
         // const body = {
         //   startDate: route.params.start,
@@ -109,9 +109,10 @@ export default ({route, navigation}) => {
                 onPress={() => {
                   navigation.navigate('InjuriesList', {
                     user: route.params.user,
-                    start: route.params.start,
-                    end: route.params.end,
-                    UserRole: route.params.UserRole,
+                    url: route.params.url,
+                    // start: route.params.start,
+                    // end: route.params.end,
+                    // UserRole: route.params.UserRole,
                   });
                 }}
               />

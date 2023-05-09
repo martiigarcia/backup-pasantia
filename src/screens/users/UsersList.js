@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Alert, FlatList, Text} from 'react-native';
 import {Avatar, Button, ListItem, Icon} from '@rneui/themed';
-import {mdiEyeOutline} from '@mdi/js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   View,

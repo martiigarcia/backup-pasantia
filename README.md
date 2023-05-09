@@ -38,16 +38,15 @@ Para esto, seguir atentamente los siuigntes pasos:
 ```bash
 git clone <URL del repositorio>
 ```
-
-2. En el archivo package.json cortar (momentaneamente) la dependencia "react-native-reanimated": "...", y correr el comando 
+2. Para instalar las dependencias:
 ```bash
 npm install
 ```
 
-3. Una vez instaladas todas las dependencias del package.json, pegar la dependencia cortada "react-native-reanimated": "...", y volver a correr el comando 
-```bash
-npm install
-```
+* En caso de tener problemas con la libreria "react-native-reanimated": "...", cortar la dependencia del package.json y volver a realizar el paso 1.
+Una vez que se hayan instalado todas las dependencias, volver a pegar la dependencia en su lugar y correr el comando del paso 1.
+Si el problema continua, vea informacion en la pagina de React Native Reanimated.
+
 
 # Ejecución de la aplicación en el dispositivo:
 
@@ -83,6 +82,10 @@ Para correr la app
 ![comandosDeInicio.png](pictures_readme\comandosDeInicio.png)
 
 Si todo ha ido bien, deberías ver la aplicación corriendo en tu dispositivo.
+* Puede ocurrir que la primera vez que se ejecute el comando anterior, se genere un error en el que Metro se desconecte. 
+Si eso ocurre, cerrar la ventana de Metro y finalizar la ejecucion del comando (si aun continua), y volver a ejecutar el comando.
+En caso de haber desconectado el dispositivo, verifique volver a hacer todos los pasos de "Ejecución de la aplicación en el dispositivo"
+
 
 # Troubleshooting
 * Si tienes problemas al compilar la aplicación, asegúrate de haber configurado correctamente el SDK de Android en tu PATH. Puedes revisar la documentación oficial de React Native para más información.

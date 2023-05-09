@@ -6,8 +6,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {Overlay} from 'react-native-elements';
+import {Overlay} from '@rneui/themed';
 
 export default function Loading({isVisible}) {
   // const isDarkMode = useColorScheme() === "dark";

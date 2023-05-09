@@ -23,7 +23,6 @@ import {Card, Icon} from '@rneui/base';
 import {Input} from '@rneui/themed';
 import {List} from 'react-native-paper';
 import {ListItem} from '@rneui/themed';
-import BigList from 'react-native-big-list';
 
 export default ({testx}) => {
   const [test, setTest] = useState([]);

@@ -27,7 +27,6 @@ import {Divider} from '@rneui/themed';
 import {Input, Card, Icon} from '@rneui/themed';
 import {List} from 'react-native-paper';
 import {ListItem} from '@rneui/themed';
-import BigList from 'react-native-big-list';
 import {environment} from '../../../environments/environment';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';

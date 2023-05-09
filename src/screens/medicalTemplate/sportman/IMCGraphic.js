@@ -13,8 +13,6 @@ import {
 import {Avatar, ListItem, Icon, Card} from '@rneui/themed';
 
 import {Button, IconButton} from '@react-native-material/core';
-import {mdiAccountDetails} from '@mdi/js';
-import {mdiInformationVariantCircleOutline} from '@mdi/js';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {environment} from '../../../environments/environment';
@@ -25,6 +23,7 @@ export default ({route, navigation}) => {
   const [user, setUser] = useState(route.params.user ? route.params.user : {});
 
   useEffect(() => {
+    console.log('IMC GRAPHIC');
     console.log(route);
     getIMCs();
   }, []);
@@ -72,7 +71,8 @@ export default ({route, navigation}) => {
           id = idX;
         }
         console.log;
-        const url = environment.baseURL + 'deportistas/get-imc/' + id + '/';
+        // const url = environment.baseURL + 'deportistas/get-imc/' + id + '/';
+        const url = route.params.url;
         console.log(url);
 
         fetch(url, {headers})
@@ -118,7 +118,10 @@ export default ({route, navigation}) => {
                 title="Ver como lista"
                 onPress={() => {
                   // if (UserRole === 'Nutricionista') {
-                  navigation.navigate('IMC', {user});
+                  navigation.navigate('IMC', {
+                    user: user,
+                    url: route.params.url,
+                  });
                   // } else {
                   //   navigation.navigate('IMC');
                   // }

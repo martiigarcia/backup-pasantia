@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import {Button, Stack, Text} from '@react-native-material/core';
 import {Avatar, ListItem, Icon} from '@rneui/themed';
-import {mdiEyeOutline} from '@mdi/js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Card} from '@rneui/themed';
 import {environment} from '../../../environments/environment';
@@ -115,6 +114,7 @@ export default ({route, navigation}) => {
     // console.log(selectedUser);
     // console.log(dateStart);
     // console.log(dateEnd);
+
     if (Object.keys(selectedUser).length === 0) {
       Alert.alert('Error', 'Debe seleccionar un usuario');
     } else {
@@ -125,11 +125,20 @@ export default ({route, navigation}) => {
           Alert.alert('Error', 'Debe seleccionar una fecha de fin');
         } else {
           console.log('esta todo completo');
+          const url =
+            environment.baseURL +
+            'kinesiologo/grafico-tratamientos/' +
+            selectedUser.id_usuario +
+            '/' +
+            moment(dateStart).format('YYYY-MM-DD') +
+            '/' +
+            moment(dateEnd).format('YYYY-MM-DD');
           navigation.navigate('InjuriesList', {
             user: selectedUser,
-            start: moment(dateStart).format('YYYY-MM-DD'),
-            end: moment(dateEnd).format('YYYY-MM-DD'),
-            UserRole: UserRole,
+            url: url,
+            // start: moment(dateStart).format('YYYY-MM-DD'),
+            // end: moment(dateEnd).format('YYYY-MM-DD'),
+            // UserRole: UserRole,
           });
         }
       }
@@ -167,7 +176,7 @@ export default ({route, navigation}) => {
         <Card.Divider />
         <Text style={styles.textInfo}>
           * Seleccione las fechas entre las que se buscaran la cantidad de
-          lesiones
+          sesiones
         </Text>
         <Card.Divider />
 
@@ -215,7 +224,7 @@ export default ({route, navigation}) => {
         <Card.Title>DEPORTISTAS</Card.Title>
         <Card.Divider />
         <Text style={styles.textInfo}>
-          * Seleccione un deportista para ver la cantidad de lesiones
+          * Seleccione un deportista para ver la cantidad de sesiones
         </Text>
         <Card.Divider />
 

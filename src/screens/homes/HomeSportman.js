@@ -60,8 +60,10 @@ export default ({route, navigation}) => {
       {
         id: 5,
         title: 'Lanzamientos',
-        // color: '#FF69B4',
-        color: '#191970',
+        // color: '#191970', //azul muuy oscuro
+        // color: '#2e2ed0', //azul mas tipo francia
+        color: '#0040FF', //azul mas tipo francia
+
         options: 'Ver informacion del progreso de mis lanzamientos',
         image: 'https://img.icons8.com/?size=512&id=feFedRJYd495&format=png',
         // image: 'https://img.icons8.com/?size=512&id=hlniyYCIF_nE&format=png',
@@ -72,7 +74,10 @@ export default ({route, navigation}) => {
         id: 6,
         title: 'Grafico de PF',
         // color: '#FF69B4',
-        color: '#20B2AA',
+        // color: '#20B2AA', //turquesita
+        // color: '#00FF00', //verde
+        // color: '#00d800', //verde opaco
+        color: '#3bc43b', //verde saturado sturado
         options: 'Ver informacion del grafico de preparador fisico',
         image: 'https://img.icons8.com/?size=512&id=feFedRJYd495&format=png',
         // image: 'https://img.icons8.com/?size=512&id=hlniyYCIF_nE&format=png',

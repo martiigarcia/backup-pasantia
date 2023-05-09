@@ -17,10 +17,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {environment} from '../../../environments/environment';
 
 export default ({route, navigation}) => {
-  const [user, setUser] = useState({});
-  const [imcs, setImcs] = useState({imcs: []});
+  const [ShotProgressList, setShotProgressList] = useState({
+    ShotProgressList: [],
+  });
   useEffect(() => {
-    getIMCs();
+    console.log('SHOT LIST');
+    console.log(route);
+    getShotProgressList();
   }, []);
 
   const getUserData = async () => {
@@ -29,43 +32,55 @@ export default ({route, navigation}) => {
       const TOKEN = await AsyncStorage.getItem('@AUTH_TOKEN');
       const ID = await AsyncStorage.getItem('@ID_USER');
       const ROLE = await AsyncStorage.getItem('@ROL_USER');
-      setUser(JSON.parse(MEMBER));
+
       const data = {
+        ROLE,
         MEMBER,
         TOKEN,
         ID,
-        ROLE,
       };
-
       return data;
     } catch (error) {
       console.log(error);
     }
   };
 
-  const getIMCs = () => {
+  const getShotProgressList = () => {
     getUserData()
       .then(data => {
-        const idX = JSON.parse(data.ID);
         const headers = {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + data.TOKEN,
         };
 
-        const url =
-          environment.baseURL + 'deportistas/get-imc/' + idX + '/' + idX;
+        // const url =
+        //   environment.baseURL +
+        //   'kinesiologo/grafico-tratamientos/' +
+        //   route.params.user.id_usuario +
+        //   '/' +
+        //   route.params.start +
+        //   '/' +
+        //   route.params.end;
+        const url = route.params.url;
         console.log(url);
+        console.log(route.params.url);
 
-        fetch(url, {headers})
+        // const body = {
+        //   startDate: route.params.start,
+        //   endDate: route.params.end,
+        // };
+
+        fetch(url, {
+          headers,
+        })
           .then(resp => resp.json())
           .then(json => {
-            //console.log(json);
+            console.log(json);
 
             if (json.success) {
-              setImcs({
-                imcs: json.imcs,
-              });
+              setShotProgressList({ShotProgressList: json.graph});
             }
+
             // setLoading(false);
           })
           .catch(error => {
@@ -83,31 +98,36 @@ export default ({route, navigation}) => {
       <SafeAreaView style={styles.container}>
         <View style={styles.view}>
           <Card>
-            <Card.Title>IMC por mes</Card.Title>
+            <Card.Title>Lanzamientos</Card.Title>
             <Card.Divider />
             <Button
-              title="Ver como grafico"
-              onPress={() => {
-                const url =
-                  environment.baseURL +
-                  'deportistas/get-imc/' +
-                  user.id_usuario +
-                  '/' +
-                  user.id_usuario;
-                navigation.navigate('IMCGraphic', {user: user, url: url});
-              }}></Button>
+              title="Ver grafico"
+              onPress={() =>
+                navigation.navigate('ShotProgressGraphic', {
+                  user: route.params.user,
+                  url: route.params.url,
+                  // start: route.params.start,
+                  // end: route.params.end,
+                  // UserRole: route.params.UserRole,
+                })
+              }></Button>
             <Card.Divider />
             <Card.Divider />
-            {imcs.imcs.map((c, index) => (
+
+            {/* {ShotProgressList.ShotProgressList.map((c, index) => (
               <ListItem key={index} bottomDivider>
                 <ListItem.Content>
-                  <ListItem.Title>{c.month}</ListItem.Title>
+                  <ListItem.Title>{c.zone}</ListItem.Title>
                   <ListItem.Subtitle>
-                    IMC: {parseFloat(c.imc).toFixed(2)}
+                    Avtividad realizada: {c.activity}
                   </ListItem.Subtitle>
+                  <ListItem.Subtitle>
+                    Cantidad de sesiones en el mismo mes: {c.count}
+                  </ListItem.Subtitle>
+                  <ListItem.Subtitle>Fecha: {c.date}</ListItem.Subtitle>
                 </ListItem.Content>
               </ListItem>
-            ))}
+            ))} */}
           </Card>
         </View>
       </SafeAreaView>

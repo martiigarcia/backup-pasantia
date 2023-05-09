@@ -9,7 +9,6 @@ import {
   StatusBar,
 } from 'react-native';
 import {Avatar, Button, ListItem, Icon} from '@rneui/themed';
-import {mdiEyeOutline} from '@mdi/js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Card} from '@rneui/themed';
 import {environment} from '../../environments/environment';
