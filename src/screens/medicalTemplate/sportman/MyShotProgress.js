@@ -22,6 +22,7 @@ export default ({route, navigation}) => {
   const [UserRole, setUserRole] = useState('');
 
   useEffect(() => {
+    console.log('MY SHOTS PROGRESS');
     getUser();
   }, []);
 

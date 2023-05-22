@@ -1,29 +1,28 @@
 import React, {useState, useEffect} from 'react';
+import {BarChart} from 'react-native-chart-kit';
+import {Avatar, ListItem, Icon, Card} from '@rneui/themed';
 import {
-  Alert,
-  FlatList,
-  Text,
-  View,
-  StyleSheet,
   SafeAreaView,
   ScrollView,
   StatusBar,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+  Dimensions,
 } from 'react-native';
-import {Avatar, ListItem, Icon, Card} from '@rneui/themed';
-
 import {Button, IconButton} from '@react-native-material/core';
-import moment from 'moment';
+import ShotProgressGraphicComponent from './ShotProgressGraphicComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {environment} from '../../../environments/environment';
+import {environment} from '../environments/environment';
+import StrengthGraphicComponent from './StrengthGraphicComponent';
 
 export default ({route, navigation}) => {
-  const [ShotProgressList, setShotProgressList] = useState({
-    ShotProgressList: [],
-  });
+  const [strengthList, setStrengthList] = useState({strengthList: []});
   useEffect(() => {
-    console.log('SHOT LIST');
+    console.log('STREENGTH GRAPHIC');
     console.log(route);
-    getShotProgressList();
+    getStrengthList();
   }, []);
 
   const getUserData = async () => {
@@ -45,7 +44,7 @@ export default ({route, navigation}) => {
     }
   };
 
-  const getShotProgressList = () => {
+  const getStrengthList = () => {
     getUserData()
       .then(data => {
         const headers = {
@@ -78,10 +77,13 @@ export default ({route, navigation}) => {
             console.log(json);
 
             if (json.success) {
-              const orderedList = json.graph.sort(
+              const orderedList = json.pesos.sort(
                 (a, b) => new Date(a.date) - new Date(b.date),
               );
-              setShotProgressList({ShotProgressList: orderedList});
+              //  setShotProgressList({ShotProgressList: orderedList});
+              setStrengthList({strengthList: orderedList});
+
+              // setShotProgressList({ShotProgressList: json.graph});
             }
 
             // setLoading(false);
@@ -95,62 +97,80 @@ export default ({route, navigation}) => {
         console.log(error);
       });
   };
+  const screenWidth = Dimensions.get('window').width;
+
+  const data = {
+    labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
+    datasets: [
+      {
+        data: [20, 45, 28, 80, 99, 43],
+        color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // color de las barras
+        barPercentage: 0.5,
+        label: 'Dato 1',
+      },
+      {
+        data: [50, 28, 80, 99, 43, 20],
+        color: (opacity = 1) => `rgba(255, 59, 48, ${opacity})`, // color de las barras
+        barPercentage: 0.5,
+        label: 'Dato 2',
+      },
+    ],
+  };
+
+  const chartConfig = {
+    backgroundGradientFrom: '#1E2923',
+    backgroundGradientFromOpacity: 0,
+    backgroundGradientTo: '#fff',
+    backgroundGradientToOpacity: 0.5,
+    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+    strokeWidth: 2,
+  };
 
   return (
     <>
-      <SafeAreaView style={styles.container}>
-        <ScrollView style={styles.scrollView}>
-          <View style={styles.view}>
-            <Card>
-              <Card.Title>Lanzamientos</Card.Title>
-              <Card.Divider />
-              <Button
-                title="Ver grafico"
-                onPress={() =>
-                  navigation.navigate('ShotProgressGraphic', {
-                    user: route.params.user,
-                    url: route.params.url,
-                    // start: route.params.start,
-                    // end: route.params.end,
-                    // UserRole: route.params.UserRole,
-                  })
-                }></Button>
-              <Card.Divider />
-              <Card.Divider />
-              {/* {"date": "2022-11-09", "scored": "2", "shots": "500"} */}
+      <>
+        <SafeAreaView style={styles.container}>
+          <ScrollView style={styles.scrollView}>
+            <View style={styles.view}>
+              <Card>
+                <Card.Title>Progreso de fuerza</Card.Title>
+                <Card.Divider />
+                <Text style={styles.text}>
+                  Tipo de ejecicio: {route.params.exerciseType.nombre}
+                </Text>
+                <Text style={styles.text}>
+                  Repetición máxima: {route.params.rm}
+                </Text>
+                <Button
+                  title="Ver lista"
+                  onPress={() => {
+                    navigation.navigate('StrengthList', {
+                      user: route.params.user,
+                      url: route.params.url,
+                      start: route.params.start,
+                      end: route.params.end,
+                      exerciseType: route.params.exerciseType,
+                      rm: route.params.rm,
+                    });
+                  }}
+                />
+                <Card.Divider />
+                <Card.Divider />
 
-              {ShotProgressList.ShotProgressList.map((c, index) => {
-                // const percentage = (c.scored / c.shots) * 100; // Calcula el porcentaje de acierto
-                // const formattedPercentage =
-                //   percentage % 1 === 0 ? percentage : percentage.toFixed(2); // Verifica si tiene decimales y redondea si es necesario
-
-                const average = (c.shots > 0 ? c.scored / c.shots : 0) * 100; // Calcula el promedio si se han hecho tiros
-                const prom = average % 1 === 0 ? average : Math.round(average); // Redondea el promedio si tiene decimales
-
-                return (
-                  <ListItem key={index} bottomDivider>
-                    <Text>{index + 1}</Text>
-                    <ListItem.Content>
-                      <ListItem.Title>
-                        Porcentaje de acierto: {prom}%
-                      </ListItem.Title>
-                      <ListItem.Subtitle>
-                        Lanzamientos hechos: {c.shots}
-                      </ListItem.Subtitle>
-                      <ListItem.Subtitle>
-                        Lanzamientos acertados: {c.scored}
-                      </ListItem.Subtitle>
-                      <ListItem.Subtitle>Fecha: {c.date}</ListItem.Subtitle>
-                    </ListItem.Content>
-                  </ListItem>
-                );
-              })}
-              <Card.Divider />
-              <Card.Divider />
-            </Card>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+                {strengthList.strengthList.length !== 0 && (
+                  <StrengthGraphicComponent
+                    strengthList={strengthList.strengthList}
+                  />
+                )}
+                {/* 
+              {imcs.imcs.length !== 0 && (
+                <IMCGraphicComponent imcsX={imcs.imcs} />
+              )} */}
+              </Card>
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      </>
     </>
   );
 };
@@ -174,23 +194,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 8,
   },
-  container: {
-    flex: 1,
-    height: 550,
-    // paddingTop: StatusBar.currentHeight,
-    marginBottom: StatusBar.currentHeight,
-  },
-  scrollView: {
-    // paddingTop: StatusBar.currentHeight,
-    // marginHorizontal: 20,
-  },
-  // view: {
-  //   height: 550,
-  //   flex: 1,
-  // },
-  input: {
-    paddingTop: StatusBar.currentHeight,
-  },
+
   viewAdmin: {
     justifyContent: 'center',
     height: 550,
@@ -221,7 +225,21 @@ const styles = StyleSheet.create({
     borderBottomColor: '#737373',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
-
+  container: {
+    flex: 1,
+    // paddingTop: StatusBar.currentHeight,
+  },
+  scrollView: {
+    // paddingTop: StatusBar.currentHeight,
+    // marginHorizontal: 20,
+  },
+  view: {
+    // height: 50,
+    flex: 1,
+  },
+  input: {
+    paddingTop: StatusBar.currentHeight,
+  },
   button: {
     paddingTop: 10,
     paddingBottom: 10,
@@ -255,6 +273,7 @@ const styles = StyleSheet.create({
   text: {
     textAlign: 'center',
     marginBottom: 10,
+    color: 'black',
   },
   dropdown: {
     height: 50,

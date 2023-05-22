@@ -81,7 +81,7 @@ export default ({route, navigation}) => {
         options: 'Ver informacion del grafico de preparador fisico',
         image: 'https://img.icons8.com/?size=512&id=feFedRJYd495&format=png',
         // image: 'https://img.icons8.com/?size=512&id=hlniyYCIF_nE&format=png',
-        route: 'MyPF',
+        route: 'MyStrenghtProgress',
         // image: 'https://img.icons8.com/office/70/000000/home-page.png',
       },
     ],

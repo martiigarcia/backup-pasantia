@@ -42,6 +42,19 @@ export default ({route, navigation}) => {
         route: 'Profile',
         // image: 'https://img.icons8.com/color/70/000000/name.png',
       },
+      {
+        id: 5,
+        title: 'Lanzamientos',
+        // color: '#191970', //azul muuy oscuro
+        // color: '#2e2ed0', //azul mas tipo francia
+        color: '#0040FF', //azul mas tipo francia
+
+        options: 'Ver informacion del progreso de mis lanzamientos',
+        image: 'https://img.icons8.com/?size=512&id=feFedRJYd495&format=png',
+        // image: 'https://img.icons8.com/?size=512&id=hlniyYCIF_nE&format=png',
+        route: 'SportmanShotProgress',
+        // image: 'https://img.icons8.com/office/70/000000/home-page.png',
+      },
     ],
   };
 

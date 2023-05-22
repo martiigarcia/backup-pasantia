@@ -10,6 +10,9 @@ import TemplateDetailTrainer from '../screens/medicalTemplate/trainer/TemplateDe
 import TrainerList from '../screens/medicalTemplate/trainer/TrainerList';
 import HomeTrainer from '../screens/homes/HomeTrainer';
 import CreateTemplateTrainer from '../screens/medicalTemplate/trainer/CreateTemplateTrainer';
+import ShotProgressList from '../components/ShotProgressList';
+import ShotProgressGraphic from '../components/ShotProgressGraphic';
+import SportmanShotProgress from '../screens/medicalTemplate/trainer/SportmanShotProgress';
 
 const Stack = createStackNavigator();
 
@@ -99,6 +102,29 @@ export default function StackTrainer({navigation}) {
         component={CreateTemplateTrainer}
         options={{
           title: 'Registrar planilla',
+        }}
+      />
+
+      <Stack.Screen
+        name="SportmanShotProgress"
+        component={SportmanShotProgress}
+        options={{
+          title: '',
+        }}
+      />
+
+      <Stack.Screen
+        name="ShotProgressList"
+        component={ShotProgressList}
+        options={{
+          title: '',
+        }}
+      />
+      <Stack.Screen
+        name="ShotProgressGraphic"
+        component={ShotProgressGraphic}
+        options={{
+          title: '',
         }}
       />
     </Stack.Navigator>

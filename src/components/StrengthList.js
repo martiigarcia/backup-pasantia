@@ -14,29 +14,15 @@ import {Avatar, ListItem, Icon, Card} from '@rneui/themed';
 import {Button, IconButton} from '@react-native-material/core';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {environment} from '../../../environments/environment';
+import {environment} from '../environments/environment';
 
 export default ({route, navigation}) => {
-  const [user, setUser] = useState({});
-  const [imcs, setImcs] = useState({imcs: []});
+  const [strengthList, setStrengthList] = useState({strengthList: []});
   useEffect(() => {
-    console.log('IMC LIST DEPORTISTA');
-    getIMCs();
+    console.log('STRENGTH LIST');
+    console.log(route);
+    getStrengthList();
   }, []);
-  const monthMapping = {
-    January: 'Enero',
-    February: 'Febrero',
-    March: 'Marzo',
-    April: 'Abril',
-    May: 'Mayo',
-    June: 'Junio',
-    July: 'Julio',
-    August: 'Agosto',
-    September: 'Septiembre',
-    October: 'Octubre',
-    November: 'Noviembre',
-    December: 'Diciembre',
-  };
 
   const getUserData = async () => {
     try {
@@ -44,52 +30,59 @@ export default ({route, navigation}) => {
       const TOKEN = await AsyncStorage.getItem('@AUTH_TOKEN');
       const ID = await AsyncStorage.getItem('@ID_USER');
       const ROLE = await AsyncStorage.getItem('@ROL_USER');
-      setUser(JSON.parse(MEMBER));
+
       const data = {
+        ROLE,
         MEMBER,
         TOKEN,
         ID,
-        ROLE,
       };
-
       return data;
     } catch (error) {
       console.log(error);
     }
   };
 
-  const getIMCs = () => {
+  const getStrengthList = () => {
     getUserData()
       .then(data => {
-        const idX = JSON.parse(data.ID);
         const headers = {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + data.TOKEN,
         };
 
-        const url =
-          environment.baseURL + 'deportistas/get-imc/' + idX + '/' + idX;
+        // const url =
+        //   environment.baseURL +
+        //   'kinesiologo/grafico-tratamientos/' +
+        //   route.params.user.id_usuario +
+        //   '/' +
+        //   route.params.start +
+        //   '/' +
+        //   route.params.end;
+        const url = route.params.url;
         console.log(url);
+        console.log(route.params.url);
 
-        fetch(url, {headers})
+        // const body = {
+        //   startDate: route.params.start,
+        //   endDate: route.params.end,
+        // };
+
+        fetch(url, {
+          headers,
+        })
           .then(resp => resp.json())
           .then(json => {
-            //console.log(json);
+            console.log(json);
 
             if (json.success) {
-              console.log(json);
-              const transformedData = json.imcs.map(item => ({
-                imc: item.imc,
-                month: monthMapping[item.month],
-                year: item.year,
-              }));
+              const orderedList = json.pesos.sort(
+                (a, b) => new Date(a.date) - new Date(b.date),
+              );
 
-              console.log(transformedData);
-              setImcs({
-                // imcs: json.imcs,
-                imcs: transformedData,
-              });
+              setStrengthList({strengthList: orderedList});
             }
+
             // setLoading(false);
           })
           .catch(error => {
@@ -105,37 +98,47 @@ export default ({route, navigation}) => {
   return (
     <>
       <SafeAreaView style={styles.container}>
-        <View style={styles.view}>
-          <Card>
-            <Card.Title>IMC por mes</Card.Title>
-            <Card.Divider />
-            <Button
-              title="Ver como grafico"
-              onPress={() => {
-                const url =
-                  environment.baseURL +
-                  'deportistas/get-imc/' +
-                  user.id_usuario +
-                  '/' +
-                  user.id_usuario;
-                navigation.navigate('IMCGraphic', {user: user, url: url});
-              }}></Button>
-            <Card.Divider />
-            <Card.Divider />
-            {imcs.imcs.map((c, index) => (
-              <ListItem key={index} bottomDivider>
-                <ListItem.Content>
-                  <ListItem.Title>
-                    {c.month} - {c.year}
-                  </ListItem.Title>
-                  <ListItem.Subtitle>
-                    IMC: {parseFloat(c.imc).toFixed(2)}
-                  </ListItem.Subtitle>
-                </ListItem.Content>
-              </ListItem>
-            ))}
-          </Card>
-        </View>
+        <ScrollView style={styles.scrollView}>
+          <View style={styles.view}>
+            <Card>
+              <Card.Title>Progreso de fuerza</Card.Title>
+              <Card.Divider />
+              <Text style={styles.text}>
+                Tipo de ejecicio: {route.params.exerciseType.nombre}
+              </Text>
+              <Text style={styles.text}>
+                Repetición máxima: {route.params.rm}
+              </Text>
+              <Button
+                title="Ver grafico"
+                onPress={() =>
+                  navigation.navigate('StrengthGraphic', {
+                    user: route.params.user,
+                    url: route.params.url,
+                    start: route.params.start,
+                    end: route.params.end,
+                    exerciseType: route.params.exerciseType,
+                    rm: route.params.rm,
+                    // start: route.params.start,
+                    // end: route.params.end,
+                    // UserRole: route.params.UserRole,
+                  })
+                }></Button>
+              <Card.Divider />
+              <Card.Divider />
+
+              {strengthList.strengthList.map((c, index) => (
+                <ListItem key={index} bottomDivider>
+                  <Text>{index + 1}</Text>
+                  <ListItem.Content>
+                    <ListItem.Title>Peso: {c.peso}</ListItem.Title>
+                    <ListItem.Subtitle>Fecha: {c.fecha}</ListItem.Subtitle>
+                  </ListItem.Content>
+                </ListItem>
+              ))}
+            </Card>
+          </View>
+        </ScrollView>
       </SafeAreaView>
     </>
   );
@@ -160,10 +163,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 8,
   },
-  view: {
-    height: 50,
-    flex: 1,
-  },
+
   viewAdmin: {
     justifyContent: 'center',
     height: 550,
@@ -199,8 +199,12 @@ const styles = StyleSheet.create({
     // paddingTop: StatusBar.currentHeight,
   },
   scrollView: {
-    paddingTop: StatusBar.currentHeight,
-    marginHorizontal: 20,
+    // paddingTop: StatusBar.currentHeight,
+    // marginHorizontal: 20,
+  },
+  view: {
+    // height: 50,
+    flex: 1,
   },
   input: {
     paddingTop: StatusBar.currentHeight,
@@ -238,6 +242,7 @@ const styles = StyleSheet.create({
   text: {
     textAlign: 'center',
     marginBottom: 10,
+    color: 'black',
   },
   dropdown: {
     height: 50,

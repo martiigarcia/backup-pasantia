@@ -21,9 +21,25 @@ export default ({route, navigation}) => {
   const [imcs, setImcs] = useState({imcs: []});
   const [UserRole, setUserRole] = useState('');
   useEffect(() => {
+    console.log('IMC LIST NUTRI');
     getIMCs();
     getUserRole();
   }, []);
+
+  const monthMapping = {
+    January: 'Enero',
+    February: 'Febrero',
+    March: 'Marzo',
+    April: 'Abril',
+    May: 'Mayo',
+    June: 'Junio',
+    July: 'Julio',
+    August: 'Agosto',
+    September: 'Septiembre',
+    October: 'Octubre',
+    November: 'Noviembre',
+    December: 'Diciembre',
+  };
 
   const getUserData = async () => {
     try {
@@ -67,6 +83,11 @@ export default ({route, navigation}) => {
             console.log(json);
 
             if (json.success) {
+              const transformedData = json.map(item => ({
+                imc: item.imc,
+                month: monthMapping[item.month],
+              }));
+              console.log(transformedData);
               setImcs({
                 imcs: json.imcs,
               });

@@ -17,6 +17,8 @@ import InjuriesList from '../screens/medicalTemplate/kinesiologist/InjuriesList'
 import InjuriesGraphic from '../screens/medicalTemplate/kinesiologist/InjuriesGraphic';
 import ShotProgressList from '../components/ShotProgressList';
 import ShotProgressGraphic from '../components/ShotProgressGraphic';
+import StrengthList from '../components/StrengthList';
+import StrengthGraphic from '../components/StrengthGraphic';
 
 const Stack = createStackNavigator();
 
@@ -131,12 +133,28 @@ export default function StackSportman({navigation}) {
         }}
       />
       <Stack.Screen
-        name="MyPF"
+        name="MyStrenghtProgress"
         options={{
           title: 'PF',
         }}
         component={MyPF}
       />
+
+      <Stack.Screen
+        name="StrengthList"
+        component={StrengthList}
+        options={{
+          title: '',
+        }}
+      />
+      <Stack.Screen
+        name="StrengthGraphic"
+        component={StrengthGraphic}
+        options={{
+          title: '',
+        }}
+      />
+
       <Stack.Screen
         name="IMCGraphic"
         options={{

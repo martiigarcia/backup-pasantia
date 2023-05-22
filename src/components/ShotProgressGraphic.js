@@ -78,7 +78,12 @@ export default ({route, navigation}) => {
             console.log(json);
 
             if (json.success) {
-              setShotProgressList({ShotProgressList: json.graph});
+              const orderedList = json.graph.sort(
+                (a, b) => new Date(a.date) - new Date(b.date),
+              );
+              setShotProgressList({ShotProgressList: orderedList});
+
+              // setShotProgressList({ShotProgressList: json.graph});
             }
 
             // setLoading(false);
@@ -146,9 +151,11 @@ export default ({route, navigation}) => {
                 />
                 <Card.Divider />
 
-                <ShotProgressGraphicComponent />
-                {/* {ShotProgressList.ShotProgressList.length !== 0 && ( */}
-                {/* )} */}
+                {ShotProgressList.ShotProgressList.length !== 0 && (
+                  <ShotProgressGraphicComponent
+                    shotsList={ShotProgressList.ShotProgressList}
+                  />
+                )}
                 {/* 
               {imcs.imcs.length !== 0 && (
                 <IMCGraphicComponent imcsX={imcs.imcs} />

@@ -76,7 +76,11 @@ export default ({route, navigation}) => {
             console.log(json);
 
             if (json.success) {
-              setInjuriesList({injuriesList: json.graph});
+              const orderedList = json.graph.sort(
+                (a, b) => new Date(a.date) - new Date(b.date),
+              );
+              //  setShotProgressList({ShotProgressList: orderedList});
+              setInjuriesList({injuriesList: orderedList});
             }
 
             // setLoading(false);
