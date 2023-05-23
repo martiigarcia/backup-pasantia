@@ -21,6 +21,7 @@ export default props => {
     fetch(environment.baseURL + 'auth/roles')
       .then(resp => resp.json())
       .then(json => {
+        console.log(json);
         setRoles({
           roles: json.roles,
         });
@@ -34,7 +35,7 @@ export default props => {
         <ListItem key={role.id_rol} bottomDivider>
           <ListItem.Content>
             <ListItem.Title>
-              {role.id_rol} - {role.nombre}
+              {i + 1} - {role.nombre}
             </ListItem.Title>
           </ListItem.Content>
         </ListItem>
@@ -45,12 +46,23 @@ export default props => {
   return (
     <>
       <Card>
-        <FlatList
+        {/* <FlatList
           keyExtractor={role => role.id_rol.toString()}
           data={roles.roles}
           renderItem={getRoleItem}
           ListHeaderComponent={() => <Card.Title>Lista de roles</Card.Title>}
-        />
+        /> */}
+        {roles.roles.map((c, index) => {
+          return (
+            <ListItem key={index} bottomDivider>
+              <ListItem.Content>
+                <ListItem.Title>
+                  {index + 1} - {c.nombre}
+                </ListItem.Title>
+              </ListItem.Content>
+            </ListItem>
+          );
+        })}
       </Card>
     </>
   );

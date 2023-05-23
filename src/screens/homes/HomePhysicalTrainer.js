@@ -42,6 +42,21 @@ export default ({route, navigation}) => {
         route: 'Profile',
         // image: 'https://img.icons8.com/color/70/000000/name.png',
       },
+      {
+        id: 6,
+        title: 'Progreso de fuerza',
+        // color: '#FF69B4',
+        // color: '#20B2AA', //turquesita
+        // color: '#00FF00', //verde
+        // color: '#00d800', //verde opaco
+        color: '#3bc43b', //verde saturado sturado
+        options:
+          'Ver informacion del progreso de fuerza con RM (repetición máxima)',
+        image: 'https://img.icons8.com/?size=512&id=feFedRJYd495&format=png',
+        // image: 'https://img.icons8.com/?size=512&id=hlniyYCIF_nE&format=png',
+        route: 'SportmanStrengthList',
+        // image: 'https://img.icons8.com/office/70/000000/home-page.png',
+      },
     ],
   };
 

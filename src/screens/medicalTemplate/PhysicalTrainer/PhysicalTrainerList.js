@@ -160,12 +160,12 @@ export default ({route, navigation}) => {
         onPress={() =>
           navigation.navigate('TemplateDetailPhysicalTrainer', template)
         }>
-        <Text>{template.id}</Text>
+        {/* <Text>{template.id}</Text> */}
         <ListItem.Content>
           <ListItem.Title>
             {template.deportista.nombre} {template.deportista.apellido}
           </ListItem.Title>
-          <ListItem.Subtitle>Fecha: 25/10/2022</ListItem.Subtitle>
+          <ListItem.Subtitle>Fecha: {template.fecha}</ListItem.Subtitle>
         </ListItem.Content>
         <Icon
           name="info-circle"
@@ -182,7 +182,7 @@ export default ({route, navigation}) => {
 
         <Card.Divider orientation="vertical" />
         {/* <ListItem.Content> */}
-        <IconButton
+        {/* <IconButton
           variant="outlined"
           onPress={() => {
             console.log('EDITAR OPTION');
@@ -192,7 +192,7 @@ export default ({route, navigation}) => {
           icon={
             <Icon name="edit" size={25} type="font-awesome" color="orange" />
           }
-        />
+        /> */}
 
         <IconButton
           variant="outlined"

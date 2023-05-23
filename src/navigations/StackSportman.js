@@ -135,7 +135,7 @@ export default function StackSportman({navigation}) {
       <Stack.Screen
         name="MyStrenghtProgress"
         options={{
-          title: 'PF',
+          title: '',
         }}
         component={MyPF}
       />

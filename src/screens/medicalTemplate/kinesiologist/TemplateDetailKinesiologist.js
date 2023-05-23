@@ -213,7 +213,7 @@ export default ({route, navigation}) => {
               <Separator />
 
               <View style={styles.fixToText}>
-                <View style={styles.vertical}>
+                {/* <View style={styles.vertical}>
                   <Button
                     title="Modificar"
                     onPress={
@@ -221,7 +221,7 @@ export default ({route, navigation}) => {
                       // navigation.navigate('UpdateTemplateNutricionist')
                     }
                   />
-                </View>
+                </View> */}
                 <View style={styles.vertical}>
                   <Button
                     title="Eliminar"

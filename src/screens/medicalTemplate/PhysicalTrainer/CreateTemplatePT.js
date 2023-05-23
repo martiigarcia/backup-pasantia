@@ -41,18 +41,19 @@ export default ({route, navigation}) => {
   const [sportman, setSportman] = useState(
     route.params.user ? route.params.user : {},
   );
-  const [typeTest, setTypeTest] = useState({typeTest: []});
-  const [selectedTypeTest, setSelectedTypeTest] = useState(null);
+  const [excerciseTypes, setExerciseTypes] = useState({excerciseTypes: []});
+  const [selectedExerciseType, setSelectedExerciseType] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
 
   const [dialogVisible, setDialogVisible] = useState(false);
   const [tests, setTests] = useState({tests: []});
   const [jsonTests, setJsonTests] = useState({jsonTests: []});
-  const [valuation, setValuation] = useState({name: ''});
+  const [weight, setWeight] = useState('');
+  const [rm, setRM] = useState('');
   const [errors, setErrors] = useState({errors: []});
 
   useEffect(() => {
-    getTypeTest();
+    getExerciseTypes();
   }, []);
 
   const getUserData = async () => {
@@ -75,7 +76,7 @@ export default ({route, navigation}) => {
     }
   };
 
-  const getTypeTest = () => {
+  const getExerciseTypes = () => {
     getUserData()
       .then(data => {
         const headers = {
@@ -83,7 +84,7 @@ export default ({route, navigation}) => {
           Authorization: 'Bearer ' + data.TOKEN,
         };
 
-        const url = environment.baseURL + 'preparador/list-tipo-test/';
+        const url = environment.baseURL + 'preparador/list-tipo-ejercicios/';
         console.log(url);
 
         fetch(url, {headers})
@@ -91,8 +92,8 @@ export default ({route, navigation}) => {
           .then(json => {
             console.log(json);
             if (json.success) {
-              setTypeTest({
-                typeTest: json.tests,
+              setExerciseTypes({
+                excerciseTypes: json.ejercicios,
               });
             } else {
               Alert.error('Error', json.message);
@@ -135,13 +136,22 @@ export default ({route, navigation}) => {
         const idX = JSON.parse(data.ID);
         const date = new Date();
 
+        console.log(weight.weight);
+        console.log(rm.rm);
+
         const templateData = {
           id_preparador: idX,
           id_deportista: sportman.id_usuario,
           fecha: moment(date).format('YYYY-MM-DD'),
-          tests: jsonTests.jsonTests,
+          tests: [
+            {
+              id_tipo_ejercicio: selectedExerciseType.id_tipo_ejercicio,
+              peso: weight.weight,
+              cant_repeticiones: rm.rm,
+            },
+          ],
         };
-        console.log(templateData);
+        console.log('HANDLE SAVE DATA:');
         console.log(JSON.stringify(templateData));
 
         const headers = {
@@ -185,34 +195,6 @@ export default ({route, navigation}) => {
       });
   };
 
-  const handleAddTest = () => {
-    console.log(valuation);
-    console.log(selectedTypeTest);
-
-    const testData = {
-      valuation: valuation.name,
-      name: selectedTypeTest.nombre,
-    };
-    const testDataJson = {
-      valoracion: valuation.name,
-      id_tipo: selectedTypeTest.id_tipo,
-    };
-
-    setJsonTests(prevState => ({
-      ...prevState,
-      jsonTests: [...prevState.jsonTests, testDataJson],
-    }));
-
-    setTests(prevState => ({
-      ...prevState,
-      tests: [...prevState.tests, testData],
-    }));
-
-    setDialogVisible(false);
-    setValuation({name: ''});
-    setSelectedTypeTest(null);
-  };
-
   return (
     <>
       <Provider>
@@ -228,104 +210,62 @@ export default ({route, navigation}) => {
             <Card>
               <Card.Title>TESTS</Card.Title>
               <Card.Divider />
-
-              {tests.tests.length !== 0 && (
-                <>
-                  {tests.tests.map((c, index) => (
-                    <ListItem key={index} bottomDivider>
-                      <ListItem.Content>
-                        <ListItem.Title>{c.name}</ListItem.Title>
-                        <ListItem.Subtitle>
-                          Valoracion: {c.valuation}
-                        </ListItem.Subtitle>
-                      </ListItem.Content>
-                    </ListItem>
-                  ))}
-                </>
-              )}
-
-              <Button
-                style={{marginBottom: 20}}
-                title="Agregar nuevo test"
-                onPress={() => {
-                  setDialogVisible(true);
+              <Dropdown
+                style={[
+                  styles.dropdown,
+                  isFocus && {borderColor: 'blue'},
+                  styles.dropdown,
+                ]}
+                maxHeight={300}
+                placeholderStyle={styles.placeholderStyle}
+                selectedTextStyle={styles.selectedTextStyle}
+                inputSearchStyle={styles.inputSearchStyle}
+                iconStyle={styles.iconStyle}
+                search
+                searchPlaceholder="Buscar por nombre"
+                label="Seleccionar un tipo de test"
+                onFocus={() => setIsFocus(true)}
+                onBlur={() => setIsFocus(false)}
+                placeholder={!isFocus ? 'Tipo de test' : '...'}
+                value={selectedExerciseType}
+                data={excerciseTypes.excerciseTypes}
+                // multiple={true}
+                labelField="nombre"
+                valueField="id_tipo_ejercicio"
+                onChange={item => {
+                  setSelectedExerciseType(item);
                 }}
               />
-
-              <Dialog
-                fullScreen={true}
-                visible={dialogVisible}
-                onDismiss={() => setDialogVisible(false)}>
-                <DialogHeader title="Agregar test" />
-                <DialogContent>
-                  <Dropdown
-                    style={[
-                      styles.dropdown,
-                      isFocus && {borderColor: 'blue'},
-                      styles.dropdown,
-                    ]}
-                    maxHeight={300}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    search
-                    searchPlaceholder="Buscar por nombre"
-                    label="Seleccionar un tipo de test"
-                    onFocus={() => setIsFocus(true)}
-                    onBlur={() => setIsFocus(false)}
-                    placeholder={!isFocus ? 'Tipo de test' : '...'}
-                    value={selectedTypeTest}
-                    data={typeTest.typeTest}
-                    // multiple={true}
-                    labelField="nombre"
-                    valueField="id_tipo"
-                    onChange={item => {
-                      setSelectedTypeTest(item);
-                    }}
-                  />
-                  <Input
-                    style={styles.input}
-                    onChangeText={name =>
-                      // console.log(name)
-                      setValuation({...valuation, name})
-                    }
-                    placeholder="Valoración"
-                    value={valuation.name}
-                    errorStyle={{color: 'red'}}
-                    // errorMessage={errors.errors.name}
-                  />
-                </DialogContent>
-                <DialogActions>
-                  <Button
-                    title="Cancelar"
-                    compact
-                    variant="text"
-                    onPress={() => {
-                      setDialogVisible(false);
-                      setValuation({name: ''});
-                      setSelectedTypeTest(null);
-                    }}
-                  />
-                  <Button
-                    title="Registrar"
-                    compact
-                    variant="text"
-                    onPress={handleAddTest}
-                  />
-                </DialogActions>
-              </Dialog>
+              <Input
+                label="Ingrese el peso en kg. Admite decimales"
+                style={styles.input}
+                onChangeText={weight => setWeight({...weight, weight})}
+                keyboardType="numeric"
+                placeholder="Peso"
+                value={weight.name}
+                errorStyle={{color: 'red'}}
+                // errorMessage={errors.errors.name}
+              />
+              <Input
+                label="Cantidad de repeticiones (RM - Máxima repetición)"
+                style={styles.input}
+                onChangeText={rm => setRM({...rm, rm})}
+                keyboardType="numeric"
+                placeholder="RM"
+                value={rm.name}
+                errorStyle={{color: 'red'}}
+                // errorMessage={errors.errors.name}
+              />
             </Card>
+            <Separator />
+
+            <View style={styles.fixToText}>
+              <View style={styles.vertical}>
+                <Button title="Guardar" onPress={handleSave} />
+              </View>
+            </View>
           </View>
         </SafeAreaView>
-
-        <Separator />
-
-        <View style={styles.fixToText}>
-          <View style={styles.vertical}>
-            <Button title="Guardar" onPress={handleSave} />
-          </View>
-        </View>
       </Provider>
     </>
   );
@@ -393,7 +333,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   input: {
-    paddingTop: StatusBar.currentHeight,
+    // paddingTop: StatusBar.currentHeight,
   },
   button: {
     paddingTop: 10,
@@ -410,7 +350,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 40,
     lineHeight: 84,
-    fontWeight: 'bold',
+    weight: 'bold',
     textAlign: 'center',
     backgroundColor: '#6409E6',
   },
@@ -418,7 +358,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     textAlign: 'center',
   },
-  textEmail: {
+  textWeight: {
     textAlign: 'center',
   },
   textAutor: {
@@ -431,13 +371,14 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     height: 50,
-    width: 210,
+    // width: 210,
     borderBottomWidth: 1,
     borderColor: 'gray',
     margin: 10,
     marginBottom: 10,
     paddingLeft: 10,
     // padding: 5,
+    marginEnd: StatusBar.currentHeight,
   },
   viewButton: {
     paddingTop: StatusBar.currentHeight,

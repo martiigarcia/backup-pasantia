@@ -72,13 +72,14 @@ export default ({route, navigation}) => {
       },
       {
         id: 6,
-        title: 'Grafico de PF',
+        title: 'Progreso de fuerza',
         // color: '#FF69B4',
         // color: '#20B2AA', //turquesita
         // color: '#00FF00', //verde
         // color: '#00d800', //verde opaco
         color: '#3bc43b', //verde saturado sturado
-        options: 'Ver informacion del grafico de preparador fisico',
+        options:
+          'Ver informacion del progreso de fuerza con RM (repetición máxima)',
         image: 'https://img.icons8.com/?size=512&id=feFedRJYd495&format=png',
         // image: 'https://img.icons8.com/?size=512&id=hlniyYCIF_nE&format=png',
         route: 'MyStrenghtProgress',

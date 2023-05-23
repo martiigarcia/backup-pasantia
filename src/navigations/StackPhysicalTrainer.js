@@ -10,6 +10,9 @@ import TemplateDetailPhysicalTrainer from '../screens/medicalTemplate/PhysicalTr
 import PhysicalTrainerList from '../screens/medicalTemplate/PhysicalTrainer/PhysicalTrainerList';
 import HomePhysicalTrainer from '../screens/homes/HomePhysicalTrainer';
 import CreateTemplatePT from '../screens/medicalTemplate/PhysicalTrainer/CreateTemplatePT';
+import SportmanStrengthList from '../screens/medicalTemplate/PhysicalTrainer/SportmanStrengthList';
+import StrengthList from '../components/StrengthList';
+import StrengthGraphic from '../components/StrengthGraphic';
 
 const Stack = createStackNavigator();
 
@@ -78,7 +81,6 @@ export default function StackPhysicalTrainer({navigation}) {
           title: 'Deportistas',
         }}
       />
-
       <Stack.Screen
         name="TemplateDetailPhysicalTrainer"
         component={TemplateDetailPhysicalTrainer}
@@ -91,6 +93,27 @@ export default function StackPhysicalTrainer({navigation}) {
         component={CreateTemplatePT}
         options={{
           title: 'Registrar planilla',
+        }}
+      />
+      <Stack.Screen
+        name="SportmanStrengthList"
+        options={{
+          title: '',
+        }}
+        component={SportmanStrengthList}
+      />
+      <Stack.Screen
+        name="StrengthList"
+        component={StrengthList}
+        options={{
+          title: '',
+        }}
+      />
+      <Stack.Screen
+        name="StrengthGraphic"
+        component={StrengthGraphic}
+        options={{
+          title: '',
         }}
       />
     </Stack.Navigator>

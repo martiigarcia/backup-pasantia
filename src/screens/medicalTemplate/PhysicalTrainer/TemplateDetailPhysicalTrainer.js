@@ -95,7 +95,45 @@ export default ({route, navigation}) => {
         ) : (
           <>
             <ListItemTests testx={template.tests} />
-            <Card.Divider />
+
+            <Separator />
+
+            <View style={styles.fixToText}>
+              {/* <View style={styles.vertical}>
+                <Button
+                  title="Modificar"
+                  onPress={() =>
+                    navigation.navigate('UpdateTemplateNutricionist')
+                  }
+                />
+              </View> */}
+              <View style={styles.vertical}>
+                <Button
+                  title="Eliminar"
+                  onPress={() => {
+                    message =
+                      'Desea eliminar la planilla de ' +
+                      template.deportista.nombre +
+                      ' ' +
+                      template.deportista.apellido +
+                      ', realizada el dia ' +
+                      template.fecha +
+                      '?';
+                    Alert.alert('Confirmación', message, [
+                      {
+                        text: 'Cancelar',
+                        onPress: () => console.log('cancelando...'),
+                        style: 'cancel',
+                      },
+                      {
+                        text: 'Eliminar',
+                        onPress: () => handleDelete(),
+                      },
+                    ]);
+                  }}
+                />
+              </View>
+            </View>
           </>
         )}
       </>
@@ -194,44 +232,6 @@ export default ({route, navigation}) => {
                     ListFooterComponent={<></>}
                   />
                 </Card>
-              </View>
-              <Separator />
-
-              <View style={styles.fixToText}>
-                <View style={styles.vertical}>
-                  <Button
-                    title="Modificar"
-                    onPress={() =>
-                      navigation.navigate('UpdateTemplateNutricionist')
-                    }
-                  />
-                </View>
-                <View style={styles.vertical}>
-                  <Button
-                    title="Eliminar"
-                    onPress={() => {
-                      message =
-                        'Desea eliminar la planilla de ' +
-                        template.deportista.nombre +
-                        ' ' +
-                        template.deportista.apellido +
-                        ', realizada el dia ' +
-                        template.fecha +
-                        '?';
-                      Alert.alert('Confirmación', message, [
-                        {
-                          text: 'Cancelar',
-                          onPress: () => console.log('cancelando...'),
-                          style: 'cancel',
-                        },
-                        {
-                          text: 'Eliminar',
-                          onPress: () => handleDelete(),
-                        },
-                      ]);
-                    }}
-                  />
-                </View>
               </View>
             </SafeAreaView>
           </>

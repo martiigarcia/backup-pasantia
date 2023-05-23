@@ -15,6 +15,7 @@ import {Button, IconButton} from '@react-native-material/core';
 import ShotProgressGraphicComponent from './ShotProgressGraphicComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {environment} from '../environments/environment';
+import ShotPercentageGraphicComponent from './ShotPercentageGraphicComponent';
 
 export default ({route, navigation}) => {
   const [ShotProgressList, setShotProgressList] = useState({
@@ -151,10 +152,26 @@ export default ({route, navigation}) => {
                 />
                 <Card.Divider />
 
-                {ShotProgressList.ShotProgressList.length !== 0 && (
-                  <ShotProgressGraphicComponent
-                    shotsList={ShotProgressList.ShotProgressList}
-                  />
+                {ShotProgressList.ShotProgressList.length !== 0 ? (
+                  <>
+                    <ShotProgressGraphicComponent
+                      shotsList={ShotProgressList.ShotProgressList}
+                    />
+                    <Card.Divider />
+                    <Card.Divider />
+
+                    <ShotPercentageGraphicComponent
+                      shotsList={ShotProgressList.ShotProgressList}
+                    />
+                    <Card.Divider />
+                  </>
+                ) : (
+                  <>
+                    <Text>
+                      No existen planillas registradas para confeccionar un
+                      grafico
+                    </Text>
+                  </>
                 )}
                 {/* 
               {imcs.imcs.length !== 0 && (

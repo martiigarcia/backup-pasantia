@@ -149,7 +149,7 @@ export default ({route, navigation}) => {
         key={template.id}
         bottomDivider
         onPress={() => navigation.navigate('TemplateDetailK', template)}>
-        <Text>{template.id_planilla}</Text>
+        {/* <Text>{template.id_planilla}</Text> */}
         <ListItem.Content>
           <ListItem.Title>
             {template.deportista.nombre} {template.deportista.apellido}
@@ -163,7 +163,7 @@ export default ({route, navigation}) => {
           color="#6495ed"
         />
         <Card.Divider orientation="vertical" />
-        <IconButton
+        {/* <IconButton
           variant="outlined"
           onPress={() => {
             console.log('EDITAR OPTION');
@@ -173,7 +173,7 @@ export default ({route, navigation}) => {
           icon={
             <Icon name="edit" size={25} type="font-awesome" color="orange" />
           }
-        />
+        /> */}
 
         <IconButton
           variant="outlined"

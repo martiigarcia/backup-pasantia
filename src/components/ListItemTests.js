@@ -29,25 +29,29 @@ export default ({testx}) => {
   useEffect(() => {
     setTest(testx);
   }, []);
+
   /*
-"tests": [
-                {
-                    "id_test": "6",
-                    "valoraciones": "Mas duro que el diegote",
-                    "id_tipo": "4",
-                    "nombre": "Flexibilidad"
-                }
-            ]
-*/
+  
+  "tests": 
+  [
+    {
+      "cant_repeticiones": "3", 
+      "id_test_fuerza": "8", 
+      "id_tipo_ejercicio": "1", 
+      "nombre": "Levantamiento de pesas", 
+      "peso": "45"
+    }
+  ]
+  
+  */
   return (
     <View>
       {test.map((c, index) => (
         <ListItem key={index} bottomDivider>
           <ListItem.Content>
-            <ListItem.Title>Test realizado: {c.nombre}</ListItem.Title>
-            <ListItem.Subtitle>
-              valoraciones: {c.valoraciones}{' '}
-            </ListItem.Subtitle>
+            <ListItem.Title>Tipo de ejercicio: {c.nombre}</ListItem.Title>
+            <ListItem.Subtitle>Peso: {c.peso} </ListItem.Subtitle>
+            <ListItem.Subtitle>RM: {c.cant_repeticiones} </ListItem.Subtitle>
           </ListItem.Content>
         </ListItem>
       ))}

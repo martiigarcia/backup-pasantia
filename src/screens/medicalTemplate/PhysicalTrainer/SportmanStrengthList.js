@@ -9,7 +9,7 @@ import {
   ScrollView,
   VirtualizedList,
 } from 'react-native';
-import {Card, Input, Icon} from '@rneui/themed';
+import {Card, Input, ListItem, Icon} from '@rneui/themed';
 import {Dropdown} from 'react-native-element-dropdown';
 import {Button, Stack, Text} from '@react-native-material/core';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -18,6 +18,7 @@ import FechaInput from '../../../components/FechaInput';
 import moment from 'moment';
 
 export default ({route, navigation}) => {
+  const [users, setUsers] = useState({users: []});
   const [user, setUser] = useState({});
   const [exerciseTypes, setExerciseTypes] = useState({exerciseTypes: []});
   const [selectedExerciseType, setSelectedExerciseType] = useState(null);
@@ -27,9 +28,11 @@ export default ({route, navigation}) => {
   const [UserRole, setUserRole] = useState('');
   const [isFocus, setIsFocus] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [selectedUser, setSelectedUser] = useState({});
 
   useEffect(() => {
     console.log('MY SHOTS PROGRESS');
+    getUsers();
     getUser();
     getExerciseTypes();
   }, []);
@@ -96,6 +99,40 @@ export default ({route, navigation}) => {
       });
   };
 
+  const getUsers = () => {
+    setLoading(true);
+    let valorToken;
+
+    getUserData()
+      .then(data => {
+        const roleX = JSON.parse(data.ROLE);
+        setUserRole(roleX);
+
+        const headers = {
+          Authorization: 'Bearer ' + data.TOKEN,
+        };
+
+        fetch(environment.baseURL + 'profesionales/deportistas', {
+          headers,
+        })
+          .then(resp => resp.json())
+          .then(json => {
+            setUsers({
+              users: json.deportistas,
+            });
+            setLoading(false);
+          })
+          .catch(error => {
+            console.log(error);
+            setLoading(false);
+          });
+      })
+      .catch(error => {
+        console.log(error);
+        setLoading(false);
+      });
+  };
+
   const handleDateStart = date => {
     console.log('handle date: ');
     console.log(date); // 2023-04-25T02:21:00.000Z
@@ -105,6 +142,11 @@ export default ({route, navigation}) => {
     console.log('handle date: ');
     console.log(date); // 2023-04-25T02:21:00.000Z
     setDateEnd(date);
+  };
+  const handleUSer = user => {
+    console.log('handle user:');
+    console.log(user);
+    setSelectedUser(user);
   };
 
   const handleSave = () => {
@@ -133,14 +175,14 @@ export default ({route, navigation}) => {
           } else {
             console.log('esta todo completo');
 
-            //obtener-progreso-fuerza/(:num)/(:segment)/(:segment)/(:num)/(:num)
-            //obtenerProgresoFuerza($idDeportista, $startDate, $endDate, $idTipoEjercicio, $cantRepeticiones)
-            // /preparador/obtener-progreso-fuerza/6/2022-09-23/2022-09-29/1/3
+            //obtener-progreso-fuerza/(:num)/(:segment)/(:segment)/(:num)/(:num)/(:num)
+            //obtenerProgresoFuerzaDeportista($idDeportista, $startDate, $endDate, $idTipoEjercicio, $cantRepeticiones, $idUsuario)
+            // /deportistas/obtener-progreso-fuerza/6/2022-09-23/2022-09-29/1/3/6
 
             const url =
               environment.baseURL +
-              'deportistas/obtener-progreso-fuerza/' +
-              user.id_usuario +
+              'preparador/obtener-progreso-fuerza/' +
+              selectedUser.id_usuario +
               '/' +
               moment(dateStart).format('YYYY-MM-DD') +
               '/' +
@@ -148,9 +190,7 @@ export default ({route, navigation}) => {
               '/' +
               selectedExerciseType.id_tipo_ejercicio +
               '/' +
-              rm.rm +
-              '/' +
-              user.id_usuario;
+              rm.rm;
 
             console.log(url);
 
@@ -168,122 +208,184 @@ export default ({route, navigation}) => {
     }
   };
 
+  function getUserItem({item: user}) {
+    return (
+      <>
+        <ListItem
+          key={user.id_usuario}
+          bottomDivider
+          onPress={() => {
+            handleUSer(user);
+            //  navigation.navigate('Injuries', {user});
+          }}>
+          <ListItem.Content>
+            <ListItem.Title>
+              {user.nombre} {user.apellido}
+            </ListItem.Title>
+            <ListItem.Subtitle>{user.email}</ListItem.Subtitle>
+          </ListItem.Content>
+          {user.id_usuario === selectedUser.id_usuario ? (
+            <Icon name="check" type="font-awesome" color="#FF69B4" />
+          ) : null}
+        </ListItem>
+      </>
+    );
+  }
+
+  const HearderListComponent = () => {
+    return (
+      <>
+        <Card.Title>INTERVALO DE FECHAS</Card.Title>
+        <Card.Divider />
+        <Text style={styles.textInfo}>
+          * Seleccione las fechas entre las que se visualizara el progreso de
+          fuerza
+        </Text>
+        <Card.Divider />
+
+        <Text style={styles.text}>Fecha de inicio</Text>
+
+        <FechaInput doDate={handleDateStart} />
+
+        {dateStart !== '' && (
+          <Text
+            style={{
+              marginLeft: 10,
+              marginTop: 10,
+              marginBottom: 15,
+              fontSize: 15,
+            }}>
+            Fecha de inicio elegida: {dateStart.toLocaleDateString()}
+          </Text>
+        )}
+
+        <Card.Divider />
+        <Text style={styles.text}>Fecha de fin</Text>
+        <FechaInput doDate={handleDateEnd} />
+
+        {dateEnd !== '' && (
+          <Text
+            style={{
+              marginLeft: 10,
+              marginTop: 10,
+              marginBottom: 15,
+              fontSize: 15,
+            }}>
+            Fecha de fin elegida: {dateEnd.toLocaleDateString()}
+          </Text>
+        )}
+
+        <Card.Divider />
+        <Card.Divider />
+
+        <Card.Title>TIPO DE EJERCICIO</Card.Title>
+        <Card.Divider />
+
+        <Dropdown
+          style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          data={exerciseTypes.exerciseTypes}
+          search
+          maxHeight={300}
+          labelField="nombre"
+          valueField="id_tipo_ejercicio"
+          placeholder={!isFocus ? 'Seleccionar tipo de ejercicio' : '...'}
+          searchPlaceholder="Buscar por nombre"
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={item => {
+            setSelectedExerciseType(item);
+            //  setUser({...user, item});
+            setIsFocus(false);
+          }}
+          renderLeftIcon={() => (
+            <Icon
+              color={isFocus ? '#6409E6' : 'black'}
+              iconStyle={styles.icon}
+              name="weight-lifter"
+              size={30}
+              type="material-community"
+            />
+          )}
+        />
+
+        <Card.Divider />
+        <Card.Divider />
+
+        <Card.Title>CANTIDAD DE REPETICIONES</Card.Title>
+        <Card.Divider />
+
+        <Input
+          style={styles.input}
+          onChangeText={rm =>
+            // console.log(name)
+            setRM({...rm, rm})
+          }
+          placeholder="RM (repetición máxima)"
+          value={rm.rm}
+          keyboardType="numeric"
+          errorStyle={{color: 'red'}}
+          // errorMessage={errors.errors.rm}
+        />
+
+        <Card.Divider />
+        <Card.Divider />
+      </>
+    );
+  };
+  const FooterListComponent = () => {
+    return (
+      <>
+        <Card.Title>DEPORTISTAS</Card.Title>
+        <Card.Divider />
+        <Text style={styles.textInfo}>
+          * Seleccione un deportista para ver la cantidad de sesiones
+        </Text>
+        <Card.Divider />
+
+        <FlatList
+          keyExtractor={user => user.id_usuario.toString()}
+          data={users.users}
+          renderItem={getUserItem}
+        />
+        <Card.Divider />
+        {Object.keys(selectedUser).length !== 0 && (
+          <Text
+            style={{
+              marginLeft: 10,
+              marginTop: 10,
+              marginBottom: 15,
+              fontSize: 15,
+            }}>
+            Usuario elegido: {selectedUser.nombre} {selectedUser.apellido}
+          </Text>
+        )}
+        <Card.Divider />
+
+        <Button title={'Guardar'} onPress={handleSave}></Button>
+      </>
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <View>
-          <Card>
-            {console.log(user)}
+      {/* <ScrollView> */}
+      <View>
+        <Card>
+          {console.log(user)}
 
-            <>
-              <Card.Title>INTERVALO DE FECHAS</Card.Title>
-              <Card.Divider />
-              <Text style={styles.textInfo}>
-                * Seleccione las fechas entre las que se visualizara el progreso
-                de fuerza
-              </Text>
-              <Card.Divider />
-
-              <Text style={styles.text}>Fecha de inicio</Text>
-
-              <FechaInput doDate={handleDateStart} />
-
-              {dateStart !== '' && (
-                <Text
-                  style={{
-                    marginLeft: 10,
-                    marginTop: 10,
-                    marginBottom: 15,
-                    fontSize: 15,
-                  }}>
-                  Fecha de inicio elegida: {dateStart.toLocaleDateString()}
-                </Text>
-              )}
-
-              <Card.Divider />
-              <Text style={styles.text}>Fecha de fin</Text>
-              <FechaInput doDate={handleDateEnd} />
-
-              {dateEnd !== '' && (
-                <Text
-                  style={{
-                    marginLeft: 10,
-                    marginTop: 10,
-                    marginBottom: 15,
-                    fontSize: 15,
-                  }}>
-                  Fecha de fin elegida: {dateEnd.toLocaleDateString()}
-                </Text>
-              )}
-
-              <Card.Divider />
-              <Card.Divider />
-
-              <Card.Title>TIPO DE EJERCICIO</Card.Title>
-              <Card.Divider />
-
-              <Dropdown
-                style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={styles.selectedTextStyle}
-                inputSearchStyle={styles.inputSearchStyle}
-                iconStyle={styles.iconStyle}
-                data={exerciseTypes.exerciseTypes}
-                search
-                maxHeight={300}
-                labelField="nombre"
-                valueField="id_tipo_ejercicio"
-                placeholder={!isFocus ? 'Seleccionar tipo de ejercicio' : '...'}
-                searchPlaceholder="Buscar por nombre"
-                onFocus={() => setIsFocus(true)}
-                onBlur={() => setIsFocus(false)}
-                onChange={item => {
-                  setSelectedExerciseType(item);
-                  //  setUser({...user, item});
-                  setIsFocus(false);
-                }}
-                renderLeftIcon={() => (
-                  <Icon
-                    color={isFocus ? '#6409E6' : 'black'}
-                    iconStyle={styles.icon}
-                    name="weight-lifter"
-                    size={30}
-                    type="material-community"
-                  />
-                )}
-              />
-
-              <Card.Divider />
-              <Card.Divider />
-
-              <Card.Title>CANTIDAD DE REPETICIONES</Card.Title>
-              <Card.Divider />
-
-              <Input
-                style={styles.input}
-                onChangeText={rm =>
-                  // console.log(name)
-                  setRM({...rm, rm})
-                }
-                placeholder="RM (repetición máxima)"
-                value={rm.rm}
-                keyboardType="numeric"
-                errorStyle={{color: 'red'}}
-                // errorMessage={errors.errors.rm}
-              />
-
-              <Card.Divider />
-              <Card.Divider />
-
-              {user && (
-                <>
-                  <Button title={'Guardar'} onPress={handleSave}></Button>
-                </>
-              )}
-            </>
-          </Card>
-        </View>
-      </ScrollView>
+          <>
+            <FlatList
+              ListHeaderComponent={<>{HearderListComponent()}</>}
+              ListFooterComponent={<>{FooterListComponent()}</>}
+            />
+          </>
+        </Card>
+      </View>
+      {/* </ScrollView> */}
     </SafeAreaView>
   );
 };

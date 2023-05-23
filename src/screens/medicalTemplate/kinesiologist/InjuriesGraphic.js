@@ -122,10 +122,17 @@ export default ({route, navigation}) => {
               />
               <Card.Divider />
 
-              {injuriesList.injuriesList.length !== 0 && (
+              {injuriesList.injuriesList.length !== 0 ? (
                 <InjuriesGraphicComponent
                   injuries={injuriesList.injuriesList}
                 />
+              ) : (
+                <>
+                  <Text>
+                    No existen planillas registradas para confeccionar un
+                    grafico
+                  </Text>
+                </>
               )}
               {/* 
               {imcs.imcs.length !== 0 && (

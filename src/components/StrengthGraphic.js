@@ -157,10 +157,17 @@ export default ({route, navigation}) => {
                 <Card.Divider />
                 <Card.Divider />
 
-                {strengthList.strengthList.length !== 0 && (
+                {strengthList.strengthList.length !== 0 ? (
                   <StrengthGraphicComponent
                     strengthList={strengthList.strengthList}
                   />
+                ) : (
+                  <>
+                    <Text>
+                      No existen planillas registradas para confeccionar un
+                      grafico
+                    </Text>
+                  </>
                 )}
                 {/* 
               {imcs.imcs.length !== 0 && (

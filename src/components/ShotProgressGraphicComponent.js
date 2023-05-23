@@ -55,7 +55,8 @@ import {Avatar, ListItem, Icon, Card} from '@rneui/themed';
 export default ({shotsList}) => {
   const [shotsData, setShotsData] = useState([]);
   const screenWidth = Dimensions.get('window').width;
-  const desiredWidth = 100 * shotsList.length;
+  const desiredWidth =
+    shotsList.length > 4 ? 100 * shotsList.length : screenWidth;
 
   useEffect(() => {
     console.log('SHOT GRAPHIC COMPONENT:');
@@ -120,19 +121,22 @@ export default ({shotsList}) => {
           <ScrollView horizontal={true}>
             <VictoryChart
               domainPadding={{x: 50}}
-              width={desiredWidth}
+              width={processedData.length > 1 ? desiredWidth : 300}
               height={500}
               theme={VictoryTheme.material}>
               <VictoryAxis
+                key={0}
                 crossAxis
                 tickFormat={date =>
                   new Date(date).toLocaleDateString('es-ES', {
                     month: 'numeric',
                     day: 'numeric',
+                    year: processedData.length === 1 ? 'numeric' : undefined,
                   })
                 }
               />
               <VictoryAxis
+                key={1}
                 dependentAxis // Eje Y
                 tickFormat={t => `${t}`} // Formato de los valores en el eje Y
               />
@@ -163,52 +167,6 @@ export default ({shotsList}) => {
                 />
               </VictoryGroup>
             </VictoryChart>
-          </ScrollView>
-          <Card.Divider />
-
-          <Card.Divider />
-
-          <Text style={{textAlign: 'center', fontSize: 20}}>
-            <Text style={{color: '#c62828', fontSize: 18}}>
-              {'\u2501'}
-              {'\u2501'}
-              {'\u2501'}{' '}
-            </Text>
-            Promedio (acertados/hechos)
-          </Text>
-          <ScrollView horizontal={true}>
-            <View style={{marginTop: 20}}>
-              <VictoryChart
-                style={{marginTop: 20}}
-                width={desiredWidth}
-                height={500}
-                domainPadding={{x: 20, y: [10, 20]}} // Adjusted domainPadding values
-                theme={VictoryTheme.material}>
-                <VictoryAxis
-                  crossAxis
-                  tickFormat={date =>
-                    new Date(date).toLocaleDateString('es-ES', {
-                      month: 'numeric',
-                      day: 'numeric',
-                    })
-                  }
-                />
-                <VictoryAxis
-                  dependentAxis
-                  domain={{y: [0, 105]}} // Adjusted domain values
-                  tickFormat={t => t + '%'}
-                />
-                <VictoryGroup offset={10}>
-                  <VictoryLine
-                    data={processedData}
-                    x="x"
-                    y="prom"
-                    labels={({datum}) => datum.prom + '%'}
-                    style={{data: {stroke: '#c62828', strokeWidth: 2}}}
-                  />
-                </VictoryGroup>
-              </VictoryChart>
-            </View>
           </ScrollView>
 
           {/* <ScrollView horizontal={true}>
