@@ -136,21 +136,28 @@ export default ({route, navigation}) => {
               }></Button>
             <Card.Divider />
             <Card.Divider />
-
-            {injuriesList.injuriesList.map((c, index) => (
-              <ListItem key={index} bottomDivider>
-                <ListItem.Content>
-                  <ListItem.Title>{c.zone}</ListItem.Title>
-                  <ListItem.Subtitle>
-                    Avtividad realizada: {c.activity}
-                  </ListItem.Subtitle>
-                  <ListItem.Subtitle>
-                    Cantidad de sesiones en el mismo mes: {c.count}
-                  </ListItem.Subtitle>
-                  <ListItem.Subtitle>Fecha: {c.date}</ListItem.Subtitle>
-                </ListItem.Content>
-              </ListItem>
-            ))}
+            {injuriesList.injuriesList.length !== 0 ? (
+              <>
+                {injuriesList.injuriesList.map((c, index) => (
+                  <ListItem key={index} bottomDivider>
+                    <ListItem.Content>
+                      <ListItem.Title>{c.zone}</ListItem.Title>
+                      <ListItem.Subtitle>
+                        Avtividad realizada: {c.activity}
+                      </ListItem.Subtitle>
+                      <ListItem.Subtitle>
+                        Cantidad de sesiones en el mismo mes: {c.count}
+                      </ListItem.Subtitle>
+                      <ListItem.Subtitle>Fecha: {c.date}</ListItem.Subtitle>
+                    </ListItem.Content>
+                  </ListItem>
+                ))}
+              </>
+            ) : (
+              <>
+                <Text>No existen planillas registradas para listar</Text>
+              </>
+            )}
           </Card>
         </View>
       </SafeAreaView>

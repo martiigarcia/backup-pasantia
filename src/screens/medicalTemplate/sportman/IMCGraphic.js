@@ -128,6 +128,7 @@ export default ({route, navigation}) => {
                 }}
               />
               <Card.Divider />
+              <Card.Divider />
               {/* <Text>ACA VA EL GRAFICO</Text> */}
               {imcs.imcs.length !== 0 ? (
                 <IMCGraphicComponent imcsX={imcs.imcs} />

@@ -32,7 +32,7 @@ export default ({route, navigation}) => {
     route.params && route.params.state ? route.params.state : '',
   );
 
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState('');
   const [open, setOpen] = useState(false);
   const [selectedRole, setSelectedRole] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
@@ -42,14 +42,13 @@ export default ({route, navigation}) => {
   const [alert, setAlert] = useState(false);
   const [errors, setErrors] = useState({errors: []});
 
+  let newUserState = '';
+
   useEffect(() => {
-    // console.log('USE EFFECTS: ');
-    // console.log(user);
-    // console.log(userState);
     getRoles();
     getAction();
     getSelectedIndexState();
-  }, [{}]);
+  }, []);
 
   const getMemberToken = async () => {
     try {
@@ -125,11 +124,6 @@ export default ({route, navigation}) => {
 
   const getAction = () => {
     user.id_usuario ? setOption('update') : setOption('create');
-    // let action = user.id_usuario ? 'update' : 'create';
-    // if (action === 'update') {
-    //   getUser();
-    //   getSelectedIndexState();
-    // }
   };
 
   const getRoles = () => {
@@ -293,15 +287,28 @@ export default ({route, navigation}) => {
 
   return (
     <>
+      {/* {console.log('SelectedIndex: ' + selectedIndex)} */}
       <SafeAreaView style={styles.container}>
         <ScrollView>
           <View>
             <Card>
+              {option === 'create' ? (
+                <>
+                  <Card.Title>REGISTRAR USUARIO</Card.Title>
+                  <Card.Divider />
+                </>
+              ) : (
+                <>
+                  <Card.Title>MODIFICAR USUARIO</Card.Title>
+                  <Card.Divider />
+                </>
+              )}
+
               <Text style={styles.text}>Nombre</Text>
               <Input
                 style={styles.input}
                 onChangeText={nombre => setUser({...user, nombre})}
-                placeholder="Completar"
+                placeholder="Nombre"
                 value={user.nombre}
                 errorStyle={{color: 'red'}}
                 errorMessage={errors.errors.name}
@@ -315,7 +322,7 @@ export default ({route, navigation}) => {
                 errorStyle={{color: 'red'}}
                 errorMessage={errors.errors.surname}
               />
-              <Text style={styles.text}>Email:</Text>
+              <Text style={styles.text}>Email</Text>
               <Input
                 style={styles.input}
                 onChangeText={email => setUser({...user, email})}
@@ -324,17 +331,29 @@ export default ({route, navigation}) => {
                 errorStyle={{color: 'red'}}
                 errorMessage={errors.errors.email}
               />
-              {/* {option === 'update' && ( */}
+              <Card.Divider />
               <>
                 <Text style={styles.text}>
-                  Fecha de nacimiento:
+                  Fecha de nacimiento
                   <Text style={styles.textInfo}> {user.fecha_nacimiento}</Text>
                 </Text>
+
                 <FechaInput doDate={handleDate} />
+                {date !== '' && (
+                  <Text
+                    style={{
+                      marginLeft: 10,
+                      marginTop: 10,
+                      marginBottom: 15,
+                      fontSize: 15,
+                    }}>
+                    Fecha de inicio elegida: {date.toLocaleDateString()}
+                  </Text>
+                )}
               </>
-              {/* )} */}
+              <Card.Divider />
               <Text style={styles.text}>
-                Rol en el sistema:
+                Rol en el sistema
                 <Text style={styles.textInfo}> {user.rol}</Text>
               </Text>
               <Dropdown
@@ -366,8 +385,20 @@ export default ({route, navigation}) => {
                   />
                 )}
               />
+              {selectedRole && (
+                <Text
+                  style={{
+                    marginLeft: 10,
+                    marginTop: 10,
+                    marginBottom: 15,
+                    fontSize: 15,
+                  }}>
+                  Rol elegido: {selectedRole.nombre}
+                </Text>
+              )}
+              <Card.Divider />
               <Text style={styles.text}>
-                Estado actual:
+                Estado actual
                 <Text style={styles.textInfo}> {user.estado}</Text>
               </Text>
               <ButtonGroup
@@ -375,11 +406,28 @@ export default ({route, navigation}) => {
                 selectedIndex={selectedIndex}
                 onPress={value => {
                   setSelectedIndex(value);
+                  console.log(value);
                 }}
-                containerStyle={{marginBottom: 20}}
+                // containerStyle={{marginBottom: StatusBar.currentHeight}}
                 selectedButtonStyle={{backgroundColor: '#6409E6'}}
               />
-              <Text style={styles.textError}>{errors.errors.wantedRole}</Text>
+
+              {selectedIndex !== null && (
+                <>
+                  <Text
+                    style={{
+                      marginLeft: 10,
+                      marginTop: 10,
+                      marginBottom: 15,
+                      fontSize: 15,
+                    }}>
+                    Estado elegido: {selectedIndex === 0 && 'Activo'}
+                    {selectedIndex === 1 && 'Pendiente'}
+                    {selectedIndex === 2 && 'Inactivo'}
+                  </Text>
+                </>
+              )}
+              <Card.Divider />
               <View style={styles.view}>
                 <Stack fill center spacing={4}>
                   <Button
@@ -400,94 +448,11 @@ export default ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // paddingTop: StatusBar.currentHeight,
-    paddingBottom: StatusBar.currentHeight,
-  },
-  scrollView: {
-    marginHorizontal: 20,
-  },
-  view: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  form: {
-    padding: 20,
-  },
-
-  view: {
-    paddingTop: StatusBar.currentHeight,
-    paddingBottom: StatusBar.currentHeight,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  // container: {
-  //   flex: 1,
-  //   paddingTop: StatusBar.currentHeight,
-  // },
-  // scrollView: {
-  //   marginHorizontal: 20,
-  // },
-  // view: {
-  //   paddingTop: StatusBar.currentHeight,
-  //   paddingBottom: StatusBar.currentHeight,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  // },
-  // form: {
-  //   padding: 20,
-  // },
-  input: {
-    height: 50,
-    // borderColor: 'gray',
-    // borderWidth: 1,
-    // margin: 5,
-    marginBottom: 10,
-    padding: 10,
-  },
-  button: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-  },
-  text: {
-    fontSize: 20,
-    textAlign: 'left',
-    padding: 10,
-  },
-  textError: {
-    paddingLeft: 10,
-    color: 'red',
-    fontSize: 12,
-  },
   textInfo: {
     fontSize: 15,
     textAlign: 'left',
     padding: 10,
     color: '#DFA8F8',
-  },
-  dropdown: {
-    height: 50,
-    borderBottomWidth: 1,
-    borderColor: 'gray',
-    margin: 10,
-    marginBottom: 10,
-    padding: 10,
-  },
-  icon: {
-    marginRight: 5,
-  },
-  label: {
-    position: 'absolute',
-    backgroundColor: 'white',
-    left: 22,
-    top: 8,
-    zIndex: 999,
-    paddingHorizontal: 8,
-    fontSize: 14,
   },
   placeholderStyle: {
     fontSize: 16,
@@ -503,17 +468,225 @@ const styles = StyleSheet.create({
     height: 40,
     fontSize: 16,
   },
-  buttonDate: {
-    height: 50,
-    borderWidth: 1,
-    margin: 10,
-    marginBottom: 10,
-    padding: 10,
-    borderColor: 'gray',
+  title: {
+    textAlign: 'center',
+    marginVertical: 8,
+  },
+
+  viewAdmin: {
+    justifyContent: 'center',
+    height: 550,
+  },
+  containerAdmin: {
+    paddingBottom: StatusBar.currentHeight,
+    marginBottom: StatusBar.currentHeight,
+  },
+  vertical: {
+    display: 'flex',
+    marginHorizontal: 5,
+    flexDirection: 'row',
+  },
+  icon: {
+    marginRight: 5,
+  },
+  fixToText: {
+    // paddingTop: StatusBar.currentHeight,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    // marginVertical: 10,
+    marginBottom: 20,
+    marginTop: 10,
+  },
+  separator: {
+    paddingTop: StatusBar.currentHeight,
+    marginVertical: 8,
+    borderBottomColor: '#737373',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  container: {
+    flex: 1,
+    // paddingTop: StatusBar.currentHeight,
+  },
+  scrollView: {
+    // paddingTop: StatusBar.currentHeight,
+    // marginHorizontal: 20,
+  },
+  view: {
+    // height: 50,
+    flex: 1,
+  },
+  input: {
+    // paddingTop: StatusBar.currentHeight,
+  },
+  button: {
     paddingTop: 10,
     paddingBottom: 10,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-end',
+    paddingLeft: 5,
+  },
+  image: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  textNombre: {
+    color: 'white',
+    fontSize: 40,
+    lineHeight: 84,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    backgroundColor: '#6409E6',
+  },
+  textTipoFicha: {
+    marginTop: 10,
     textAlign: 'center',
   },
+  textEmail: {
+    textAlign: 'center',
+  },
+  textAutor: {
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  text: {
+    fontSize: 20,
+    textAlign: 'left',
+    padding: 10,
+  },
+  // text: {
+  //   textAlign: 'center',
+  //   marginBottom: 10,
+  //   color: 'black',
+  // },
+  dropdown: {
+    height: 50,
+    // width: 210,
+    borderBottomWidth: 1,
+    borderColor: 'gray',
+    margin: 10,
+    marginBottom: StatusBar.currentHeight,
+    paddingLeft: 10,
+    // padding: 5,
+  },
+  viewButton: {
+    paddingTop: StatusBar.currentHeight,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     // paddingTop: StatusBar.currentHeight,
+//     paddingBottom: StatusBar.currentHeight,
+//   },
+//   scrollView: {
+//     marginHorizontal: 20,
+//   },
+
+//   form: {
+//     padding: 20,
+//   },
+
+//   view: {
+//     paddingTop: StatusBar.currentHeight,
+//     paddingBottom: StatusBar.currentHeight,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//   },
+//   // container: {
+//   //   flex: 1,
+//   //   paddingTop: StatusBar.currentHeight,
+//   // },
+//   // scrollView: {
+//   //   marginHorizontal: 20,
+//   // },
+//   // view: {
+//   //   paddingTop: StatusBar.currentHeight,
+//   //   paddingBottom: StatusBar.currentHeight,
+//   //   justifyContent: 'center',
+//   //   alignItems: 'center',
+//   // },
+//   // form: {
+//   //   padding: 20,
+//   // },
+//   input: {
+//     height: 50,
+//     // borderColor: 'gray',
+//     // borderWidth: 1,
+//     // margin: 5,
+//     marginBottom: 10,
+//     padding: 10,
+//   },
+//   button: {
+//     paddingTop: 10,
+//     paddingBottom: 10,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     textAlign: 'center',
+//   },
+//   text: {
+//     fontSize: 20,
+//     textAlign: 'left',
+//     padding: 10,
+//   },
+//   textError: {
+//     paddingLeft: 10,
+//     color: 'red',
+//     fontSize: 12,
+//   },
+//   textInfo: {
+//     fontSize: 15,
+//     textAlign: 'left',
+//     padding: 10,
+//     color: '#DFA8F8',
+//   },
+//   dropdown: {
+//     height: 50,
+//     borderBottomWidth: 1,
+//     borderColor: 'gray',
+//     margin: 10,
+//     marginBottom: 10,
+//     padding: 10,
+//   },
+//   icon: {
+//     marginRight: 5,
+//   },
+//   label: {
+//     position: 'absolute',
+//     backgroundColor: 'white',
+//     left: 22,
+//     top: 8,
+//     zIndex: 999,
+//     paddingHorizontal: 8,
+//     fontSize: 14,
+//   },
+//   placeholderStyle: {
+//     fontSize: 16,
+//   },
+//   selectedTextStyle: {
+//     fontSize: 16,
+//   },
+//   iconStyle: {
+//     width: 20,
+//     height: 20,
+//   },
+//   inputSearchStyle: {
+//     height: 40,
+//     fontSize: 16,
+//   },
+//   buttonDate: {
+//     height: 50,
+//     borderWidth: 1,
+//     margin: 10,
+//     marginBottom: 10,
+//     padding: 10,
+//     borderColor: 'gray',
+//     paddingTop: 10,
+//     paddingBottom: 10,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     textAlign: 'center',
+//   },
+// });

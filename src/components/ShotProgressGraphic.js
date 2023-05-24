@@ -151,6 +151,7 @@ export default ({route, navigation}) => {
                   }}
                 />
                 <Card.Divider />
+                <Card.Divider />
 
                 {ShotProgressList.ShotProgressList.length !== 0 ? (
                   <>

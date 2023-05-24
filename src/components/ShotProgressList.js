@@ -118,35 +118,42 @@ export default ({route, navigation}) => {
               <Card.Divider />
               <Card.Divider />
               {/* {"date": "2022-11-09", "scored": "2", "shots": "500"} */}
+              {ShotProgressList.ShotProgressList.length !== 0 ? (
+                <>
+                  {ShotProgressList.ShotProgressList.map((c, index) => {
+                    // const percentage = (c.scored / c.shots) * 100; // Calcula el porcentaje de acierto
+                    // const formattedPercentage =
+                    //   percentage % 1 === 0 ? percentage : percentage.toFixed(2); // Verifica si tiene decimales y redondea si es necesario
 
-              {ShotProgressList.ShotProgressList.map((c, index) => {
-                // const percentage = (c.scored / c.shots) * 100; // Calcula el porcentaje de acierto
-                // const formattedPercentage =
-                //   percentage % 1 === 0 ? percentage : percentage.toFixed(2); // Verifica si tiene decimales y redondea si es necesario
+                    const average =
+                      (c.shots > 0 ? c.scored / c.shots : 0) * 100; // Calcula el promedio si se han hecho tiros
+                    const prom =
+                      average % 1 === 0 ? average : Math.round(average); // Redondea el promedio si tiene decimales
 
-                const average = (c.shots > 0 ? c.scored / c.shots : 0) * 100; // Calcula el promedio si se han hecho tiros
-                const prom = average % 1 === 0 ? average : Math.round(average); // Redondea el promedio si tiene decimales
-
-                return (
-                  <ListItem key={index} bottomDivider>
-                    <Text>{index + 1}</Text>
-                    <ListItem.Content>
-                      <ListItem.Title>
-                        Porcentaje de acierto: {prom}%
-                      </ListItem.Title>
-                      <ListItem.Subtitle>
-                        Lanzamientos hechos: {c.shots}
-                      </ListItem.Subtitle>
-                      <ListItem.Subtitle>
-                        Lanzamientos acertados: {c.scored}
-                      </ListItem.Subtitle>
-                      <ListItem.Subtitle>Fecha: {c.date}</ListItem.Subtitle>
-                    </ListItem.Content>
-                  </ListItem>
-                );
-              })}
-              <Card.Divider />
-              <Card.Divider />
+                    return (
+                      <ListItem key={index} bottomDivider>
+                        <Text>{index + 1}</Text>
+                        <ListItem.Content>
+                          <ListItem.Title>
+                            Porcentaje de acierto: {prom}%
+                          </ListItem.Title>
+                          <ListItem.Subtitle>
+                            Lanzamientos hechos: {c.shots}
+                          </ListItem.Subtitle>
+                          <ListItem.Subtitle>
+                            Lanzamientos acertados: {c.scored}
+                          </ListItem.Subtitle>
+                          <ListItem.Subtitle>Fecha: {c.date}</ListItem.Subtitle>
+                        </ListItem.Content>
+                      </ListItem>
+                    );
+                  })}
+                </>
+              ) : (
+                <>
+                  <Text>No existen planillas registradas para listar</Text>
+                </>
+              )}
             </Card>
           </View>
         </ScrollView>

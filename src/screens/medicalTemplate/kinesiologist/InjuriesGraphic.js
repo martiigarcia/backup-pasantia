@@ -121,6 +121,7 @@ export default ({route, navigation}) => {
                 }}
               />
               <Card.Divider />
+              <Card.Divider />
 
               {injuriesList.injuriesList.length !== 0 ? (
                 <InjuriesGraphicComponent

@@ -126,16 +126,23 @@ export default ({route, navigation}) => {
                 }></Button>
               <Card.Divider />
               <Card.Divider />
-
-              {strengthList.strengthList.map((c, index) => (
-                <ListItem key={index} bottomDivider>
-                  <Text>{index + 1}</Text>
-                  <ListItem.Content>
-                    <ListItem.Title>Peso: {c.peso}</ListItem.Title>
-                    <ListItem.Subtitle>Fecha: {c.fecha}</ListItem.Subtitle>
-                  </ListItem.Content>
-                </ListItem>
-              ))}
+              {strengthList.strengthList.length !== 0 ? (
+                <>
+                  {strengthList.strengthList.map((c, index) => (
+                    <ListItem key={index} bottomDivider>
+                      <Text>{index + 1}</Text>
+                      <ListItem.Content>
+                        <ListItem.Title>Peso: {c.peso}</ListItem.Title>
+                        <ListItem.Subtitle>Fecha: {c.fecha}</ListItem.Subtitle>
+                      </ListItem.Content>
+                    </ListItem>
+                  ))}
+                </>
+              ) : (
+                <>
+                  <Text>No existen planillas registradas para listar</Text>
+                </>
+              )}
             </Card>
           </View>
         </ScrollView>

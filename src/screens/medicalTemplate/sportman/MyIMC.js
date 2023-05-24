@@ -122,18 +122,26 @@ export default ({route, navigation}) => {
               }}></Button>
             <Card.Divider />
             <Card.Divider />
-            {imcs.imcs.map((c, index) => (
-              <ListItem key={index} bottomDivider>
-                <ListItem.Content>
-                  <ListItem.Title>
-                    {c.month} - {c.year}
-                  </ListItem.Title>
-                  <ListItem.Subtitle>
-                    IMC: {parseFloat(c.imc).toFixed(2)}
-                  </ListItem.Subtitle>
-                </ListItem.Content>
-              </ListItem>
-            ))}
+            {imcs.imcs.length !== 0 ? (
+              <>
+                {imcs.imcs.map((c, index) => (
+                  <ListItem key={index} bottomDivider>
+                    <ListItem.Content>
+                      <ListItem.Title>
+                        {c.month} - {c.year}
+                      </ListItem.Title>
+                      <ListItem.Subtitle>
+                        IMC: {parseFloat(c.imc).toFixed(2)}
+                      </ListItem.Subtitle>
+                    </ListItem.Content>
+                  </ListItem>
+                ))}
+              </>
+            ) : (
+              <>
+                <Text>No existen planillas registradas para listar</Text>
+              </>
+            )}
           </Card>
         </View>
       </SafeAreaView>
